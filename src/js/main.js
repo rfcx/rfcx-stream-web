@@ -1,6 +1,5 @@
 /* jshint -W079 */
 'use strict';
-var $ = require('jquery');
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
 
@@ -24,11 +23,11 @@ var queue = {
     $.ajax({
       type: 'GET',
       // hardcode guardian id
-      url: 'https://api.rfcx.org/v1/guardians/0bdbb4a5d567/audio.json?limit=3',
+      url: 'https://api.rfcx.org/v1/guardians/74b55fd8b7f2/audio.json?limit=3',
       beforeSend: function (request)
       {
         // x-auth-token and x-auth-user are required for backend api call. hardcoded
-        request.setRequestHeader("x-auth-token", 'bxca0geq04njg2278b30m22obm5yqdwy1f1q5lqm');
+        request.setRequestHeader("x-auth-token", 'hy6g3x1v7tud9wkeersk20yb46vhvuys0e3jjo1k');
         request.setRequestHeader("x-auth-user", 'user/63079ab5-fd39-4486-b01c-f61426ffce50');
       },
       success: function(res) {
@@ -82,39 +81,40 @@ var audio = {
   // current index to play
   index: 1,
   init: function() {
-    this.initAnalyser();
     this.bindEvents();
   },
   bindEvents: function() {
     // listen to the queue object for the new audio files
     $(queue).on('newurl', this._onNewUrls.bind(this));
-    // listen to the queue object for the start event
-    $(queue).on('start', this.startPlayback.bind(this));
   },
   createAudios: function() {
     // create html audio instances for each of audio file
     // after that all audio files will be requested, cached and ready to play immediately
-    console.log('AUDIO |', this.urls.length - this.list.length, 'new audios');
+    var _this = this;
     for (var i=0; i < this.urls.length; i++) {
       if (!this.list[i]) {
-        // create only new items
-        var audio = new Audio();
-        audio.crossOrigin = 'anonymous';
-        audio.preload = true;
-        audio.autoplay = false;
-        audio.src = this.urls[i];
-        $(audio).on('play', this._onPlay);
-        $(audio).on('ended', this._onEnd.bind(this));
-        this.list[i] = audio;
-        $('#audios').append(audio);
+        (function(index) {
+          loadAudioBuffer(_this.urls[index], function (buffer) {
+            var source = context.createBufferSource();
+            source.buffer = buffer;
+            // set loop for last audio
+            if (index == _this.urls.length-1) {
+              source.loop = true;
+            }
+            _this.list[index] = source;
+            if (index == 1) {
+              _this.startPlayback();
+            }
+          });
+        })(i);
+      }
+      else {
+        this.list[i].loop = false;
       }
     }
   },
-  _onPlay: function(ev) {
-    console.log('AUDIO | Playback Started:', ev.target.src);
-  },
   _onEnd: function(ev) {
-    console.log('AUDIO | Playback Finished:', ev.target.src);
+    console.log('AUDIO | Playback Finished:', ev);
     // if audio is not last in the list then play the next
     this.playNext();
   },
@@ -122,80 +122,35 @@ var audio = {
     if (data && data.urls) {
       // save all urls to local array
       this.urls = data.urls;
+      console.log('AUDIO | Total:', this.urls.length, 'audio files');
       // create new audio instances
       this.createAudios();
     }
   },
   playNext: function() {
-    var isNew = false;
+    var toPlayNewSong = false;
     if(this.index + 1 < this.list.length) {
       this.index++;
-      isNew = true;
+      toPlayNewSong = true;
     }
     // if audio was last in the list then play it again
-    this.list[this.index].play();
-    if (isNew) {
-      this.updateAnalyser(this.list[this.index]);
+    console.log('play', this.index, this.list[this.index], this.urls[this.index]);
+    if (toPlayNewSong) {
+      this.list[this.index].onended = this._onEnd.bind(this);
+      this.list[this.index].start(0.0);
+      this.list[this.index].connect(analyser);
     }
     // trigger event to queue to request new audios from server
     $(this).trigger('playbackended');
   },
   startPlayback: function() {
     // start playing from the second audio file
-    this.list[1].play();
-    this.updateAnalyser(this.list[1]);
-  },
-  updateAnalyser: function(audio) {
-    var source = this.context.createMediaElementSource(audio);
-    source.connect(this.analyser);
-    this.analyser.connect(this.context.destination);
-  },
-  initAnalyser: function() {
-    var _this = this;
-    this.context = new AudioContext();
-    this.analyser = this.context.createAnalyser();
+    console.log('play', 1, this.list[this.index], this.urls[this.index]);
+    this.list[1].connect(analyser);
+    this.list[1].onended = this._onEnd.bind(this);
+    this.list[1].start(0.0);
 
-    var canvas = document.getElementById('canvas'),
-        ctx = canvas.getContext('2d');
-
-    var cwidth            = canvas.width,
-        cheight           = canvas.height - 2,
-        meterWidth        = 10, //width of the meters in the spectrum
-        gap               = 2, //gap between meters
-        capHeight         = 2,
-        capStyle          = '#fff',
-        meterNum          = 5000 / (10 + 2), //count of the meters
-        capYPositionArray = []; ////store the vertical position of hte caps for the previous frame
-    //var gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    var gradient = ctx.createLinearGradient(0, 0, 0, cheight);
-    gradient.addColorStop(1, '#fff');
-    gradient.addColorStop(0.5, 'rgba(17, 153, 17, 0.812)');
-    gradient.addColorStop(0, 'rgba(17, 153, 17, 0.812)');
-
-    function renderFrame() {
-      var array = new Uint8Array(_this.analyser.frequencyBinCount);
-      _this.analyser.getByteFrequencyData(array);
-      var step = Math.round(array.length / meterNum); //sample limited data from the total array
-      ctx.clearRect(0, 0, cwidth, cheight);
-      for (var i = 0; i < meterNum; i++) {
-        var value = array[i * step];
-        if (capYPositionArray.length < Math.round(meterNum)) {
-          capYPositionArray.push(value);
-        }
-        ctx.fillStyle = capStyle;
-        //draw the cap, with transition effect
-        if (value < capYPositionArray[i]) {
-          ctx.fillRect(i * 12, cheight - (--capYPositionArray[i]), meterWidth, capHeight);
-        } else {
-          ctx.fillRect(i * 12, cheight - value, meterWidth, capHeight);
-          capYPositionArray[i] = value;
-        }
-        ctx.fillStyle = gradient; //set the filllStyle to gradient for a better look
-        ctx.fillRect(i * 12 /*meterWidth+gap*/ , cheight - value + capHeight, meterWidth, cheight); //the meter
-      }
-      requestAnimationFrame(renderFrame);
-    }
-    renderFrame();
+    window.requestAnimationFrame(draw);
   }
 };
 
@@ -203,8 +158,3 @@ $(function() {
   audio.init();
   queue.init();
 });
-
-module.exports = {
-  queue: queue,
-  audio: audio
-};

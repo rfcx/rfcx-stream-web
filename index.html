@@ -12,10 +12,42 @@
 
 <p>Rainforest Connection</p>
 
-<canvas id='canvas' width="800" height="350"></canvas>
-<div id="audios"></div>
+<section class="top">
+    <!--<canvas id='canvas' class="equalizer"></canvas>-->
+    <canvas id="view1" width="1024px" height="450px"></canvas>
+    <div>
+        <input id="frequencyInput" type="radio" name="radioSet" value="data"
+               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_FREQUENCY);">
+        <label for="frequencyInput">Frequency</label>
+        <input id="sonogramInput" type="radio" name="radioSet" value="data"
+               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_SONOGRAM);">
+        <label for="sonogramInput">Sonogram</label>
+        <input id="sonogram3dInput" type="radio" name="radioSet" value="data" checked="checked"
+               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_3D_SONOGRAM);">
+        <label for="sonogram3dInput">3D Sonogram</label>
+        <input id="waveformInput" type="radio" name="radioSet" value="data"
+               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_WAVEFORM);">
+        <label for="waveformInput">Waveform</label>
+    </div>
+</section>
 
-<script src="public/js/app.js"></script>
+<div id="audios"></div>
+<script type="text/javascript" src="./src/js/lib/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript" src="./src/js/lib/webgl/events.js"></script>
+<!-- WebGL stuff -->
+<script type="text/javascript" src="./src/js/lib/webgl/base.js"></script>
+<script type="text/javascript" src="./src/js/lib/webgl/cameracontroller.js"></script>
+
+<script type="text/javascript" src="./src/js/lib/webgl/matrix4x4.js"></script>
+
+<!-- Visualizer GL library -->
+<script type="text/javascript" src="./src/js/lib/webgl/visualizer.js"></script>
+<script type="text/javascript" src="./src/js/lib/webgl/shader.js"></script>
+
+<script type="text/javascript" src="./src/js/visualiser.js"></script>
+<script type="text/javascript" src="./src/js/main.js"></script>
+<!--<script src="public/js/app.js"></script>-->
 
 </body>
 </html>
