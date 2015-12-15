@@ -12,9 +12,8 @@
 
 <p>Rainforest Connection</p>
 
-<section class="top">
-    <!--<canvas id='canvas' class="equalizer"></canvas>-->
-    <canvas id="view1" width="1024px" height="450px"></canvas>
+<div class="rfcx-player">
+    <canvas id="view1" width="600" height="262"></canvas>
     <div>
         <input id="frequencyInput" type="radio" name="radioSet" value="data"
                onchange="analyserView1.setAnalysisType(ANALYSISTYPE_FREQUENCY);">
@@ -29,9 +28,8 @@
                onchange="analyserView1.setAnalysisType(ANALYSISTYPE_WAVEFORM);">
         <label for="waveformInput">Waveform</label>
     </div>
-</section>
+</div>
 
-<div id="audios"></div>
 <script type="text/javascript" src="./src/js/lib/jquery-2.1.4.min.js"></script>
 
 <script type="text/javascript" src="./src/js/lib/webgl/events.js"></script>

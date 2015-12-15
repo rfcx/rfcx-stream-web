@@ -27,7 +27,7 @@ var queue = {
       beforeSend: function (request)
       {
         // x-auth-token and x-auth-user are required for backend api call. hardcoded
-        request.setRequestHeader("x-auth-token", 'hy6g3x1v7tud9wkeersk20yb46vhvuys0e3jjo1k');
+        request.setRequestHeader("x-auth-token", 'q2uk5tzwqhxmo7jzan0ve0mi0nsdl8854lut9qo1');
         request.setRequestHeader("x-auth-user", 'user/63079ab5-fd39-4486-b01c-f61426ffce50');
       },
       success: function(res) {
