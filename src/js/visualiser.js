@@ -16,13 +16,16 @@ var source;
 var analyser;
 var audioBuffer;
 
-var analyserView1;
+var analyserView1,
+    analyserView2;
 
 function init() {
-  analyserView1 = new AnalyserView("view1");
+  analyserView1 = new AnalyserView("3dSonogramView");
+  analyserView2 = new AnalyserView("waveformView", ANALYSISTYPE_WAVEFORM);
 
   initAudio();
   analyserView1.initByteBuffer();
+  analyserView2.initByteBuffer();
 }
 
 function loadAudioBuffer(url, cb) {
@@ -78,5 +81,6 @@ if (!window.requestAnimationFrame) {
 
 function draw() {
   analyserView1.doFrequencyAnalysis();
+  analyserView2.doFrequencyAnalysis();
   window.requestAnimationFrame(draw);
 }

@@ -13,21 +13,26 @@
 <p>Rainforest Connection</p>
 
 <div class="rfcx-player">
-    <canvas id="view1" width="600" height="262"></canvas>
-    <div>
-        <input id="frequencyInput" type="radio" name="radioSet" value="data"
-               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_FREQUENCY);">
-        <label for="frequencyInput">Frequency</label>
-        <input id="sonogramInput" type="radio" name="radioSet" value="data"
-               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_SONOGRAM);">
-        <label for="sonogramInput">Sonogram</label>
-        <input id="sonogram3dInput" type="radio" name="radioSet" value="data" checked="checked"
-               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_3D_SONOGRAM);">
-        <label for="sonogram3dInput">3D Sonogram</label>
-        <input id="waveformInput" type="radio" name="radioSet" value="data"
-               onchange="analyserView1.setAnalysisType(ANALYSISTYPE_WAVEFORM);">
-        <label for="waveformInput">Waveform</label>
+    <div style="margin-bottom: 10px;">
+        <canvas id="waveformView" width="350" height="152"></canvas>
     </div>
+    <div>
+        <canvas id="3dSonogramView" width="600" height="262"></canvas>
+    </div>
+    <!--<div>-->
+        <!--<input id="frequencyInput" type="radio" name="radioSet" value="data"-->
+               <!--onchange="analyserView1.setAnalysisType(ANALYSISTYPE_FREQUENCY);">-->
+        <!--<label for="frequencyInput">Frequency</label>-->
+        <!--<input id="sonogramInput" type="radio" name="radioSet" value="data"-->
+               <!--onchange="analyserView1.setAnalysisType(ANALYSISTYPE_SONOGRAM);">-->
+        <!--<label for="sonogramInput">Sonogram</label>-->
+        <!--<input id="sonogram3dInput" type="radio" name="radioSet" value="data" checked="checked"-->
+               <!--onchange="analyserView1.setAnalysisType(ANALYSISTYPE_3D_SONOGRAM);">-->
+        <!--<label for="sonogram3dInput">3D Sonogram</label>-->
+        <!--<input id="waveformInput" type="radio" name="radioSet" value="data"-->
+               <!--onchange="analyserView1.setAnalysisType(ANALYSISTYPE_WAVEFORM);">-->
+        <!--<label for="waveformInput">Waveform</label>-->
+    <!--</div>-->
 </div>
 
 <script type="text/javascript" src="./src/js/lib/jquery-2.1.4.min.js"></script>
