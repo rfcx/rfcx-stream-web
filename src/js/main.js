@@ -5,21 +5,29 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext || window
 
 var queue = {
   list: [],
+  token: '',
+  guid: '',
   init: function() {
     this.createChain();
     this.bindEvents();
   },
   createChain: function() {
-    var def = this.requestToken().then(this.requestData.bind(this)).then(function(res) {
-      if (res && res.length) {
-        // add new urls to local array
-        this.refreshList(res);
-      }
-      // after success send audio files to audio object
-      this.sendAudio();
-      // and trigger start event
-      this.triggerStart();
-    }.bind(this));
+    var def = this.requestToken()
+      .then(function(data){
+        this.token = data.token;
+        this.guid  = data.guid;
+        return this.requestData();
+      }.bind(this))
+      .then(function(res) {
+        if (res && res.length) {
+          // add new urls to local array
+          this.refreshList(res);
+        }
+        // after success send audio files to audio object
+        this.sendAudio();
+        // and trigger start event
+        this.triggerStart();
+      }.bind(this));
 
     def.fail(function() {
       console.log('RFCX | Error Receiving Data from Server. Retry in 10 seconds');
@@ -44,9 +52,9 @@ var queue = {
       beforeSend: function (request)
       {
         // x-auth-token and x-auth-user are required for backend api call.
-        request.setRequestHeader("x-auth-user", 'token/' + data.guid);
-        request.setRequestHeader("x-auth-token", data.token);
-      }
+        request.setRequestHeader("x-auth-user", 'token/' + this.guid);
+        request.setRequestHeader("x-auth-token", this.token);
+      }.bind(this)
     })
   },
   refreshList: function(data) {
@@ -61,7 +69,15 @@ var queue = {
   },
   prepareNext: function() {
     // new data request
-    this.requestData(this.sendAudio.bind(this));
+    this.requestData().then(
+      function(res) {
+        if (res && res.length) {
+          // add new urls to local array
+          this.refreshList(res);
+        }
+        this.sendAudio();
+      }.bind(this)
+    );
   },
   sendAudio: function() {
     // send event to audio object with new audio file url
