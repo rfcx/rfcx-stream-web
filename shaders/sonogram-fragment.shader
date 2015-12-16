@@ -22,6 +22,6 @@ void main()
     // Fade out the mesh close to the edges
     float fade = pow(cos((1.0 - texCoord.y) * 0.5 * 3.1415926535), 0.5);
     k *= fade;
-    vec4 color = k * vec4(0,0,0,1) + (1.0 - k) * backgroundColor;
+    vec4 color = k * vec4(0.07, 0.6, 0.07,1) + (1.0 - k) * backgroundColor;
     gl_FragColor = color;
 }

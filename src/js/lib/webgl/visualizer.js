@@ -76,7 +76,7 @@ AnalyserView = function(canvasElementID, analysisType) {
 
 
     this.initGL();
-}
+};
 
 AnalyserView.prototype.initGL = function() {
     model = new Matrix4x4();
@@ -87,17 +87,10 @@ AnalyserView.prototype.initGL = function() {
     var sonogram3DHeight = this.sonogram3DHeight;
     var sonogram3DGeometrySize = this.sonogram3DGeometrySize;
     var backgroundColor = this.backgroundColor;
-    
-
 
     var canvas = document.getElementById(this.canvasElementID);
     this.canvas = canvas;
-    
-    
-    
-    
-    
-    
+
     // var gl = create3DDebugContext(canvas.getContext("experimental-webgl"));
     var gl = canvas.getContext("experimental-webgl");
     this.gl = gl;
@@ -111,8 +104,8 @@ AnalyserView.prototype.initGL = function() {
     var cameraController = new CameraController(canvas);
     this.cameraController = cameraController;
     
-    cameraController.xRot = -45; //-55;
-    cameraController.yRot = 0;
+    cameraController.xRot = -32; //-55;
+    cameraController.yRot = 5;
     gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
     gl.enable(gl.DEPTH_TEST);
 
@@ -217,7 +210,7 @@ AnalyserView.prototype.initGL = function() {
 
   if (this.has3DVisualizer)
     this.sonogram3DShader = o3djs.shader.loadFromURL(gl, "shaders/sonogram-vertex.shader", "shaders/sonogram-fragment.shader");
-}
+};
 
 AnalyserView.prototype.initByteBuffer = function() {
     var gl = this.gl;
@@ -244,7 +237,7 @@ AnalyserView.prototype.initByteBuffer = function() {
         var tmp = new Uint8Array(freqByteData.length * TEXTURE_HEIGHT);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.ALPHA, freqByteData.length, TEXTURE_HEIGHT, 0, gl.ALPHA, gl.UNSIGNED_BYTE, tmp);
     }
-}
+};
 
 AnalyserView.prototype.setAnalysisType = function(type) {
     // Check for read textures in vertex shaders.
@@ -252,11 +245,11 @@ AnalyserView.prototype.setAnalysisType = function(type) {
         return;
 
     this.analysisType = type;
-}
+};
 
 AnalyserView.prototype.analysisType = function() {
     return this.analysisType;
-}
+};
 
 
 AnalyserView.prototype.doFrequencyAnalysis = function(event) {
@@ -281,7 +274,7 @@ AnalyserView.prototype.doFrequencyAnalysis = function(event) {
     }
   
     this.drawGL();
-}
+};
 
 
 AnalyserView.prototype.drawGL = function() {
@@ -424,4 +417,4 @@ AnalyserView.prototype.drawGL = function() {
     // Disable the attribute arrays for cleanliness
     gl.disableVertexAttribArray(vertexLoc);
     gl.disableVertexAttribArray(texCoordLoc);
-}
+};
