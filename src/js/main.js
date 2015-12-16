@@ -6,45 +6,47 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext || window
 var queue = {
   list: [],
   init: function() {
-    // initial data request
-    this.requestData(function(){
+    this.createChain();
+    this.bindEvents();
+  },
+  createChain: function() {
+    var def = this.requestToken().then(this.requestData.bind(this)).then(function(res) {
+      if (res && res.length) {
+        // add new urls to local array
+        this.refreshList(res);
+      }
       // after success send audio files to audio object
       this.sendAudio();
       // and trigger start event
       this.triggerStart();
     }.bind(this));
-    this.bindEvents();
+
+    def.fail(function() {
+      console.log('RFCX | Error Receiving Data from Server. Retry in 10 seconds');
+      setTimeout(this.createChain.bind(this), 10000);
+    }.bind(this));
   },
   bindEvents: function() {
     $(audio).on('playbackended', this.prepareNext.bind(this));
   },
-  requestData: function(cb) {
+  requestToken: function() {
+    return $.ajax({
+      type: 'GET',
+      url: 'https://api.rfcx.org/v1/tokens/player'
+    })
+  },
+  requestData: function(data) {
     // use rfcx-console method for requesting audio
-    $.ajax({
+    return $.ajax({
       type: 'GET',
       // hardcode guardian id
       url: 'https://api.rfcx.org/v1/guardians/74b55fd8b7f2/audio.json?limit=3',
       beforeSend: function (request)
       {
-        // x-auth-token and x-auth-user are required for backend api call. hardcoded
-        request.setRequestHeader("x-auth-token", 'q2uk5tzwqhxmo7jzan0ve0mi0nsdl8854lut9qo1');
-        request.setRequestHeader("x-auth-user", 'user/63079ab5-fd39-4486-b01c-f61426ffce50');
-      },
-      success: function(res) {
-        console.log('RFCX | Received from Server: ', res);
-        if (res && res.length) {
-          // add new urls to local array
-          this.refreshList(res);
-          if (cb) cb();
-        }
-      }.bind(this),
-      error: function(error) {
-        console.log('RFCX | Error Loading from Server. Retry in 10 seconds');
-        setTimeout(function() {
-          // repeat request in 10 seconds
-          this.requestData(this.sendAudio.bind(this));
-        }.bind(this), 10000);
-      }.bind(this)
+        // x-auth-token and x-auth-user are required for backend api call.
+        request.setRequestHeader("x-auth-user", 'token/' + data.guid);
+        request.setRequestHeader("x-auth-token", data.token);
+      }
     })
   },
   refreshList: function(data) {
