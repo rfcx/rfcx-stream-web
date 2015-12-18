@@ -7,16 +7,18 @@ var queue = {
   list: [],
   token: '',
   guid: '',
+  timeout: undefined,
+  isStopped: false,
   init: function() {
     this.createChain();
     this.bindEvents();
   },
   createChain: function() {
+    this.isStopped = false;
     this.list = [];
     var def = this.requestToken()
       .then(function(data){
-        this.token = data.token;
-        this.guid  = data.guid;
+        this.saveTokens(data);
         return this.requestData();
       }.bind(this))
       .then(function(res) {
@@ -24,6 +26,7 @@ var queue = {
         this.refreshList(res);
         // after success send audio files to audio object
         this.sendAudio();
+        //this.createRequestTimeout();
       }.bind(this));
 
     def.fail(function() {
@@ -32,8 +35,8 @@ var queue = {
     }.bind(this));
   },
   bindEvents: function() {
-    $(audio).on('playbackended', this.prepareNext.bind(this));
     $(audio).on('reset', this.createChain.bind(this));
+    $(audio).on('stop', this.onAudioStopped.bind(this));
   },
   requestToken: function() {
     return $.ajax({
@@ -41,8 +44,13 @@ var queue = {
       url: 'https://api.rfcx.org/v1/tokens/player'
     })
   },
-  requestData: function(data) {
+  saveTokens: function(data) {
+    this.token = data.token;
+    this.guid  = data.guid;
+  },
+  requestData: function() {
     // use rfcx-console method for requesting audio
+    this.createRequestTimeout();
     return $.ajax({
       type: 'GET',
       // hardcode guardian id
@@ -83,6 +91,21 @@ var queue = {
     $(this).trigger('newurl', {
       urls: this.list
     });
+  },
+  createRequestTimeout: function() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    // request new audio files every 100 seconds
+    if (!this.isStopped) {
+      this.timeout = setTimeout(this.prepareNext.bind(this), 100000)
+    }
+  },
+  onAudioStopped: function() {
+    this.isStopped = true;
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
   }
 };
 
@@ -151,6 +174,7 @@ var audio = {
       $(ev.target).addClass('stopped');
       this.currentAudioNode.stop();
       this.isStopped = true;
+      $(this).trigger('stop');
     }
     else {
       $(ev.target).removeClass('stopped');
