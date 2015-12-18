@@ -40,13 +40,14 @@ var queue = {
   },
   requestToken: function() {
     return $.ajax({
-      type: 'GET',
-      url: 'https://api.rfcx.org/v1/tokens/player'
+      type: 'POST',
+      url: 'https://api.rfcx.org/v1/player/login'
     })
   },
   saveTokens: function(data) {
-    this.token = data.token;
-    this.guid  = data.guid;
+    console.log('dd', data);
+    this.token = data.token.token;
+    this.guid  = data.token.guid;
   },
   requestData: function() {
     // use rfcx-console method for requesting audio
@@ -54,7 +55,7 @@ var queue = {
     return $.ajax({
       type: 'GET',
       // hardcode guardian id
-      url: 'https://api.rfcx.org/v1/guardians/74b55fd8b7f2/audio.json?limit=3',
+      url: 'https://api.rfcx.org/v1/guardians/0bdbb4a5d567/audio.json?limit=3',
       beforeSend: function (request)
       {
         // x-auth-token and x-auth-user are required for backend api call.
