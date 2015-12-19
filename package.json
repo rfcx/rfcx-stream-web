@@ -1,7 +1,7 @@
 {
-  "name": "rfcx-promo",
-  "version": "1.0.0",
-  "description": "Rainforest Connection Audio Streaming Promo Site",
+  "name": "rfcx-player-web",
+  "version": "0.1.0",
+  "description": "Rainforest Connection Audio Streaming Player",
   "main": "",
   "dependencies": {},
   "devDependencies": {
@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rassokhin-s/rfcx-promo.git"
+    "url": "git+https://github.com/rfcx/rfcx-player-web.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rassokhin-s/rfcx-promo/issues"
+    "url": "https://github.com/rfcx/rfcx-player-web/issues"
   },
-  "homepage": "https://github.com/rassokhin-s/rfcx-promo#readme"
+  "homepage": "https://rfcx.org"
 }

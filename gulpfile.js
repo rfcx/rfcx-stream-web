@@ -29,7 +29,9 @@ gulp.task('watch', function() {
 });
 
 gulp.task('connect', function() {
-  connect.server();
+  connect.server({
+    port: process.env.PORT || 8083
+  });
 });
 
 // generates css files from less

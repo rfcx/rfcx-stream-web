@@ -1,4 +1,11 @@
+dist/
+public/css/min/
+
 .idea
 npm-debug.log
 node_modules
 public/audio
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
