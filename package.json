@@ -13,8 +13,8 @@
     "gulp-rename": "^1.2.2"
   },
   "scripts": {
-    "start": "gulp",
-    "prod": "gulp production"
+    "start": "./node_modules/.bin/gulp",
+    "prod": "./node_modules/.bin/gulp production"
   },
   "repository": {
     "type": "git",
