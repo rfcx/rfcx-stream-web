@@ -24,7 +24,17 @@
         Sede - Guama, Tembé Territory
     </h2>
     <div class="rfcx-player__sonogram-container">
-        <canvas id="3dSonogramView" width="600" height="262"></canvas>
+        <canvas id="3dSonogramView" width="600" height="262" class="rfcx-player__sonogram"></canvas>
+        <button type="button" id="btnShowCarousel" class="rfcx-player__btn-show-carousel" title="Show Gallery"></button>
+        <button type="button" id="btnHideCarousel" class="rfcx-player__btn-hide-carousel" title="Hide Gallery"></button>
+        <div id="imgSlideshow" class="rfcx-player__carousel">
+            <div><img class="rfcx-player__carousel-img" data-lazy="/public/img/slideshow/photo-1.jpg" alt=""/></div>
+            <div><img class="rfcx-player__carousel-img" data-lazy="/public/img/slideshow/photo-2.jpg" alt=""/></div>
+            <div><img class="rfcx-player__carousel-img" data-lazy="/public/img/slideshow/photo-3.jpg" alt=""/></div>
+            <div><img class="rfcx-player__carousel-img" data-lazy="/public/img/slideshow/photo-4.jpg" alt=""/></div>
+            <div><img class="rfcx-player__carousel-img" data-lazy="/public/img/slideshow/photo-5.jpg" alt=""/></div>
+            <div><img class="rfcx-player__carousel-img" data-lazy="/public/img/slideshow/photo-6.jpg" alt=""/></div>
+        </div>
     </div>
     <div class="rfcx-player__streams-container">
         <button type="button" class="rfcx-player__stream-btn active">Sede</button>
@@ -35,6 +45,7 @@
 </div>
 
 <script type="text/javascript" src="./src/js/lib/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="./src/js/lib/slick.min.js"></script>
 
 <script type="text/javascript" src="./src/js/lib/webgl/events.js"></script>
 <!-- WebGL stuff -->
