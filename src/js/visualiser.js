@@ -2,24 +2,18 @@ function output(str) {
   console.log(str);
 }
 
-// Events
-// init() once the page has finished loading.
-
 // Temporary patch until all browsers support unprefixed context.
 if (window.hasOwnProperty('AudioContext') && !window.hasOwnProperty('webkitAudioContext'))
   window.webkitAudioContext = AudioContext;
 
-window.onload = init;
 
 var context;
-var source;
 var analyser;
-var audioBuffer;
 
 var analyserView1,
     analyserView2;
 
-function init() {
+function initAnalysers() {
   analyserView1 = new AnalyserView("3dSonogramView");
   analyserView2 = new AnalyserView("waveformView", ANALYSISTYPE_WAVEFORM);
 
@@ -43,7 +37,7 @@ function loadAudioBuffer(url, cb) {
       },
 
       function (buffer) {
-        console.log("Error decoding human voice!");
+        console.log("Error decoding audio!");
       }
     );
   };

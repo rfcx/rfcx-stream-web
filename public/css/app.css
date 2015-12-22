@@ -682,6 +682,9 @@ body {
   content: "✕";
   color: #d3d3d3;
 }
+.rfcx-player__btn-hide-carousel.unclosable {
+  display: none !important;
+}
 .rfcx-player__carousel {
   display: none;
   position: absolute;
@@ -697,13 +700,22 @@ body {
   -o-transform: translate(-50%, -50%);
   z-index: 2;
   background: #222222;
+  overflow: hidden;
 }
 .rfcx-player__carousel-img {
   display: block;
   max-width: 100%;
 }
 .rfcx-player .slick-list {
-  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.rfcx-player .slick-track {
+  height: 100%;
+}
+.rfcx-player .slick-slide {
+  height: 100%;
+  overflow: hidden;
 }
 .rfcx-player .slick-dots {
   position: absolute;
