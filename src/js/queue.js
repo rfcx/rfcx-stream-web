@@ -66,8 +66,8 @@ var queue = {
     for (var i = data.length-1; i >= 0; i--) {
       var item = data[i];
       // if current url was not presented in the list than append it to the end of array
-      if (this.list.indexOf(item.url) === -1) {
-        this.list.push(item.url);
+      if (this.list.indexOf(item.urls['mp3']) === -1) {
+        this.list.push(item.urls['mp3']);
       }
     }
   },

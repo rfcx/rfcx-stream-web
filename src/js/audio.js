@@ -45,8 +45,6 @@ var audio = {
         (function(index) {
           var isLooped = (index == urlsCount-1),
               url      = _this.urls[index];
-          // temporary hardcode
-          url = url.replace('.m4a', '.mp3');
           if (_this.isVisualizationSupported) {
             // if audio source is supported then load audio buffer
             loadAudioBuffer(url, function (buffer) {
