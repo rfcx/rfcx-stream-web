@@ -123,6 +123,7 @@ var audio = {
     else {
       $(ev.target).removeClass('stopped');
       if (this.isVisualizationSupported) {
+        this.index = 0;
         this.isStopped = false;
         this.list = [];
         $(this).trigger('reset');
