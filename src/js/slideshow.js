@@ -2,9 +2,9 @@
 'use strict';
 
 var slideshow = {
+  isInitialized: false,
   init: function() {
     this.bindEvents();
-    this.initCarousel();
   },
   bindEvents: function() {
     $('#btnShowCarousel').click(this.onBtnShowClicked.bind(this));
@@ -19,11 +19,15 @@ var slideshow = {
   showCarousel: function() {
     $('#btnShowCarousel').hide();
     $('#btnHideCarousel').show();
-    $('#imgSlideshow').fadeIn().slick('setPosition').slick('slickPlay');
+    $('#imgSlideshow').fadeIn(function() {
+      if (!this.isInitialized) {
+        this.initCarousel();
+      }
+    }.bind(this));
   },
   hideCarousel: function() {
     $('#btnHideCarousel').hide();
-    $('#imgSlideshow').fadeOut('fast').slick('slickPause');
+    $('#imgSlideshow').fadeOut('fast');
     $('#btnShowCarousel').show();
   },
   setUncloseable: function() {
@@ -31,16 +35,21 @@ var slideshow = {
     return this;
   },
   initCarousel: function() {
-    $('#imgSlideshow').slick({
-      infinite: true,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      dots: true,
-      speed: 700,
-      fade: true,
-      cssEase: 'linear',
-      autoplaySpeed: 5000
+    $("#imgSlideshow").Kenburns({
+      images:[
+        "/public/img/slideshow/photo1.jpg",
+        "/public/img/slideshow/photo2.jpg",
+        "/public/img/slideshow/photo3.jpg",
+        "/public/img/slideshow/photo4.jpg",
+        "/public/img/slideshow/photo5.jpg",
+        "/public/img/slideshow/photo6.jpg",
+        "/public/img/slideshow/photo7.jpg"
+      ],
+      scale:0.9,
+      duration:10000,
+      fadeSpeed:800
     });
+    this.isInitialized = true;
   }
 };
 
