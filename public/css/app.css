@@ -483,7 +483,25 @@ body {
   text-align: center;
   min-width: 620px;
 }
+.logo-link {
+  display: inline-block;
+  margin: 10px auto 15px;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  z-index: 2;
+}
+.logo-link__img,
+.logo-link__text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.logo-link__img {
+  margin-right: 6px;
+}
 .rfcx-player {
+  position: relative;
+  z-index: 1;
   display: inline-block;
   width: auto;
   background: #222;
@@ -499,9 +517,9 @@ body {
 .rfcx-player__play-btn {
   display: inline-block;
   vertical-align: middle;
-  width: 70px;
-  height: 70px;
-  border: 2px solid #d3d3d3;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #d3d3d3;
   border-radius: 50%;
   outline: none;
   position: relative;
@@ -519,14 +537,13 @@ body {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
-  width: 50%;
-  height: 50%;
-  background: url(../../../public/img/stop.png) no-repeat center center;
-  background-size: contain;
+  width: 20px;
+  height: 20px;
+  background: url(../../../public/img/play-stop-sprite.png) no-repeat center bottom;
+  background-size: auto 200%;
 }
 .rfcx-player__play-btn.stopped:after {
-  background: url(../../../public/img/play.png) no-repeat center center;
-  background-size: contain;
+  background-position: center top;
 }
 .rfcx-player__waveform-container {
   display: inline-block;

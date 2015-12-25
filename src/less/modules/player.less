@@ -1,4 +1,6 @@
 .rfcx-player {
+    position: relative;
+    z-index: 1;
     display: inline-block;
     width: auto;
     background: #222;
@@ -11,9 +13,9 @@
     &__play-btn {
         display: inline-block;
         vertical-align: middle;
-        width: 70px;
-        height: 70px;
-        border: 2px solid #d3d3d3;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #d3d3d3;
         border-radius: 50%;
         outline: none;
         position: relative;
@@ -27,15 +29,14 @@
             top: 50%;
             left: 50%;
             .translate(-50%, -50%);
-            width: 50%;
-            height: 50%;
-            background: url(../../../public/img/stop.png) no-repeat center center;
-            background-size: contain;
+            width: 20px;
+            height: 20px;
+            background: url(../../../public/img/play-stop-sprite.png) no-repeat center bottom;
+            background-size: auto 200%;
         }
         &.stopped {
             &:after {
-                background: url(../../../public/img/play.png) no-repeat center center;
-                background-size: contain;
+                background-position: center top;
             }
         }
     }

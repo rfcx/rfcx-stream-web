@@ -109,6 +109,10 @@ var audio = {
   },
   _onPlayStopBtnClicked: function(ev) {
     var $this = $(ev.target);
+    // if audio has not started playing
+    if (!this.currentAudio) {
+      return;
+    }
     if (!$this.hasClass('stopped')) {
       $(ev.target).addClass('stopped');
       if (this.isVisualizationSupported) {
