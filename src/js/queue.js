@@ -38,7 +38,10 @@ var queue = {
   requestToken: function() {
     return $.ajax({
       type: 'POST',
-      url: 'https://api.rfcx.org/v1/player/login'
+      url: 'https://api.rfcx.org/v1/player/login',
+      beforeSend: function(request) {
+        request.setRequestHeader("x-auth-pass", window.rfcxPassphrase);
+      }
     })
   },
   saveTokens: function(data) {
@@ -105,7 +108,3 @@ var queue = {
     }
   }
 };
-
-$(function() {
-  queue.init();
-});
