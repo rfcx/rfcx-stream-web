@@ -47,7 +47,8 @@ var slideshow = {
       ],
       scale:0.9,
       duration:10000,
-      fadeSpeed:800
+      fadeSpeed:800,
+      ease3d: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
     });
     this.isInitialized = true;
   }
