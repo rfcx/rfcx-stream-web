@@ -6,18 +6,11 @@ var queue = {
   guid: '',
   timeout: undefined,
   isStopped: false,
-  init: function() {
-    this.createChain();
-    this.bindEvents();
-  },
   createChain: function() {
     this.isStopped = false;
     this.list = [];
-    var def = this.requestToken()
-      .then(function(data){
-        this.saveTokens(data);
-        return this.requestData();
-      }.bind(this))
+
+    var def = this.requestData()
       .then(function(res) {
         // add new urls to local array
         this.refreshList(res);
@@ -35,12 +28,29 @@ var queue = {
     $(audio).on('reset', this.createChain.bind(this));
     $(audio).on('stop', this.onAudioStopped.bind(this));
   },
+  checkPassword: function() {
+    var def = this.requestToken();
+    def.done(function(data) {
+      login.hideOverlay();
+      this.bindEvents();
+      this.saveTokens(data);
+      this.createChain();
+    }.bind(this));
+    def.fail(function(err) {
+      if (err.status == 401) {
+        alert('Passphrase is not correct');
+      }
+      else {
+        alert('Error while initialization');
+      }
+    });
+  },
   requestToken: function() {
     return $.ajax({
       type: 'POST',
       url: 'https://api.rfcx.org/v1/player/login',
-      beforeSend: function(request) {
-        request.setRequestHeader("x-auth-pass", window.rfcxPassphrase);
+      data: {
+        'password': window.rfcxPassphrase
       }
     })
   },

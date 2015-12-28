@@ -10,15 +10,14 @@ var login = {
   onSubmit: function(ev) {
     ev.preventDefault();
     this.savePassphrase();
-    this.startQueue();
-    this.hideOverlay();
+    this.checkPassword();
     return false;
   },
   savePassphrase: function() {
     window.rfcxPassphrase = $('#passphraseInput').val();
   },
-  startQueue: function() {
-    queue.init();
+  checkPassword: function() {
+    queue.checkPassword();
   },
   hideOverlay: function() {
     $('#loginOverlay').fadeOut('fast');
