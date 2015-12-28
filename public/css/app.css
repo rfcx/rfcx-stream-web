@@ -539,12 +539,8 @@ body {
   display: block;
   margin: 0 auto 18px;
 }
-.login-overlay .form__input.error {
-  border-bottom-color: darkred;
-}
 .login-overlay .form__button {
   display: block;
-  margin: 0 auto;
   padding: 10px 20px;
   width: auto;
   font-size: 18px;
@@ -555,6 +551,13 @@ body {
   border-radius: 4px;
   min-width: 120px;
   text-transform: uppercase;
+  margin: 0 auto 10px;
+}
+.login-overlay .form__info {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin: 0 auto;
 }
 .rfcx-player {
   position: relative;

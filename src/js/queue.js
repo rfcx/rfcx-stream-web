@@ -38,10 +38,10 @@ var queue = {
     }.bind(this));
     def.fail(function(err) {
       if (err.status == 401) {
-        alert('Passphrase is not correct');
+        login.setMessage('Passphrase is not correct');
       }
       else {
-        alert('Error while initialization');
+        login.setMessage('Error while initialization');
       }
     });
   },

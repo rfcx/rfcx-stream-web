@@ -1,6 +1,7 @@
 "use strict";
 
 var login = {
+  $info: $('#formInfo'),
   init: function() {
     this.bindEvents();
   },
@@ -9,6 +10,7 @@ var login = {
   },
   onSubmit: function(ev) {
     ev.preventDefault();
+    this.clearMessage();
     this.savePassphrase();
     this.checkPassword();
     return false;
@@ -21,6 +23,12 @@ var login = {
   },
   hideOverlay: function() {
     $('#loginOverlay').fadeOut('fast');
+  },
+  clearMessage: function() {
+    this.setMessage('');
+  },
+  setMessage: function(mes) {
+    this.$info.text(mes);
   }
 };
 
