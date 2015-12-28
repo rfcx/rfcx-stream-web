@@ -517,13 +517,13 @@ body {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   background: #fff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 20px;
 }
 .login-overlay .form__label {
   display: block;
-  font-size: 16px;
-  margin: 0 auto 15px;
+  font-size: 22px;
+  margin: 0 auto 22px;
   text-align: center;
   color: #000;
 }
@@ -531,12 +531,13 @@ body {
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
-  font-size: 14px;
-  padding: 6px 4px;
+  font-size: 20px;
+  padding: 10px 4px;
+  min-width: 280px;
   background: #fff;
   color: #000;
   display: block;
-  margin: 0 auto 12px;
+  margin: 0 auto 18px;
 }
 .login-overlay .form__input.error {
   border-bottom-color: darkred;
@@ -544,14 +545,16 @@ body {
 .login-overlay .form__button {
   display: block;
   margin: 0 auto;
-  padding: 6px 15px;
+  padding: 10px 20px;
   width: auto;
-  font-size: 16px;
+  font-size: 18px;
   border: none;
   outline: none;
   background: #222;
   color: #fff;
   border-radius: 4px;
+  min-width: 120px;
+  text-transform: uppercase;
 }
 .rfcx-player {
   position: relative;
