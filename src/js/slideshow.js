@@ -37,7 +37,6 @@ var slideshow = {
   initCarousel: function() {
     $("#imgSlideshow").Kenburns({
       images:[
-        "/public/img/slideshow/photo1.jpg",
         "/public/img/slideshow/photo2.jpg",
         "/public/img/slideshow/photo3.jpg",
         "/public/img/slideshow/photo4.jpg",
