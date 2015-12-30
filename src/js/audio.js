@@ -122,7 +122,7 @@ var audio = {
         this.currentAudio.pause();
       }
       this.isStopped = true;
-      $(this).trigger('stop');
+      $(this).trigger('stopped');
     }
     else {
       $(ev.target).removeClass('stopped');
@@ -134,6 +134,7 @@ var audio = {
       }
       else {
         this.currentAudio.play();
+        $(this).trigger('continued');
       }
     }
   },
@@ -162,10 +163,7 @@ var audio = {
           window.requestAnimationFrame(draw);
         }
     }
-    else {
-      // trigger event to queue to request new audios from server
-      $(this).trigger('playbackended');
-    }
+    $(this).trigger('started');
   }
 };
 

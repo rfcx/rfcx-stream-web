@@ -3,6 +3,7 @@
 var queue = {
   apiUrl: 'https://api.rfcx.org',
   list: [],
+  measureList: [],
   token: '',
   guid: '',
   stream: undefined,
@@ -30,7 +31,7 @@ var queue = {
   },
   bindEvents: function() {
     $(audio).on('reset', this.createChain.bind(this));
-    $(audio).on('stop', this.onAudioStopped.bind(this));
+    $(audio).on('stopped', this.onAudioStopped.bind(this));
   },
   checkPassword: function() {
     var def = this.requestToken();
@@ -70,7 +71,6 @@ var queue = {
   requestData: function() {
     return $.ajax({
       type: 'GET',
-      //url: 'https://api.rfcx.org/v1/guardians/0bdbb4a5d567/audio.json?limit=3',
       url: this.apiUrl + '/v1/player/web',
       beforeSend: function (request)
       {
@@ -101,6 +101,7 @@ var queue = {
       // if current url was not presented in the list than append it to the end of array
       if (this.list.indexOf(item.urls['mp3']) === -1) {
         this.list.push(item.urls['mp3']);
+        this.measureList.push(item['measured_at']);
       }
     }
   },
