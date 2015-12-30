@@ -44,16 +44,20 @@
         <button type="button" id="btnHideCarousel" class="rfcx-player__btn-hide-carousel" title="Hide Gallery"></button>
         <div id="imgSlideshow" class="rfcx-player__carousel"></div>
     </div>
-    <div class="rfcx-player__streams-container">
-        <button type="button" class="rfcx-player__stream-btn active">Sede</button>
-        <button type="button" class="rfcx-player__stream-btn" disabled="disabled" title="Stream is unavailable">Tora</button>
-        <button type="button" class="rfcx-player__stream-btn" disabled="disabled" title="Stream is unavailable">Velho</button>
-        <button type="button" class="rfcx-player__stream-btn" disabled="disabled" title="Stream is unavailable">Itahu</button>
-    </div>
+    <nav class="rfcx-player__menu">
+        <ul class="rfcx-player__menu-list" id="playerMenu"></ul>
+    </nav>
+    <!--<div class="rfcx-player__streams-container">-->
+        <!--<button type="button" class="rfcx-player__stream-btn active">Sede</button>-->
+        <!--<button type="button" class="rfcx-player__stream-btn" disabled="disabled" title="Stream is unavailable">Tora</button>-->
+        <!--<button type="button" class="rfcx-player__stream-btn" disabled="disabled" title="Stream is unavailable">Velho</button>-->
+        <!--<button type="button" class="rfcx-player__stream-btn" disabled="disabled" title="Stream is unavailable">Itahu</button>-->
+    <!--</div>-->
 </div>
 
 <script type="text/javascript" src="./src/js/lib/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="./src/js/lib/kenburns.js"></script>
+<script type="text/javascript" src="./src/js/lib/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="./src/js/lib/webgl/events.js"></script>
 <!-- WebGL stuff -->
@@ -67,6 +71,7 @@
 <script type="text/javascript" src="./src/js/lib/webgl/shader.js"></script>
 
 <script type="text/javascript" src="./src/js/visualiser.js"></script>
+<script type="text/javascript" src="./src/js/menu.js"></script>
 <script type="text/javascript" src="./src/js/login.js"></script>
 <script type="text/javascript" src="./src/js/slideshow.js"></script>
 <script type="text/javascript" src="./src/js/queue.js"></script>

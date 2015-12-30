@@ -16,7 +16,9 @@ var queue = {
     var def = this.requestData()
       .then(function(res) {
         this.stream = res.streams[0];
+        menu.init(res);
         this.setStreamName();
+        this.pullImages();
         return this.pullStream();
       }.bind(this))
       .then(function(res) {
@@ -72,8 +74,7 @@ var queue = {
     return $.ajax({
       type: 'GET',
       url: this.apiUrl + '/v1/player/web',
-      beforeSend: function (request)
-      {
+      beforeSend: function (request) {
         // x-auth-token and x-auth-user are required for backend api call.
         request.setRequestHeader("x-auth-user", 'token/' + this.guid);
         request.setRequestHeader("x-auth-token", this.token);
@@ -85,12 +86,25 @@ var queue = {
     return $.ajax({
       type: 'GET',
       url: this.apiUrl + this.stream.urls.audio + '?limit=3',
-      beforeSend: function (request)
-      {
+      beforeSend: function (request) {
         // x-auth-token and x-auth-user are required for backend api call.
         request.setRequestHeader("x-auth-user", 'token/' + this.guid);
         request.setRequestHeader("x-auth-token", this.token);
       }.bind(this)
+    })
+  },
+  pullImages: function() {
+    $.ajax({
+      type: 'GET',
+      url: this.apiUrl + this.stream.urls.slideshow,
+      beforeSend: function (request) {
+        // x-auth-token and x-auth-user are required for backend api call.
+        request.setRequestHeader("x-auth-user", 'token/' + this.guid);
+        request.setRequestHeader("x-auth-token", this.token);
+      }.bind(this),
+      success: function(res) {
+        console.log('res', res);
+      }
     })
   },
   refreshAudios: function(data) {

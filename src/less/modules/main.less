@@ -21,3 +21,80 @@ body {
         margin-right: 6px;
     }
 }
+
+.rfcx-player {
+    &__menu-list {
+        padding: 5px 0;
+        margin: 0;
+        list-style: none;
+        font-size: 0;
+        .dropup {
+            display: inline-block;
+            vertical-align: middle;
+            width: 23%;
+            margin: 0 1%;
+            font-size: 14px;
+            color: #d3d3d3;
+            text-align: center;
+            background: transparent;
+            border: 1px solid #d3d3d3;
+            border-radius: 4px;
+            outline: none;
+            position: relative;
+            .box-sizing(border-box);
+            .btn {
+                display: block;
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                outline: none;
+                color: #d3d3d3;
+                width: 100%;
+                max-width: 100%;
+                padding: 7px 2px;
+                &.stream {
+                    background: #119911;
+                    color: #fff;
+                    .caret {
+                        display: none;
+                    }
+                }
+                &[disabled="disabled"] {
+                    opacity: 0.5;
+                }
+                .caret {
+                    position: absolute;
+                    top: 50%;
+                    right: 3px;
+                    .translate(0, -50%);
+                }
+            }
+            li {
+                display: block;
+                margin: 6px auto;
+            }
+            a {
+                text-decoration: none;
+            }
+            .dropdown-menu {
+                min-width: 0;
+                width: 100%;
+                background: #d3d3d3;
+            }
+        }
+        .dropdown-menu {
+            > li {
+                > a {
+                    color: #222;
+                    padding: 3px 12px;
+                    &:hover,
+                    &:focus {
+                        text-decoration: underline;
+                        background: #d3d3d3;
+                        color: #222;
+                    }
+                }
+            }
+        }
+    }
+}
