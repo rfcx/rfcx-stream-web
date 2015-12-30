@@ -1,9 +1,11 @@
 "use strict";
 
 var queue = {
+  apiUrl: 'https://api.rfcx.org',
   list: [],
   token: '',
   guid: '',
+  stream: undefined,
   timeout: undefined,
   isStopped: false,
   createChain: function() {
@@ -12,11 +14,13 @@ var queue = {
 
     var def = this.requestData()
       .then(function(res) {
-        // add new urls to local array
-        this.refreshList(res);
-        // after success send audio files to audio object
+        this.stream = res.streams[0];
+        this.setStreamName();
+        return this.pullStream();
+      }.bind(this))
+      .then(function(res) {
+        this.refreshAudios(res);
         this.sendAudio();
-        //this.createRequestTimeout();
       }.bind(this));
 
     def.fail(function() {
@@ -48,23 +52,26 @@ var queue = {
   requestToken: function() {
     return $.ajax({
       type: 'POST',
-      url: 'https://api.rfcx.org/v1/player/login',
+      url: this.apiUrl + '/v1/player/login',
       data: {
         'password': window.rfcxPassphrase
       }
     })
+  },
+  setStreamName: function(data) {
+    if (this.stream && this.stream.name) {
+      $('#streamName').text(this.stream.name);
+    }
   },
   saveTokens: function(data) {
     this.token = data.token.token;
     this.guid  = data.token.guid;
   },
   requestData: function() {
-    // use rfcx-console method for requesting audio
-    this.createRequestTimeout();
     return $.ajax({
       type: 'GET',
-      // hardcode guardian id
-      url: 'https://api.rfcx.org/v1/guardians/0bdbb4a5d567/audio.json?limit=3',
+      //url: 'https://api.rfcx.org/v1/guardians/0bdbb4a5d567/audio.json?limit=3',
+      url: this.apiUrl + '/v1/player/web',
       beforeSend: function (request)
       {
         // x-auth-token and x-auth-user are required for backend api call.
@@ -73,7 +80,20 @@ var queue = {
       }.bind(this)
     })
   },
-  refreshList: function(data) {
+  pullStream: function() {
+    this.createRequestTimeout();
+    return $.ajax({
+      type: 'GET',
+      url: this.apiUrl + this.stream.urls.audio + '?limit=3',
+      beforeSend: function (request)
+      {
+        // x-auth-token and x-auth-user are required for backend api call.
+        request.setRequestHeader("x-auth-user", 'token/' + this.guid);
+        request.setRequestHeader("x-auth-token", this.token);
+      }.bind(this)
+    })
+  },
+  refreshAudios: function(data) {
     console.log('RFCX | Received from server:', data);
     // iterate through all new items in inverse order
     for (var i = data.length-1; i >= 0; i--) {
@@ -86,11 +106,11 @@ var queue = {
   },
   prepareNext: function() {
     // new data request
-    this.requestData().then(
+    this.pullStream().then(
       function(res) {
         if (res && res.length) {
           // add new urls to local array
-          this.refreshList(res);
+          this.refreshAudios(res);
         }
         this.sendAudio();
       }.bind(this)
