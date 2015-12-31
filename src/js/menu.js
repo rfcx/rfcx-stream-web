@@ -4,6 +4,21 @@ var menu = {
   $el: $('#playerMenu'),
   init: function(data) {
     this.parseData(data);
+    this.bindEvents();
+  },
+  bindEvents: function() {
+    this.$el.on('click', '.js-stream-item', this.onStreamClicked.bind(this));
+    this.$el.on('click', '.js-playlist-item', this.onPlaylistClicked.bind(this));
+  },
+  onStreamClicked: function(ev) {
+    var $this = $(ev.target),
+        url   = $this.attr('data-url');
+    console.log('stream url', url);
+  },
+  onPlaylistClicked: function(ev) {
+    var $this = $(ev.target),
+        url   = $this.attr('data-url');
+    console.log('playlist url', url);
   },
   parseData: function (data) {
     if (data.streams) {
@@ -41,7 +56,10 @@ var menu = {
                 'aria-haspopup="true" aria-expanded="true" id="dropdown' + id +'">' + opts.name + '<span class="caret"></span></button>');
     $dropdown.append($button);
     if (opts.audio) {
-      $button.attr('data-audio', audio);
+      $button.attr('data-url', opts.audio);
+    }
+    if (opts.type == 'stream') {
+      $button.addClass('js-stream-item');
     }
     if (opts.playlists) {
       if (opts.playlists.length) {
@@ -49,7 +67,8 @@ var menu = {
         for (var i = 0; i < opts.playlists.length; i++) {
           var playlist = opts.playlists[i];
           var $dropdownChild = $('<li></li>');
-          var $buttonChild  = $('<a href="#" data-audio="' + playlist.urls.audio + '">' + playlist.name + '</a>')
+          var $buttonChild  = $('<a href="#" class="js-playlist-item" data-type="' + opts.type + '" data-url="' +
+                                playlist.urls.audio + '">' + playlist.name + '</a>')
           $dropdownChild.append($buttonChild);
           $dropdown.find('ul').append($dropdownChild);
         }
