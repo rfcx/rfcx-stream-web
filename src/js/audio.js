@@ -163,6 +163,7 @@ var audio = {
           window.requestAnimationFrame(draw);
         }
     }
+    $('#playStopBtn').addClass('visible');
     $(this).trigger('started');
   }
 };

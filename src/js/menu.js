@@ -7,18 +7,18 @@ var menu = {
     this.bindEvents();
   },
   bindEvents: function() {
-    this.$el.on('click', '.js-stream-item', this.onStreamClicked.bind(this));
-    this.$el.on('click', '.js-playlist-item', this.onPlaylistClicked.bind(this));
+    this.$el.on('click', '.js-audio-item', this.onAudioLinkClicked.bind(this));
   },
-  onStreamClicked: function(ev) {
+  onAudioLinkClicked: function(ev) {
     var $this = $(ev.target),
+        name  = $this.attr('data-name'),
+        type  = $this.attr('data-type'),
         url   = $this.attr('data-url');
-    console.log('stream url', url);
-  },
-  onPlaylistClicked: function(ev) {
-    var $this = $(ev.target),
-        url   = $this.attr('data-url');
-    console.log('playlist url', url);
+    queue.setupAudio({
+      type: type,
+      name: name,
+      url : url
+    });
   },
   parseData: function (data) {
     if (data.streams) {
@@ -59,7 +59,12 @@ var menu = {
       $button.attr('data-url', opts.audio);
     }
     if (opts.type == 'stream') {
-      $button.addClass('js-stream-item');
+      $button.addClass('js-audio-item').attr('data-type', 'stream');
+      $button.attr('data-name', opts.name);
+    }
+    // Disable playlist buttons while playlist stuff is not ready
+    if (opts.type == 'playlist') {
+      $button.attr('disabled', 'disabled');
     }
     if (opts.playlists) {
       if (opts.playlists.length) {
@@ -67,8 +72,9 @@ var menu = {
         for (var i = 0; i < opts.playlists.length; i++) {
           var playlist = opts.playlists[i];
           var $dropdownChild = $('<li></li>');
-          var $buttonChild  = $('<a href="#" class="js-playlist-item" data-type="' + opts.type + '" data-url="' +
-                                playlist.urls.audio + '">' + playlist.name + '</a>')
+          var $buttonChild  = $('<a href="#" class="js-audio-item" data-type="' + opts.type + '" data-url="' +
+                                playlist.urls.audio + '">' + playlist.name + '</a>');
+          $buttonChild.attr('data-name', opts.name + ' - ' + playlist.name);
           $dropdownChild.append($buttonChild);
           $dropdown.find('ul').append($dropdownChild);
         }

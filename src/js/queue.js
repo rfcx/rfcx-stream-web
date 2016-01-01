@@ -6,33 +6,52 @@ var queue = {
   measureList: [],
   token: '',
   guid: '',
-  stream: undefined,
+  stream: {
+    url: undefined,
+    name: undefined,
+    type: undefined
+  },
   timeout: undefined,
   isStopped: false,
-  createChain: function() {
+  setupUI: function() {
     this.isStopped = false;
     this.list = [];
 
     var def = this.requestData()
       .then(function(res) {
-        this.stream = res.streams[0];
         menu.init(res);
-        this.setStreamName();
-        this.pullImages();
-        return this.pullStream();
-      }.bind(this))
-      .then(function(res) {
-        this.refreshAudios(res);
-        this.sendAudio();
+        // Play Live stream automatically
+        $('.js-audio-item[data-type="stream"]').click();
       }.bind(this));
 
     def.fail(function() {
       console.log('RFCX | Error Receiving Data from Server. Retry in 10 seconds');
-      setTimeout(this.createChain.bind(this), 10000);
+      setTimeout(this.setupUI.bind(this), 10000);
     }.bind(this));
   },
+  setupAudio: function(opts) {
+    // do not setup one stream twice
+    if (this.stream.url == opts.url) {
+      return;
+    }
+    this.stream = opts;
+    this.pullAudio();
+  },
+  pullAudio: function() {
+    this.pullStream()
+      .then(function(res) {
+        this.setStreamName();
+        this.refreshAudios(res);
+        this.sendAudio();
+      }.bind(this));
+  },
+  resetAudio: function() {
+    this.list = [];
+    this.isStopped = false;
+    this.pullAudio();
+  },
   bindEvents: function() {
-    $(audio).on('reset', this.createChain.bind(this));
+    $(audio).on('reset', this.resetAudio.bind(this));
     $(audio).on('stopped', this.onAudioStopped.bind(this));
   },
   checkPassword: function() {
@@ -41,7 +60,7 @@ var queue = {
       login.hideOverlay();
       this.bindEvents();
       this.saveTokens(data);
-      this.createChain();
+      this.setupUI();
     }.bind(this));
     def.fail(function(err) {
       if (err.status == 401) {
@@ -61,8 +80,8 @@ var queue = {
       }
     })
   },
-  setStreamName: function(data) {
-    if (this.stream && this.stream.name) {
+  setStreamName: function() {
+    if (this.stream.name) {
       $('#streamName').text(this.stream.name);
     }
   },
@@ -85,7 +104,8 @@ var queue = {
     this.createRequestTimeout();
     return $.ajax({
       type: 'GET',
-      url: this.apiUrl + this.stream.urls.audio + '?limit=3',
+      //url: this.apiUrl + this.stream.urls.audio + '?limit=3',
+      url: this.apiUrl + this.stream.url + (this.stream.type == 'stream'? '?limit=3' : ''),
       beforeSend: function (request) {
         // x-auth-token and x-auth-user are required for backend api call.
         request.setRequestHeader("x-auth-user", 'token/' + this.guid);
