@@ -15,7 +15,6 @@ var audio = {
   isVisualizationSupported: !!window.AudioContext,
   init: function() {
     this.bindEvents();
-    this.initVisualization();
   },
   bindEvents: function() {
     // listen to the queue object for the new audio files

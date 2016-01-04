@@ -103,9 +103,34 @@ AnalyserView.prototype.initGL = function() {
     
     var cameraController = new CameraController(canvas);
     this.cameraController = cameraController;
-    
-    cameraController.xRot = -32; //-55;
-    cameraController.yRot = 5;
+
+    var xR   = -32,
+        yR   = 5,
+        toUp = true,
+        delta = 0.2;
+
+    cameraController.xRot = xR;
+    cameraController.yRot = yR;
+
+    function setDelta() {
+      delta = toUp? 0.2 : -0.2;
+    }
+    function checkYRot() {
+      if (cameraController.yRot > 20) {
+        toUp = false;
+      }
+      else if (cameraController.yRot < -16) {
+        toUp = true;
+      }
+    }
+
+    // set sonogram dragging automatically
+    setInterval(function() {
+      checkYRot();
+      setDelta();
+      cameraController.yRot = cameraController.yRot + delta;
+    }, 100);
+
     gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
     gl.enable(gl.DEPTH_TEST);
 

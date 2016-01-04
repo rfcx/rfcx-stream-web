@@ -17,6 +17,8 @@ var queue = {
     this.isStopped = false;
     this.list = [];
 
+    audio.initVisualization();
+
     var def = this.requestData()
       .then(function(res) {
         menu.init(res);
