@@ -733,7 +733,7 @@ body {
 }
 .login-overlay .form__label {
   display: block;
-  font-size: 22px;
+  font-size: 24px;
   margin: 0 auto 22px;
   text-align: center;
   color: #000;
@@ -754,7 +754,7 @@ body {
   display: block;
   padding: 10px 20px;
   width: auto;
-  font-size: 18px;
+  font-size: 20px;
   border: none;
   outline: none;
   background: #222;
