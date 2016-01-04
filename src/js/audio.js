@@ -89,6 +89,8 @@ var audio = {
     var audio = new Audio();
     audio.src = data.src;
     audio.loop = data.loop;
+    // Start playback with offset of 2000 ms to avoid empty gap in the start of audio
+    audio.currentTime = 2;
     return audio;
   },
   _onPlayEnd: function(ev) {
@@ -150,7 +152,8 @@ var audio = {
       var audio = this.list[this.index];
       audio.onended = this._onPlayEnd.bind(this);
       if (this.isVisualizationSupported) {
-        audio.start(0.0);
+        // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
+        audio.start(0, 1.5);
         audio.connect(analyser);
       }
       else {
