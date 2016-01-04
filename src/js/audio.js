@@ -51,7 +51,9 @@ var audio = {
               _this.list[index] = _this.createAudioBuffer({
                 buffer: buffer,
                 // set loop for last audio
-                loop: isLooped
+                loop: isLooped,
+                loopStart: 1.5,
+                loopEnd: buffer.duration
               });
               if (index == 1) {
                 // trigger play on first load
@@ -81,8 +83,10 @@ var audio = {
   },
   createAudioBuffer: function(data) {
     var source = context.createBufferSource();
-    source.buffer = data.buffer;
-    source.loop = data.loop;
+    source.buffer    = data.buffer;
+    source.loop      = data.loop;
+    source.loopStart = data.loopStart;
+    source.loopEnd   = data.loopEnd;
     return source;
   },
   createAudioTag: function(data) {
@@ -153,6 +157,7 @@ var audio = {
       audio.onended = this._onPlayEnd.bind(this);
       if (this.isVisualizationSupported) {
         // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
+        console.log('loop', audio.loopStart, audio.loopEnd);
         audio.start(0, 1.5);
         audio.connect(analyser);
       }
