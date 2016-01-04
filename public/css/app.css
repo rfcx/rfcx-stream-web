@@ -844,6 +844,7 @@ body {
 .rfcx-player__sonogram {
   position: relative;
   z-index: 1;
+  cursor: move;
 }
 .rfcx-player__streams-container {
   text-align: center;

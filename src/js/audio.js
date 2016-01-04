@@ -157,7 +157,6 @@ var audio = {
       audio.onended = this._onPlayEnd.bind(this);
       if (this.isVisualizationSupported) {
         // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
-        console.log('loop', audio.loopStart, audio.loopEnd);
         audio.start(0, 1.5);
         audio.connect(analyser);
       }
