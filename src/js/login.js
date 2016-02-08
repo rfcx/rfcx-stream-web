@@ -2,18 +2,27 @@
 
 var login = {
   $info: $('#formInfo'),
+  $form: $('#loginForm'),
+  $submitBtn: $('#btnSubmitLoginForm'),
   init: function() {
     this.bindEvents();
   },
   bindEvents: function() {
-    $('#loginForm').submit(this.onSubmit.bind(this));
+    this.$form.submit(this.onSubmit.bind(this));
   },
   onSubmit: function(ev) {
     ev.preventDefault();
+    this.disableButton();
     this.clearMessage();
     this.savePassphrase();
     this.checkPassword();
     return false;
+  },
+  enableButton: function() {
+    this.$submitBtn.prop('disabled', false);
+  },
+  disableButton: function() {
+    this.$submitBtn.prop('disabled', true);
   },
   savePassphrase: function() {
     window.rfcxPassphrase = $('#passphraseInput').val();

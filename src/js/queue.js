@@ -65,6 +65,7 @@ var queue = {
       this.setupUI();
     }.bind(this));
     def.fail(function(err) {
+      login.enableButton();
       if (err.status == 401) {
         login.setMessage('Passphrase is not correct');
       }
