@@ -819,6 +819,9 @@ body {
 .rfcx-player__play-btn.visible {
   display: inline-block;
 }
+.rfcx-player__play-btn:disabled {
+  opacity: 0.4;
+}
 .rfcx-player__waveform-container {
   display: inline-block;
   vertical-align: middle;

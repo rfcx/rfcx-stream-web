@@ -1,5 +1,29 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
 
+function webgl_detect() {
+  if (!!window.WebGLRenderingContext) {
+    var canvas = document.createElement("canvas"),
+      names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
+      context = false;
+
+    for(var i=0;i<4;i++) {
+      try {
+        context = canvas.getContext(names[i]);
+        if (context && typeof context.getParameter == "function") {
+          // WebGL is enabled
+          return true;
+        }
+      } catch(e) {}
+    }
+
+    // WebGL is supported, but disabled
+    return false;
+  }
+
+  // WebGL not supported
+  return false;
+}
+
 var audio = {
   // array to store all urls
   urls: [],
@@ -12,7 +36,7 @@ var audio = {
   // is stop button was pressed
   isStopped: false,
   // is audio source and visualization is supported by current browser
-  isVisualizationSupported: !!window.AudioContext,
+  isVisualizationSupported: webgl_detect(),
   init: function() {
     this.bindEvents();
   },
@@ -56,7 +80,7 @@ var audio = {
               });
               if (index == 1) {
                 // trigger play on first load
-                _this.playAudio();
+                _this.changeButtonState({disabled: false});
               }
             });
           }
@@ -69,7 +93,7 @@ var audio = {
             });
             if (index == 1) {
               // trigger play on first load
-              _this.playAudio();
+              _this.changeButtonState({disabled: false});
             }
           }
         })(i);
@@ -114,14 +138,35 @@ var audio = {
   },
   _onPlayStopBtnClicked: function(ev) {
     var $this = $(ev.target);
-    // if audio has not started playing
-    if (!this.currentAudio) {
+    if ($this.prop('disabled')) {
       return;
     }
-    if (!$this.hasClass('stopped')) {
-      $(ev.target).addClass('stopped');
+    // play audio
+    if ($this.hasClass('stopped')) {
+      this.isStopped = false;
+      $this.removeClass('stopped');
+      if (this.isVisualizationSupported) {
+        this.playAudio();
+      }
+      else {
+        if (!this.currentAudio) {
+          this.playAudio();
+        }
+        else {
+          this.currentAudio.play();
+          $(this).trigger('continued');
+        }
+      }
+    }
+    // stop audio
+    else {
+      $this.addClass('stopped');
       if (this.isVisualizationSupported) {
         this.currentAudio.stop();
+        this.index = 0;
+        this.list = [];
+        this.changeButtonState({disabled: true});
+        $(this).trigger('reset');
       }
       else {
         this.currentAudio.pause();
@@ -129,19 +174,9 @@ var audio = {
       this.isStopped = true;
       $(this).trigger('stopped');
     }
-    else {
-      $(ev.target).removeClass('stopped');
-      if (this.isVisualizationSupported) {
-        this.index = 0;
-        this.isStopped = false;
-        this.list = [];
-        $(this).trigger('reset');
-      }
-      else {
-        this.currentAudio.play();
-        $(this).trigger('continued');
-      }
-    }
+  },
+  changeButtonState: function(opts) {
+    $('#playStopBtn').prop('disabled', opts.disabled);
   },
   playAudio: function() {
     var toPlayNewSong = false;
@@ -169,7 +204,6 @@ var audio = {
           window.requestAnimationFrame(draw);
         }
     }
-    $('#playStopBtn').addClass('visible');
     $(this).trigger('started');
   }
 };
