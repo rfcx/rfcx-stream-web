@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Rainforest Connection Audio Streaming</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="public/css/app.css">
 </head>
@@ -30,7 +30,7 @@
 
 <div class="rfcx-player">
     <div class="rfcx-player__top">
-        <button type="button" class="rfcx-player__play-btn visible stopped" disabled id="playStopBtn" title="Play/Stop Audio"></button>
+        <button type="button" class="rfcx-player__play-btn stopped" disabled id="playStopBtn" title="Play/Stop Audio"></button>
         <div class="rfcx-player__waveform-container">
             <canvas id="waveformView" width="300" height="90"></canvas>
         </div>
@@ -40,7 +40,7 @@
         Loading...
     </h2>
     <div class="rfcx-player__sonogram-container">
-        <canvas id="3dSonogramView" width="600" height="262" class="rfcx-player__sonogram"></canvas>
+        <canvas id="3dSonogramView" class="rfcx-player__sonogram"></canvas>
         <button type="button" id="btnShowCarousel" class="rfcx-player__btn-show-carousel" title="Show Gallery"></button>
         <button type="button" id="btnHideCarousel" class="rfcx-player__btn-hide-carousel" title="Hide Gallery"></button>
         <div id="imgSlideshow" class="rfcx-player__carousel"></div>

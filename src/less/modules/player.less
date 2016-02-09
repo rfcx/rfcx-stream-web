@@ -1,27 +1,35 @@
 .rfcx-player {
     position: relative;
     z-index: 1;
-    display: inline-block;
-    width: auto;
+    display: block;
+    width: 95%;
+    max-width: 600px;
+    margin: 0 auto;
     background: #222;
     color: #fff;
     border-radius: 8px;
     .box-shadow(0px 0px 100px -15px rgba(34,34,34,1));
     &__top {
-        margin: 0 auto 10px;
+        margin: 0 auto;
+        position: relative;
+        padding-bottom: 10px;
+        @media @mobile {
+            padding-top: 10px;
+        }
     }
     &__play-btn {
-        display: none;
-        vertical-align: middle;
+        display: block;
         width: 50px;
         height: 50px;
         border: 1px solid #d3d3d3;
         border-radius: 50%;
         outline: none;
-        position: relative;
         overflow: hidden;
         background: transparent;
-        margin-right: 30px;
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        .translate(0, -50%);
         &:after {
             display: block;
             content: "";
@@ -39,23 +47,37 @@
                 background-position: center top;
             }
         }
-        &.visible {
-            display: inline-block;
-        }
         &:disabled {
             opacity: 0.4;
         }
+        @media @mobile {
+            width: 40px;
+            height: 40px;
+            &:after {
+                width: 16px;
+                height: 16px;
+            }
+        }
     }
     &__waveform-container {
-        display: inline-block;
-        vertical-align: middle;
+        display: block;
+        max-width: 50%;
+        margin: 0 auto;
+        @media @mobile {
+            max-width: 40%;
+        }
     }
     &__time {
-        display: inline-block;
-        vertical-align: middle;
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 3%;
         font-size: 20px;
         color: #d3d3d3;
-        margin-left: 30px;
+        .translate(0, -50%);
+        @media @mobile {
+            font-size: 16px;
+        }
     }
     &__title {
         margin: 0 auto 10px;

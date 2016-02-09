@@ -14,12 +14,26 @@ var analyserView1,
     analyserView2;
 
 function initAnalysers() {
+  updateAnalyzersDimensions();
+
+  $(window).resize(updateAnalyzersDimensions);
+
   analyserView1 = new AnalyserView("3dSonogramView");
   analyserView2 = new AnalyserView("waveformView", ANALYSISTYPE_WAVEFORM);
 
   initAudio();
   analyserView1.initByteBuffer();
   analyserView2.initByteBuffer();
+}
+
+function updateAnalyzersDimensions() {
+  var $sonogramCanvas = $('#3dSonogramView');
+  $sonogramCanvas.attr('width', $sonogramCanvas.parent().width());
+  $sonogramCanvas.attr('height', parseInt(parseInt($sonogramCanvas.attr('width')) / 1.8));
+
+  var $waveform = $('#waveformView');
+  $waveform.attr('width', $waveform.parent().width());
+  $waveform.attr('height', parseInt(parseInt($waveform.attr('width')) / 3.3));
 }
 
 function loadAudioBuffer(url, cb) {
