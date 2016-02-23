@@ -8,7 +8,9 @@ if (window.hasOwnProperty('AudioContext') && !window.hasOwnProperty('webkitAudio
 
 
 var context;
-var analyser;
+var analyser,
+    analyser2,
+    splitter;
 
 var analyserView1,
     analyserView2;
@@ -63,10 +65,17 @@ function initAudio() {
   context = new webkitAudioContext();
 
   analyser = context.createAnalyser();
+  analyser2 = context.createAnalyser();
   analyser.fftSize = 2048;
+  analyser2.fftSize = 2048;
+
+  splitter = context.createChannelSplitter();
+  splitter.connect(analyser,0,0);
+  splitter.connect(analyser2,1,0);
 
   // Connect audio processing graph
   analyser.connect(context.destination);
+  analyser2.connect(context.destination);
 }
 
 if (!window.requestAnimationFrame) {
