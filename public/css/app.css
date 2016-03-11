@@ -751,9 +751,6 @@ body {
   max-height: 90%;
   overflow: auto;
 }
-.keypad__content {
-  min-height: 373px;
-}
 .keypad__title {
   font-size: 24px;
   font-weight: bold;
@@ -777,6 +774,18 @@ body {
   left: 0;
   background: transparent;
 }
+.keypad__loader {
+  display: none;
+  position: absolute;
+  top: 11px;
+  right: 17%;
+  width: 28px;
+  height: 28px;
+  z-index: 3;
+}
+.keypad__loader.visible {
+  display: block;
+}
 .keypad__input {
   display: block;
   width: 70%;
@@ -788,6 +797,7 @@ body {
   background: #fff;
   color: #000;
   pointer-events: none;
+  text-align: center;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -808,19 +818,28 @@ body {
   color: #FF4D4D;
 }
 .keypad__controls {
-  width: 90%;
+  width: 70%;
   margin: 0 auto;
   font-size: 0;
 }
-@media only screen and (max-width: 767px) {
-  .keypad__controls {
-    width: 100%;
-  }
+.keypad__controls.loading {
+  position: relative;
+}
+.keypad__controls.loading:before {
+  display: block;
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
 }
 .keypad__col {
-  width: 25%;
+  width: 33.33%;
   display: inline-block;
-  vertical-align: bottom;
+  vertical-align: top;
   padding: 0 3%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -869,8 +888,8 @@ body {
 .keypad__btn:last-child {
   margin-bottom: 0;
 }
-.keypad__btn_enter {
-  padding-bottom: 200%;
+.keypad__btn_backspace {
+  display: none;
 }
 .keypad__btn_backspace:before {
   display: block;
@@ -886,6 +905,9 @@ body {
   height: 28px;
   background: url(../../../public/img/icon-backspace.png) no-repeat center center;
   background-size: contain;
+}
+.keypad__btn_backspace.visible {
+  display: block;
 }
 @media only screen and (min-width: 1025px) {
   .keypad__btn:hover {

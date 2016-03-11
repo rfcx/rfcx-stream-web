@@ -4,34 +4,40 @@ var login = {
   $info: $('#passwordErrorLabel'),
   $form: $('#loginForm'),
   $input: $('#passwordInput'),
-  $submitBtn: $('#btnSubmitLoginForm'),
+  $keypadControls: $('#keypadControls'),
+  $keypadLoader: $('#keypadLoader'),
   init: function() {
     this.bindEvents();
   },
   bindEvents: function() {
     this.$form.submit(this.onSubmit.bind(this));
+    this.$input.on('change', this.onInputChanged.bind(this));
     this.$form.on('click touchstart', '.js-keypad-btn',       this.onKeypadBtnClicked.bind(this));
     this.$form.on('click touchstart', '.js-keypad-backspace', this.onKeypadBackspaceClicked.bind(this));
   },
   onSubmit: function(ev) {
     ev.preventDefault();
-    if (!this.$input.val().length) {
-      return;
-    }
-    this.clearMessage();
-    this.$input.removeClass('error');
-    this.disableButton();
-    this.clearMessage();
-    this.savePassphrase();
-    this.checkPassword();
+    this.submitForm();
     return false;
+  },
+  onInputChanged: function(ev) {
+    var $this = $(ev.target),
+        val   = $this.val();
+    this.$form.find('.js-keypad-backspace').toggleClass('visible', !!val.length);
+    if (val.length === 4) {
+      this.submitForm();
+    }
   },
   onKeypadBtnClicked: function(ev) {
     var $this = $(ev.target),
         val   = $this.attr('data-value');
+    var inputVal = this.$input.val();
+    if (inputVal.length > 4) {
+      return;
+    }
     this.clearMessage();
     this.$input.removeClass('error');
-    this.$input.val(this.$input.val() + val);
+    this.$input.val(inputVal + val).trigger('change');
     ev.preventDefault();
   },
   onKeypadBackspaceClicked: function(ev) {
@@ -41,28 +47,33 @@ var login = {
     }
     this.clearMessage();
     this.$input.removeClass('error');
-    this.$input.val(currentVal.substr(0, currentVal.length-1));
+    this.$input.val(currentVal.substr(0, currentVal.length-1)).trigger('change');
     ev.preventDefault();
   },
-  enableButton: function() {
-    this.$submitBtn.prop('disabled', false);
-  },
-  disableButton: function() {
-    this.$submitBtn.prop('disabled', true);
+  submitForm: function() {
+    if (!this.$input.val().length) {
+      return;
+    }
+    this.clearMessage();
+    this.$input.removeClass('error');
+    this.clearMessage();
+    this.savePassphrase();
+    this.checkPassword();
   },
   savePassphrase: function() {
     window.rfcxPassphrase = this.$input.val();
   },
   checkPassword: function() {
+    this.toggleLoadingState(true);
     queue.checkPassword()
       .done(function () {
         this.hideOverlay();
-        this.enableButton();
+        this.toggleLoadingState(false);
       }.bind(this))
       .fail(function(err) {
-        this.enableButton();
+        this.toggleLoadingState(false);
         if (err.status == 401) {
-          this.$input.addClass('error');
+          this.$input.val('').trigger('change');
           this.setMessage('Invalid Password');
         }
         else {
@@ -78,6 +89,10 @@ var login = {
   },
   setMessage: function(mes) {
     this.$info.text(mes);
+  },
+  toggleLoadingState: function(isLoading) {
+    this.$keypadControls.toggleClass('loading', isLoading);
+    this.$keypadLoader.toggleClass('visible', isLoading);
   }
 };
 

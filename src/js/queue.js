@@ -59,20 +59,10 @@ var queue = {
   checkPassword: function() {
     var def = this.requestToken();
     def.done(function(data) {
-      //login.hideOverlay();
       this.bindEvents();
       this.saveTokens(data);
       this.setupUI();
     }.bind(this));
-    def.fail(function(err) {
-      //login.enableButton();
-      //if (err.status == 401) {
-      //  login.setMessage('Passphrase is not correct');
-      //}
-      //else {
-      //  login.setMessage('Error while initialization');
-      //}
-    });
     return def;
   },
   requestToken: function() {

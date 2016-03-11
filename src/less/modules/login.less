@@ -25,9 +25,6 @@
     .box-sizing(border-box);
     max-height: 90%;
     overflow: auto;
-    &__content {
-        min-height: 373px;
-    }
     &__title {
         font-size: 24px;
         font-weight: bold;
@@ -51,6 +48,18 @@
         }
         padding-bottom: 30px;
     }
+    &__loader {
+        display: none;
+        position: absolute;
+        top: 11px;
+        right: 17%;
+        width: 28px;
+        height: 28px;
+        z-index: 3;
+        &.visible {
+            display: block;
+        }
+    }
     &__input {
         display: block;
         width: 70%;
@@ -62,6 +71,7 @@
         background: #fff;
         color: #000;
         pointer-events: none;
+        text-align: center;
         .box-sizing(border-box);
         &.error {
             border-color: @redError;
@@ -80,17 +90,28 @@
         color: @redError;
     }
     &__controls {
-        width: 90%;
+        width: 70%;
         margin: 0 auto;
         font-size: 0;
-        @media @mobile {
-            width: 100%;
+        &.loading {
+            position: relative;
+            &:before {
+                display: block;
+                content: "";
+                position: absolute;
+                z-index: 4;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255,255,255,0.6);
+            }
         }
     }
     &__col {
-        width: 25%;
+        width: 33.33%;
         display: inline-block;
-        vertical-align: bottom;
+        vertical-align: top;
         padding: 0 3%;
         .box-sizing(border-box);
         @media @mobile {
@@ -125,10 +146,8 @@
         &:last-child {
             margin-bottom: 0;
         }
-        &_enter {
-            padding-bottom: 200%;
-        }
         &_backspace {
+            display: none;
             &:before {
                 display: block;
                 content: "";
@@ -140,6 +159,9 @@
                 height: 28px;
                 background: url(../../../public/img/icon-backspace.png) no-repeat center center;
                 background-size: contain;
+            }
+            &.visible {
+                display: block;
             }
         }
         @media @desktop {
