@@ -13,11 +13,48 @@
 
 <div class="login-overlay" id="loginOverlay">
     <form class="form" action="/" method="post" id="loginForm">
-        <label class="form__label" for="passphraseInput">Type a passphrase to open the player:</label>
-        <input class="form__input" type="text" name="password" id="passphraseInput"
-               required="required" placeholder="Passphrase" autofocus="true"/>
-        <button class="form__button" id="btnSubmitLoginForm" type="submit">Send</button>
-        <p class="form__info" id="formInfo"></p>
+        <div class="keypad">
+            <div class="keypad__content">
+                <p class="keypad__title">Please Enter Password:</p>
+                <div class="keypad__input-wrapper">
+                    <input class="keypad__input" id="passwordInput" type="text" name="password"
+                           readonly required="required" placeholder="******"/>
+                    <span id="passwordErrorLabel" class="keypad__input-error-message"></span>
+                </div>
+                <div class="keypad__controls">
+                    <div class="keypad__col">
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="1"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="4"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="7"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="*"></button>
+                    </div>
+                    <div class="keypad__col">
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="2"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="5"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="8"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="0"></button>
+                    </div>
+                    <div class="keypad__col">
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="3"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="6"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="9"></button>
+                        <button type="button" class="keypad__btn js-keypad-btn" data-value="#"></button>
+                    </div>
+                    <div class="keypad__col">
+                        <button type="button" class="keypad__btn keypad__btn_backspace js-keypad-backspace">
+                        </button>
+                        <button type="submit" id="btnSubmitLoginForm" class="keypad__btn keypad__btn_enter">
+                            <span class="keypad__btn-text">Enter</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<label class="form__label" for="passphraseInput">Type a passphrase to open the player:</label>-->
+        <!--<input class="form__input" type="text" name="password" id="passphraseInput"-->
+               <!--required="required" placeholder="Passphrase" autofocus="true"/>-->
+        <!--<button class="form__button" id="btnSubmitLoginForm" type="submit">Send</button>-->
+        <!--<p class="form__info" id="formInfo"></p>-->
     </form>
 </div>
 

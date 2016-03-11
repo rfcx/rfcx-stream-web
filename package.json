@@ -14,7 +14,7 @@
   "devDependencies": {
   },
   "scripts": {
-    "start": "./node_modules/.bin/gulp;"
+    "start": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",

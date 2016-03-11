@@ -1,65 +1,171 @@
+@redError: #FF4D4D;
+
 .login-overlay {
     background: rgba(34,34,34,0.9);
     position: fixed;
     z-index: 10000;
     top: 0;
     left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
     height: 100%;
-    .form {
-        display: block;
-        max-width: 90%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        .translate(-50%, -50%);
-        background: #fff;
-        padding: 30px;
-        border-radius: 20px;
-        .box-sizing(border-box);
-        &__label {
+}
+
+.keypad {
+    width: 95%;
+    max-width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 20px 3%;
+    background: #fff;
+    border-radius: 12px;
+    .translate(-50%, -50%);
+    .box-sizing(border-box);
+    max-height: 90%;
+    overflow: auto;
+    &__content {
+        min-height: 373px;
+    }
+    &__title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 auto 16px;
+        text-align: center;
+        color: #000;
+    }
+    &__input-wrapper {
+        position: relative;
+        z-index: 1;
+        &:before {
             display: block;
-            font-size: 24px;
-            margin: 0 auto 22px;
+            content: "";
+            position: absolute;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: transparent;
+        }
+        padding-bottom: 30px;
+    }
+    &__input {
+        display: block;
+        width: 70%;
+        margin: 0 auto;
+        border: 4px solid #000;
+        outline: none;
+        font-size: 20px;
+        padding: 10px;
+        background: #fff;
+        color: #000;
+        pointer-events: none;
+        .box-sizing(border-box);
+        &.error {
+            border-color: @redError;
+        }
+    }
+    &__input-error-message {
+        display: block;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        left: 0;
+        bottom: 10px;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: @redError;
+    }
+    &__controls {
+        width: 90%;
+        margin: 0 auto;
+        font-size: 0;
+        @media @mobile {
+            width: 100%;
+        }
+    }
+    &__col {
+        width: 25%;
+        display: inline-block;
+        vertical-align: bottom;
+        padding: 0 3%;
+        .box-sizing(border-box);
+        @media @mobile {
+            padding: 0 2%;
+        }
+    }
+    &__btn {
+        display: block;
+        width: 100%;
+        height: 0;
+        padding-bottom: 80%;
+        border: 4px solid #000;
+        position: relative;
+        outline: none;
+        background: #fff;
+        margin: 0 auto 13%;
+        .box-shadow(5px 5px 5px 0px rgba(0,0,0,0.5));
+        .transition(all 0.1s);
+        &:after {
+            display: block;
+            content: attr(data-value);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
             text-align: center;
             color: #000;
+            font-size: 22px;
+            font-weight: bold;
+            .translate(0, -50%);
         }
-        &__input {
-            border: none;
-            border-bottom: 1px solid #ccc;
-            outline: none;
-            font-size: 20px;
-            padding: 10px 4px;
-            min-width: 280px;
-            background: #fff;
-            color: #000;
-            display: block;
-            margin: 0 auto 18px;
-            .box-sizing(border-box);
-            max-width: 100%;
-            @media @mobile {
-                min-width: 0;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &_enter {
+            padding-bottom: 200%;
+        }
+        &_backspace {
+            &:before {
+                display: block;
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                .translate(-50%, -50%);
+                width: 40px;
+                height: 28px;
+                background: url(../../../public/img/icon-backspace.png) no-repeat center center;
+                background-size: contain;
             }
         }
-        &__button {
-            display: block;
-            padding: 10px 20px;
-            width: auto;
-            font-size: 20px;
-            border: none;
-            outline: none;
-            background: #222;
-            color: #fff;
-            border-radius: 4px;
-            min-width: 120px;
-            text-transform: uppercase;
-            margin: 0 auto 10px;
+        @media @desktop {
+            &:hover {
+                background: rgba(10,10,10,0.1);
+            }
         }
-        &__info {
-            color: red;
-            font-size: 14px;
-            text-align: center;
-            margin: 0 auto;
+        &:active {
+            .box-shadow(1px 1px 5px 0px rgba(0,0,0,0.5));
+        }
+        &:disabled {
+            opacity: 0.5;
+        }
+    }
+    &__btn-text {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: #000;
+        font-size: 22px;
+        font-weight: bold;
+        .translate(0, -50%);
+        @media @mobile {
+            font-size: 20px;
         }
     }
 }
