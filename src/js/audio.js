@@ -148,6 +148,7 @@ var audio = {
     if ($this.hasClass('stopped')) {
       this.isStopped = false;
       $this.removeClass('stopped');
+      $('#bigPlayBtnContainer').hide();
       if (this.isVisualizationSupported) {
         this.playAudio();
       }
