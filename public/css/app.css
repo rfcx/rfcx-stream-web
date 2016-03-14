@@ -1031,16 +1031,27 @@ body {
   position: absolute;
   top: 50%;
   right: 3%;
-  font-size: 20px;
   color: #d3d3d3;
   -webkit-transform: translate(0, -50%);
   -moz-transform: translate(0, -50%);
   -ms-transform: translate(0, -50%);
   -o-transform: translate(0, -50%);
 }
+.rfcx-player__time-value {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
 @media only screen and (max-width: 767px) {
-  .rfcx-player__time {
+  .rfcx-player__time-value {
     font-size: 16px;
+  }
+}
+.rfcx-player__time-zone {
+  font-size: 10px;
+}
+@media only screen and (max-width: 767px) {
+  .rfcx-player__time-zone {
+    font-size: 8px;
   }
 }
 .rfcx-player__title {
