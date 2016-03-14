@@ -45,6 +45,7 @@ var audio = {
     $(queue).on('newurl', this._onNewUrls.bind(this));
     // play/stop button clicked
     $('#playStopBtn').click(this._onPlayStopBtnClicked.bind(this));
+    $('#playBtn').click(this._onPlayBtnClicked.bind(this));
   },
   initVisualization: function () {
     if (this.isVisualizationSupported) {
@@ -81,6 +82,7 @@ var audio = {
               if (index == 1) {
                 // trigger play on first load
                 _this.changeButtonState({disabled: false});
+                _this.toggleLoader({visible: false});
               }
             });
           }
@@ -94,6 +96,7 @@ var audio = {
             if (index == 1) {
               // trigger play on first load
               _this.changeButtonState({disabled: false});
+              _this.toggleLoader({visible: false});
             }
           }
         })(i);
@@ -166,6 +169,7 @@ var audio = {
         this.index = 0;
         this.list = [];
         this.changeButtonState({disabled: true});
+        this.toggleLoader({visible: true});
         $(this).trigger('reset');
       }
       else {
@@ -175,8 +179,19 @@ var audio = {
       $(this).trigger('stopped');
     }
   },
+  _onPlayBtnClicked: function(ev) {
+    var $this = $(ev.target);
+    if ($this.prop('disabled')) {
+      return;
+    }
+    $('#playStopBtn').removeClass('stopped');
+    this.isStopped = false;
+    $('#bigPlayBtnContainer').hide();
+    this.playAudio();
+  },
   changeButtonState: function(opts) {
     $('#playStopBtn').prop('disabled', opts.disabled);
+    $('#playBtn').prop('disabled', opts.disabled);
   },
   playAudio: function() {
     var toPlayNewSong = false;
@@ -205,6 +220,9 @@ var audio = {
         }
     }
     $(this).trigger('started');
+  },
+  toggleLoader: function(opts) {
+    $('#loaderContainer').toggleClass('hidden', !opts.visible);
   }
 };
 
