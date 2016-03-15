@@ -1115,20 +1115,28 @@ body {
 }
 .rfcx-player__big-play-btn:before {
   display: block;
-  content: "►";
-  color: #fff;
-  font-size: 80px;
+  content: "";
   position: absolute;
   top: 50%;
   left: 51%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 0 40px 80px;
+  border-color: transparent transparent transparent #ffffff;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
 }
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 480px) {
   .rfcx-player__big-play-btn:before {
-    font-size: 60px;
+    border-width: 30px 0 30px 60px;
+  }
+}
+@media (max-width: 360px) {
+  .rfcx-player__big-play-btn:before {
+    border-width: 25px 0 25px 50px;
   }
 }
 .rfcx-player__big-play-btn:active {
