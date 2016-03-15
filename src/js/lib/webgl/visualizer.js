@@ -48,7 +48,7 @@ function create3DDebugContext(context) {
 
 AnalyserView = function(canvasElementID, analysisType) {
     this.canvasElementID = canvasElementID;
-    
+
     // NOTE: the default value of this needs to match the selected radio button
 
     // This analysis type may be overriden later on if we discover we don't support the right shader features.
@@ -74,8 +74,17 @@ AnalyserView = function(canvasElementID, analysisType) {
     // set to rfcx green color
     this.foregroundColor = [0.07, 0.6, 0.07, 1.0];
 
-
     this.initGL();
+
+    var resizeTimeout;
+    $(window).resize(function() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function() {
+        if (this.canvas && this.gl) {
+          this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+        }
+      }.bind(this), 500);
+    }.bind(this));
 };
 
 AnalyserView.prototype.initGL = function() {
