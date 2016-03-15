@@ -680,6 +680,9 @@ body {
 .rfcx-player__menu-list .dropup .btn.stream .caret {
   display: none;
 }
+.rfcx-player__menu-list .dropup .btn.playlist .caret {
+  display: none;
+}
 .rfcx-player__menu-list .dropup .btn[disabled="disabled"] {
   opacity: 0.5;
 }

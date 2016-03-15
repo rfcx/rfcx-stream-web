@@ -43,8 +43,10 @@ var menu = {
       var playlist = playlists[i];
       this.addDropdown({
         name: playlist.name,
-        audio: null,
-        playlists: playlist.playlists,
+        audio: '',
+        // playlists were disabled since march 2016 save previous code
+        //playlists: playlist.playlists,
+        playlists: null,
         type: 'playlist'
       })
     }
@@ -58,9 +60,9 @@ var menu = {
     if (opts.audio) {
       $button.attr('data-url', opts.audio);
     }
+    $button.addClass('js-audio-item').attr('data-name', opts.name);
     if (opts.type == 'stream') {
-      $button.addClass('js-audio-item').attr('data-type', 'stream');
-      $button.attr('data-name', opts.name);
+      $button.attr('data-type', 'stream');
     }
     // Disable playlist buttons while playlist stuff is not ready
     if (opts.type == 'playlist') {
