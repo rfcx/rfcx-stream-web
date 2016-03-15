@@ -724,6 +724,19 @@ body {
   background: #d3d3d3;
   color: #222;
 }
+.rfcx-iframe {
+  width: 95%;
+  max-width: 600px;
+  margin: 30px auto;
+  -webkit-box-shadow: 0px 0px 100px -15px #222222;
+  -moz-box-shadow: 0px 0px 100px -15px #222222;
+  box-shadow: 0px 0px 100px -15px #222222;
+}
+.rfcx-iframe iframe {
+  display: block;
+  width: 100%;
+  min-height: 400px;
+}
 @media only screen and (max-width: 1024px) and (min-width: 768px) {
   #tabletDeviceContainer {
     display: none;
