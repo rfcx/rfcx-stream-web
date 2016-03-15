@@ -37,6 +37,8 @@ var audio = {
   isStopped: false,
   // is audio source and visualization is supported by current browser
   isVisualizationSupported: webgl_detect(),
+  // flag to trigger autoplay on first desktop load
+  firstLoad: true,
   init: function() {
     this.bindEvents();
   },
@@ -83,6 +85,10 @@ var audio = {
                 // trigger play on first load
                 _this.changeButtonState({disabled: false});
                 _this.toggleLoader({visible: false});
+                if (!window.isTablet && !window.isPhone && _this.firstLoad) {
+                  _this.firstLoad = false;
+                  _this.startPlayback();
+                }
               }
             });
           }
@@ -185,8 +191,11 @@ var audio = {
     if ($this.prop('disabled')) {
       return;
     }
-    $('#playStopBtn').removeClass('stopped');
+    this.startPlayback();
+  },
+  startPlayback: function() {
     this.isStopped = false;
+    $('#playStopBtn').removeClass('stopped');
     $('#bigPlayBtnContainer').hide();
     this.playAudio();
   },

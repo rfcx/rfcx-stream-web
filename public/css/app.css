@@ -721,6 +721,16 @@ body {
   background: #d3d3d3;
   color: #222;
 }
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
+  #tabletDeviceContainer {
+    display: none;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #phoneDeviceContainer {
+    display: none;
+  }
+}
 .login-overlay {
   background: rgba(34, 34, 34, 0.9);
   position: fixed;
