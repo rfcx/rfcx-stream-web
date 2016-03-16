@@ -21,6 +21,7 @@ var queue = {
 
     var def = this.requestData()
       .then(function(res) {
+        console.log('new res', res);
         menu.init(res);
         // Play Live stream automatically
         $('.js-audio-item[data-type="stream"]').click();
