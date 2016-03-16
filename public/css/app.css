@@ -673,7 +673,7 @@ body {
   max-width: 100%;
   padding: 7px 2px;
 }
-.rfcx-player__menu-list .dropup .btn.stream {
+.rfcx-player__menu-list .dropup .btn.active {
   background: #119911;
   color: #fff;
 }

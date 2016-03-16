@@ -10,10 +10,12 @@ var menu = {
     this.$el.on('click', '.js-audio-item', this.onAudioLinkClicked.bind(this));
   },
   onAudioLinkClicked: function(ev) {
+    $('.js-audio-item.active').removeClass('active');
     var $this = $(ev.target),
         name  = $this.attr('data-name'),
         type  = $this.attr('data-type'),
         url   = $this.attr('data-url');
+    $this.addClass('active');
     queue.setupAudio({
       type: type,
       name: name,

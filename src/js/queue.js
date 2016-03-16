@@ -21,10 +21,9 @@ var queue = {
 
     var def = this.requestData()
       .then(function(res) {
-        console.log('new res', res);
         menu.init(res);
         // Play Live stream automatically
-        $('.js-audio-item[data-type="stream"]').click();
+        $('.js-audio-item').first().click();
       }.bind(this));
 
     def.fail(function() {
@@ -38,6 +37,11 @@ var queue = {
       return;
     }
     this.stream = opts;
+    this.list = [];
+    audio.urls = [];
+    audio.stopPlayback();
+    audio.firstLoad = true;
+    this.isStopped = false;
     this.pullAudio();
   },
   pullAudio: function() {
@@ -96,7 +100,9 @@ var queue = {
     })
   },
   pullStream: function() {
-    this.createRequestTimeout();
+    if (this.stream.type == 'stream') {
+      this.createRequestTimeout();
+    }
     return $.ajax({
       type: 'GET',
       //url: this.apiUrl + this.stream.urls.audio + '?limit=3',

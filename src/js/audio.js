@@ -170,20 +170,12 @@ var audio = {
     }
     // stop audio
     else {
-      $this.addClass('stopped');
+      this.stopPlayback();
       if (this.isVisualizationSupported) {
-        this.currentAudio.stop();
-        this.index = 0;
-        this.list = [];
         this.changeButtonState({disabled: true});
         this.toggleLoader({visible: true});
         $(this).trigger('reset');
       }
-      else {
-        this.currentAudio.pause();
-      }
-      this.isStopped = true;
-      $(this).trigger('stopped');
     }
   },
   _onPlayBtnClicked: function(ev) {
@@ -198,6 +190,23 @@ var audio = {
     $('#playStopBtn').removeClass('stopped');
     $('#bigPlayBtnContainer').hide();
     this.playAudio();
+  },
+  stopPlayback: function () {
+    $('#playStopBtn').addClass('stopped');
+    if (this.isVisualizationSupported) {
+      if (this.currentAudio) {
+        this.currentAudio.stop();
+      }
+      this.index = 0;
+      this.list = [];
+    }
+    else {
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+      }
+    }
+    this.isStopped = true;
+    $(this).trigger('stopped');
   },
   changeButtonState: function(opts) {
     $('#playStopBtn').prop('disabled', opts.disabled);
