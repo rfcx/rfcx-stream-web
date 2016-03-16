@@ -27,7 +27,8 @@ var menu = {
     for (var i = 0; i < data.streams.length; i++) {
       var stream = data.streams[i];
       this.addButton({
-        name: stream.shortname,
+        name: stream.name,
+        shortname: stream.shortname,
         audio_url: stream.urls.audio,
         type: stream.type,
         timezone_offset: stream.timezone_offset
@@ -38,9 +39,10 @@ var menu = {
     var $button = $('<button/>', {
       class: 'btn btn-default js-audio-item',
       type: 'button',
+      'data-name': data.name,
       'data-url': data.audio_url,
       'data-type': data.type,
-      text: data.name
+      text: data.shortname
     });
     $button.addClass(data.type);
     this.$el.append($button);
