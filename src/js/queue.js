@@ -9,7 +9,11 @@ var queue = {
   stream: {
     url: undefined,
     name: undefined,
-    type: undefined
+    type: undefined,
+    timezone: {
+      offset: undefined,
+      label: undefined
+    }
   },
   timeout: undefined,
   isStopped: false,
@@ -20,6 +24,8 @@ var queue = {
     this.stream.url = undefined;
     this.stream.name = undefined;
     this.stream.type = undefined;
+    this.stream.timezone.offset = undefined;
+    this.stream.timezone.label = undefined;
     this.isStopped = false;
   },
   setupUI: function() {

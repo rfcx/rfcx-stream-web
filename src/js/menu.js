@@ -11,15 +11,21 @@ var menu = {
   },
   onAudioLinkClicked: function(ev) {
     $('.js-audio-item.active').removeClass('active');
-    var $this = $(ev.target),
-        name  = $this.attr('data-name'),
-        type  = $this.attr('data-type'),
-        url   = $this.attr('data-url');
+    var $this           = $(ev.target),
+        name            = $this.attr('data-name'),
+        type            = $this.attr('data-type'),
+        url             = $this.attr('data-url'),
+        timezone_offset = $this.attr('data-timezone-offset'),
+        timezone_label  = $this.attr('data-timezone-label');
     $this.addClass('active');
     queue.setupAudio({
       type: type,
       name: name,
-      url : url
+      url : url,
+      timezone: {
+        offset: timezone_offset,
+        label: timezone_label
+      }
     });
   },
   parseData: function (data) {
@@ -33,7 +39,8 @@ var menu = {
         shortname: stream.shortname,
         audio_url: stream.urls.audio,
         type: stream.type,
-        timezone_offset: stream.timezone_offset
+        timezone_offset: stream.timezone_offset,
+        timezone_label: stream.location
       })
     }
   },
@@ -44,6 +51,8 @@ var menu = {
       'data-name': data.name,
       'data-url': data.audio_url,
       'data-type': data.type,
+      'data-timezone-offset': data.timezone_offset,
+      'data-timezone-label': data.timezone_label,
       text: data.shortname
     });
     $button.addClass(data.type);

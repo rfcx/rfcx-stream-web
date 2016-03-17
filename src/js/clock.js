@@ -16,8 +16,8 @@ var clock = {
     this.time = new Date(date);
     // get actual hours which were in ISO time (GMT 00:00))
     this.time = new Date(this.time.getTime() + (this.time.getTimezoneOffset() * 60000));
-    // substract guardian's timezone offset. hardcode Amazon Timezone (GMT -04:00)
-    this.time.setHours(this.time.getHours() - 4);
+    // substract guardian's timezone offset
+    this.time.setHours(this.time.getHours() + parseFloat(queue.stream.timezone.offset));
     setTimeout(this.setTimezone, 1000);
     this.startTimer();
   },
@@ -50,7 +50,8 @@ var clock = {
     $('#clock').text(this.h + ":" + this.m + ":" + this.s);
   },
   setTimezone: function() {
-    $('#timezone').text('Amazon Standard Time');
+    $('#clockLabel').show();
+    $('#timezone').text(queue.stream.timezone.label);
   },
   checkTime: function(i) {
     if (i < 10) {i = "0" + i} // add zero in front of numbers < 10

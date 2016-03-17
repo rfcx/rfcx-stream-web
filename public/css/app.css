@@ -1063,6 +1063,16 @@ body {
   -ms-transform: translate(0, -50%);
   -o-transform: translate(0, -50%);
 }
+.rfcx-player__time-label {
+  display: none;
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+@media only screen and (max-width: 767px) {
+  .rfcx-player__time-label {
+    font-size: 8px;
+  }
+}
 .rfcx-player__time-value {
   font-size: 20px;
   margin-bottom: 5px;
