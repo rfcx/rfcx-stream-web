@@ -11,17 +11,19 @@ var menu = {
   },
   onAudioLinkClicked: function(ev) {
     $('.js-audio-item.active').removeClass('active');
-    var $this           = $(ev.target),
-        name            = $this.attr('data-name'),
-        type            = $this.attr('data-type'),
-        url             = $this.attr('data-url'),
-        timezone_offset = $this.attr('data-timezone-offset'),
-        timezone_label  = $this.attr('data-timezone-label');
+    var $this              = $(ev.target),
+        name               = $this.attr('data-name'),
+        type               = $this.attr('data-type'),
+        url                = $this.attr('data-url'),
+        timezone_offset    = $this.attr('data-timezone-offset'),
+        timezone_label     = $this.attr('data-timezone-label'),
+        flickr_photoset_id = $this.attr('data-flickr-photoset-id');
     $this.addClass('active');
     queue.setupAudio({
       type: type,
       name: name,
       url : url,
+      flickr_photoset_id: flickr_photoset_id,
       timezone: {
         offset: timezone_offset,
         label: timezone_label
@@ -40,7 +42,8 @@ var menu = {
         audio_url: stream.urls.audio,
         type: stream.type,
         timezone_offset: stream.timezone_offset,
-        timezone_label: stream.location
+        timezone_label: stream.location,
+        flickr_photoset_id: stream.flickr_photoset_id
       })
     }
   },
@@ -53,6 +56,7 @@ var menu = {
       'data-type': data.type,
       'data-timezone-offset': data.timezone_offset,
       'data-timezone-label': data.timezone_label,
+      'data-flickr-photoset-id': data.flickr_photoset_id,
       text: data.shortname
     });
     $button.addClass(data.type);
