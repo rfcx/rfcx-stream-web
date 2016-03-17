@@ -144,12 +144,24 @@ var queue = {
   refreshAudios: function(data) {
     console.log('RFCX | Received from server:', data);
     // iterate through all new items in inverse order
-    for (var i = data.length-1; i >= 0; i--) {
-      var item = data[i];
-      // if current url was not presented in the list than append it to the end of array
-      if (this.list.indexOf(item.urls['mp3']) === -1) {
-        this.list.push(item.urls['mp3']);
-        this.measureList.push(item['measured_at']);
+    if (this.stream.type == 'stream') {
+      for (var i = data.length-1; i >= 0; i--) {
+        var item = data[i];
+        // if current url was not presented in the list than append it to the end of array
+        if (this.list.indexOf(item.urls['mp3']) === -1) {
+          this.list.push(item.urls['mp3']);
+          this.measureList.push(item['measured_at']);
+        }
+      }
+    }
+    else if (this.stream.type == 'playlist') {
+      for (var j = 0; j < data.length; j++) {
+        var item = data[j];
+        // if current url was not presented in the list than append it to the end of array
+        if (this.list.indexOf(item.urls['mp3']) === -1) {
+          this.list.push(item.urls['mp3']);
+          this.measureList.push(item['measured_at']);
+        }
       }
     }
   },

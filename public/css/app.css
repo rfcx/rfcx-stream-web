@@ -1013,14 +1013,16 @@ body {
   display: block;
   content: "";
   position: absolute;
-  top: 15px;
-  left: 15px;
+  top: 14px;
+  left: 14px;
   width: 20px;
   height: 20px;
   background: url(../../../public/img/play-stop-sprite.png) no-repeat center bottom;
   background-size: auto 200%;
 }
 .rfcx-player__play-btn.stopped:after {
+  top: 15px;
+  left: 15px;
   background-position: center top;
 }
 .rfcx-player__play-btn:disabled {
