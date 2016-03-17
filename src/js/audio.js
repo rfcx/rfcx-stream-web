@@ -42,6 +42,14 @@ var audio = {
   init: function() {
     this.bindEvents();
   },
+  reset: function() {
+    this.stopPlayback();
+    this.urls = [];
+    this.list = [];
+    this.index = 0;
+    this.currentAudio = undefined;
+    this.firstLoad = true;
+  },
   bindEvents: function() {
     // listen to the queue object for the new audio files
     $(queue).on('newurl', this._onNewUrls.bind(this));
@@ -83,8 +91,7 @@ var audio = {
               });
               if (index == 1) {
                 // trigger play on first load
-                _this.changeButtonState({disabled: false});
-                _this.toggleLoader({visible: false});
+                _this.setLoadingState(false);
                 if (!window.isTablet && !window.isPhone && _this.firstLoad) {
                   _this.firstLoad = false;
                   _this.startPlayback();
@@ -101,8 +108,7 @@ var audio = {
             });
             if (index == 1) {
               // trigger play on first load
-              _this.changeButtonState({disabled: false});
-              _this.toggleLoader({visible: false});
+              _this.setLoadingState(false);
             }
           }
         })(i);
@@ -172,9 +178,8 @@ var audio = {
     else {
       this.stopPlayback();
       if (this.isVisualizationSupported) {
-        this.changeButtonState({disabled: true});
-        this.toggleLoader({visible: true});
-        $(this).trigger('reset');
+        this.setLoadingState(true);
+        $(this).trigger('refresh');
       }
     }
   },
@@ -239,6 +244,10 @@ var audio = {
         }
     }
     $(this).trigger('started');
+  },
+  setLoadingState: function (isLoading) {
+    this.changeButtonState({disabled: isLoading});
+    this.toggleLoader({visible: isLoading});
   },
   toggleLoader: function(opts) {
     $('#loaderContainer').toggleClass('hidden', !opts.visible);

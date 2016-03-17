@@ -13,6 +13,15 @@ var queue = {
   },
   timeout: undefined,
   isStopped: false,
+  reset: function() {
+    clearTimeout(this.timeout);
+    this.list = [];
+    this.measureList = [];
+    this.stream.url = undefined;
+    this.stream.name = undefined;
+    this.stream.type = undefined;
+    this.isStopped = false;
+  },
   setupUI: function() {
     this.isStopped = false;
     this.list = [];
@@ -36,12 +45,10 @@ var queue = {
     if (this.stream.url == opts.url) {
       return;
     }
+    audio.reset();
+    audio.setLoadingState(true);
+    this.reset();
     this.stream = opts;
-    this.list = [];
-    audio.urls = [];
-    audio.stopPlayback();
-    audio.firstLoad = true;
-    this.isStopped = false;
     this.pullAudio();
   },
   pullAudio: function() {
@@ -58,7 +65,7 @@ var queue = {
     this.pullAudio();
   },
   bindEvents: function() {
-    $(audio).on('reset', this.resetAudio.bind(this));
+    $(audio).on('refresh', this.resetAudio.bind(this));
     $(audio).on('stopped', this.onAudioStopped.bind(this));
   },
   checkPassword: function() {
