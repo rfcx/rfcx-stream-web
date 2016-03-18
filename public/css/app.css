@@ -1210,6 +1210,9 @@ body {
 .rfcx-player__loader-container.hidden {
   display: none;
 }
+.rfcx-player__loader-container.loading-carousel {
+  display: block;
+}
 .rfcx-player__loader-wrapper {
   width: 60px;
   height: 60px;
@@ -1299,15 +1302,11 @@ body {
 .rfcx-player__carousel {
   display: none;
   position: absolute;
-  top: 50%;
+  top: 0;
+  left: 0;
   height: 100%;
-  left: 50%;
   width: 100%;
   max-width: 100%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
   z-index: 2;
   overflow: hidden;
 }

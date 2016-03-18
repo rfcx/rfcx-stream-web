@@ -15,10 +15,14 @@ var analyser,
 var analyserView1,
     analyserView2;
 
-function initAnalysers() {
+function initCanvases() {
   updateAnalyzersDimensions();
 
   $(window).resize(updateAnalyzersDimensions);
+}
+
+function initAnalysers() {
+  initCanvases();
 
   analyserView1 = new AnalyserView("3dSonogramView");
   analyserView2 = new AnalyserView("waveformView", ANALYSISTYPE_WAVEFORM);

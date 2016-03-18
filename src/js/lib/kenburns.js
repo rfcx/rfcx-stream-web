@@ -32,6 +32,7 @@
       fadeSpeed:500,
       scale:1,
       ease3d:'cubic-bezier(.81, 0, .26, 1)',
+      onLoadingFirstComplete:function(){},
       onLoadingComplete:function(){},
       onSlideComplete:function(){},
       onListComplete:function(){},
@@ -123,6 +124,9 @@
 
     //set up the image OBJ parameters - used to track loading and initial dimensions
     img.load(function() {
+      if (!imagesObj["image"+index]) {
+        return;
+      }
       imagesObj["image"+index].element = this;
       imagesObj["image"+index].loaded  = true;
       imagesObj["image"+index].width = $(this).width();
@@ -144,7 +148,7 @@
     if(index == 0) {
       this.startTransition(0);
       $(this.element).find('.loader').hide();
-
+      this.options.onLoadingFirstComplete();
     }
 
     //if the next image hasnt loaded yet, but the transition has started,
@@ -173,7 +177,7 @@
   Plugin.prototype.checkLoadProgress = function() {
     var imagesLoaded = true;
     for(i=0;i<this.maxSlides;i++){
-      if (imagesObj["image"+i].loaded == false){
+      if (!imagesObj["image"+i] || imagesObj["image"+i].loaded == false){
         imagesLoaded = false;
       }
     }

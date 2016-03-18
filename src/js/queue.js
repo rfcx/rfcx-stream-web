@@ -34,16 +34,19 @@ var queue = {
 
     audio.initVisualization();
 
+    this.firstRequest();
+  },
+  firstRequest: function() {
     var def = this.requestData()
       .then(function(res) {
         menu.init(res);
-        // Play Live stream automatically
+        // Play first stream automatically
         $('.js-audio-item').first().click();
       }.bind(this));
 
     def.fail(function() {
       console.log('RFCX | Error Receiving Data from Server. Retry in 10 seconds');
-      setTimeout(this.setupUI.bind(this), 10000);
+      setTimeout(this.firstRequest.bind(this), 10000);
     }.bind(this));
   },
   setupAudio: function(opts) {

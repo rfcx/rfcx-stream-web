@@ -1,28 +1,5 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
 
-function webgl_detect() {
-  if (!!window.WebGLRenderingContext) {
-    var canvas = document.createElement("canvas"),
-      names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
-      context = false;
-
-    for(var i=0;i<4;i++) {
-      try {
-        context = canvas.getContext(names[i]);
-        if (context && typeof context.getParameter == "function") {
-          // WebGL is enabled
-          return true;
-        }
-      } catch(e) {}
-    }
-
-    // WebGL is supported, but disabled
-    return false;
-  }
-
-  // WebGL not supported
-  return false;
-}
 
 var audio = {
   // array to store all urls
@@ -36,7 +13,7 @@ var audio = {
   // is stop button was pressed
   isStopped: false,
   // is audio source and visualization is supported by current browser
-  isVisualizationSupported: webgl_detect(),
+  isVisualizationSupported: window.isVisualizationSupported,
   // flag to trigger autoplay on first desktop load
   firstLoad: true,
   init: function() {
@@ -63,10 +40,9 @@ var audio = {
       initAnalysers();
     }
     else {
-      // if visualization is not supported show slideshow
-      slideshow
-        .setUncloseable()
-        .showCarousel();
+      // if visualization is not supported init slideshow
+      initCanvases();
+      slideshow.setUncloseable();
     }
   },
   parseAudioData: function() {
@@ -109,6 +85,10 @@ var audio = {
             if (index == 1) {
               // trigger play on first load
               _this.setLoadingState(false);
+              if (!window.isTablet && !window.isPhone && _this.firstLoad) {
+                _this.firstLoad = false;
+                _this.startPlayback();
+              }
             }
           }
         })(i);
