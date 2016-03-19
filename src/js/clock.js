@@ -1,6 +1,7 @@
 "use strict";
 
 var clock = {
+  $el: $('#clock'),
   init: function() {
     this.bindEvents();
   },
@@ -47,11 +48,11 @@ var clock = {
     this.time.setSeconds(this.time.getSeconds() + 1);
   },
   render: function() {
-    $('#clock').text(this.h + ":" + this.m + ":" + this.s);
+    this.$el.html(this.h + ":" + this.m + ":" + this.s);
   },
   setTimezone: function() {
     $('#clockLabel').show();
-    $('#timezone').text(queue.stream.timezone.label);
+    $('#timezone').html(queue.stream.timezone.label);
   },
   checkTime: function(i) {
     if (i < 10) {i = "0" + i} // add zero in front of numbers < 10
