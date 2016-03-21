@@ -2053,9 +2053,11 @@ AnalyserView.prototype.initGL = function() {
 
     // set sonogram dragging automatically
     setInterval(function() {
-      checkYRot();
-      setDelta();
-      cameraController.yRot = cameraController.yRot + delta;
+      if (window.isVisualizationEnabled) {
+        checkYRot();
+        setDelta();
+        cameraController.yRot = cameraController.yRot + delta;
+      }
     }, 100);
 
     gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
@@ -2670,6 +2672,8 @@ function output(str) {
 if (window.hasOwnProperty('AudioContext') && !window.hasOwnProperty('webkitAudioContext'))
   window.webkitAudioContext = AudioContext;
 
+// if set to false, then webgl rendering is suspended
+window.isVisualizationEnabled = true;
 
 var context;
 var analyser,
@@ -2765,8 +2769,10 @@ if (!window.requestAnimationFrame) {
 }
 
 function draw() {
-  analyserView1.doFrequencyAnalysis();
-  analyserView2.doFrequencyAnalysis();
+  if (window.isVisualizationEnabled) {
+    analyserView1.doFrequencyAnalysis();
+    analyserView2.doFrequencyAnalysis();
+  }
   window.requestAnimationFrame(draw);
 }
 "use strict";
@@ -2983,6 +2989,7 @@ var slideshow = {
     $('#btnShowCarousel').hide();
     $('#btnHideCarousel').show();
     $('#imgSlideshow').fadeIn();
+    window.isVisualizationEnabled = false;
   },
   hideCarousel: function() {
     $('#btnHideCarousel').hide();
@@ -2990,6 +2997,7 @@ var slideshow = {
       this.destroyCarousel();
     }.bind(this));
     $('#btnShowCarousel').show();
+    window.isVisualizationEnabled = true;
   },
   setUncloseable: function() {
     // when browser doesn't support webgl, we will show only slideshow, so X button is redundant in this case

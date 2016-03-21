@@ -6,6 +6,8 @@ function output(str) {
 if (window.hasOwnProperty('AudioContext') && !window.hasOwnProperty('webkitAudioContext'))
   window.webkitAudioContext = AudioContext;
 
+// if set to false, then webgl rendering is suspended
+window.isVisualizationEnabled = true;
 
 var context;
 var analyser,
@@ -101,7 +103,9 @@ if (!window.requestAnimationFrame) {
 }
 
 function draw() {
-  analyserView1.doFrequencyAnalysis();
-  analyserView2.doFrequencyAnalysis();
+  if (window.isVisualizationEnabled) {
+    analyserView1.doFrequencyAnalysis();
+    analyserView2.doFrequencyAnalysis();
+  }
   window.requestAnimationFrame(draw);
 }

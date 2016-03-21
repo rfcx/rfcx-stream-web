@@ -45,6 +45,7 @@ var slideshow = {
     $('#btnShowCarousel').hide();
     $('#btnHideCarousel').show();
     $('#imgSlideshow').fadeIn();
+    window.isVisualizationEnabled = false;
   },
   hideCarousel: function() {
     $('#btnHideCarousel').hide();
@@ -52,6 +53,7 @@ var slideshow = {
       this.destroyCarousel();
     }.bind(this));
     $('#btnShowCarousel').show();
+    window.isVisualizationEnabled = true;
   },
   setUncloseable: function() {
     // when browser doesn't support webgl, we will show only slideshow, so X button is redundant in this case

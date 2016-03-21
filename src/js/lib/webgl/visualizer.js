@@ -147,9 +147,11 @@ AnalyserView.prototype.initGL = function() {
 
     // set sonogram dragging automatically
     setInterval(function() {
-      checkYRot();
-      setDelta();
-      cameraController.yRot = cameraController.yRot + delta;
+      if (window.isVisualizationEnabled) {
+        checkYRot();
+        setDelta();
+        cameraController.yRot = cameraController.yRot + delta;
+      }
     }, 100);
 
     gl.clearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
