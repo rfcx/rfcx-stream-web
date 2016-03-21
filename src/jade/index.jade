@@ -1,0 +1,67 @@
+doctype html
+html.no-js(lang='')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='x-ua-compatible', content='ie=edge')
+    title Rainforest Connection Audio Streaming
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
+    link(rel='shortcut icon', href='favicon.ico')
+    link(rel='stylesheet', href='public/css/app#{suffix}.css')
+  body
+    #phoneDeviceContainer
+    #tabletDeviceContainer
+    #loginOverlay.login-overlay
+      form#loginForm.form(action='/', method='post')
+        .keypad
+          .keypad__content
+            p.keypad__title Please Enter Password:
+            .keypad__input-wrapper
+              input#passwordInput.keypad__input(type='text', name='password', readonly='', required='required', placeholder='******')
+              span#passwordErrorLabel.keypad__input-error-message
+              img#keypadLoader.keypad__loader(src='public/img/ajax-loader.gif', alt='')
+            #keypadControls.keypad__controls
+              .keypad__col
+                button.keypad__btn.js-keypad-btn(type='button', data-value='1')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='4')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='7')
+              .keypad__col
+                button.keypad__btn.js-keypad-btn(type='button', data-value='2')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='5')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='8')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='0')
+              .keypad__col
+                button.keypad__btn.js-keypad-btn(type='button', data-value='3')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='6')
+                button.keypad__btn.js-keypad-btn(type='button', data-value='9')
+                button.keypad__btn.keypad__btn_backspace.js-keypad-backspace(type='button')
+    div
+      a.logo-link(href='http://rfcx.org')
+        img.logo-link__img(src='public/img/rfcx-logo.png', alt='')
+        span.logo-link__text Rainforest Connection
+    .rfcx-player
+      .rfcx-player__top
+        button#playStopBtn.rfcx-player__play-btn.stopped(type='button', disabled='', title='Play/Stop Audio')
+        .rfcx-player__waveform-container
+          canvas#waveformView(width='300', height='90')
+        .rfcx-player__time
+          #clockLabel.rfcx-player__time-label Local Time
+          #clock.rfcx-player__time-value
+          #timezone.rfcx-player__time-zone
+      h2#streamName.rfcx-player__title
+        | Loading...
+      .rfcx-player__sonogram-container
+        canvas#3dSonogramView.rfcx-player__sonogram
+        button#btnShowCarousel.rfcx-player__btn-show-carousel(type='button', title='Show Gallery')
+        button#btnHideCarousel.rfcx-player__btn-hide-carousel(type='button', title='Hide Gallery')
+        #imgSlideshow.rfcx-player__carousel
+        #bigPlayBtnContainer.rfcx-player__big-play-btn-container
+          button#playBtn.rfcx-player__big-play-btn(type='button', disabled='disabled')
+        #loaderContainer.rfcx-player__loader-container
+          .rfcx-player__loader-wrapper
+            img.rfcx-player__main-loader(src='public/img/ajax-loader.gif', alt='')
+      nav.rfcx-player__menu
+        #playerMenu.rfcx-player__menu-list
+    .rfcx-iframe
+      iframe(src='https://rainforestconnect.typeform.com/to/npn63N')
+    script(type='text/javascript', src='./public/js/app#{suffix}.js')
