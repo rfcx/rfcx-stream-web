@@ -3194,7 +3194,9 @@ var queue = {
     })
   },
   pullStream: function() {
-    this.createRequestTimeout();
+    if (this.stream.type == 'stream' || (this.stream.type == 'playlist' && this.list.length < 20)) {
+      this.createRequestTimeout();
+    }
     return $.ajax({
       type: 'GET',
       //url: this.apiUrl + this.stream.urls.audio + '?limit=3',
