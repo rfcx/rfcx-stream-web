@@ -117,9 +117,7 @@ var queue = {
     })
   },
   pullStream: function() {
-    if (this.stream.type == 'stream') {
-      this.createRequestTimeout();
-    }
+    this.createRequestTimeout();
     return $.ajax({
       type: 'GET',
       //url: this.apiUrl + this.stream.urls.audio + '?limit=3',
@@ -156,6 +154,9 @@ var queue = {
     }
   },
   prepareNext: function() {
+    if (this.stream.type === 'playlist') {
+      this.increaseUrlTime();
+    }
     // new data request
     this.pullStream().then(
       function(res) {
@@ -187,5 +188,33 @@ var queue = {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+  },
+  increaseUrlTime: function() {
+    // get startinf_atter parameter from current playlist url
+    var startingAfter = this.getParameterByName('starting_after', this.stream.url);
+    var time = new Date(startingAfter);
+    // increase this time by 90 seconds
+    time.setSeconds(time.getSeconds() + 90);
+    // update url with new time
+    this.stream.url = this.updateUrlParameter('starting_after', time.toISOString(), this.stream.url);
+  },
+  // get url parameter
+  getParameterByName: function(param, url) {
+    if (!url) url = window.location.href;
+    url = url.toLowerCase(); // This is just to avoid case sensitiveness
+    param = param.replace(/[\[\]]/g, "\\$&").toLowerCase();// This is just to avoid case sensitiveness for query parameter name
+    var regex = new RegExp("[?&]" + param + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  },
+  // set new value to url parameter
+  updateUrlParameter: function(param, value, url){
+    var pattern = new RegExp('\\b('+ param +'=).*?(&|$)');
+    if(url.search(pattern) >= 0){
+      return url.replace(pattern,'$1' + value + '$2');
+    }
+    return url + (url.indexOf('?')>0 ? '&' : '?') + param + '=' + value;
   }
 };

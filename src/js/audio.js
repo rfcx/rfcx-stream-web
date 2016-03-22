@@ -49,53 +49,57 @@ var audio = {
     // create html audio instances for each of audio file
     // after that all audio files will be requested, cached and ready to play immediately
     var _this     = this,
-      urlsCount = this.urls.length;
+        urlsCount = this.urls.length;
     for (var i=0; i < urlsCount; i++) {
       if (!this.list[i]) {
         (function(index) {
-          var isLooped = (index == urlsCount-1),
-              url      = _this.urls[index];
-          if (_this.isVisualizationSupported) {
-            // if audio source is supported then load audio buffer
-            loadAudioBuffer(url, function (buffer) {
-              _this.list[index] = _this.createAudioBuffer({
-                buffer: buffer,
-                // set loop for last audio
-                loop: isLooped,
-                loopStart: 1.5,
-                loopEnd: buffer.duration
-              });
-              if (index == 1) {
-                // trigger play on first load
-                _this.setLoadingState(false);
-                if (!window.isTablet && !window.isPhone && _this.firstLoad) {
-                  _this.firstLoad = false;
-                  _this.startPlayback();
-                }
-              }
-            });
-          }
-          else {
-            // if audio source is supported then create html Audio object
-            _this.list[index] = _this.createAudioTag({
-              src: url,
-              // set loop for last audio
-              loop: isLooped
-            });
-            if (index == 1) {
-              // trigger play on first load
-              _this.setLoadingState(false);
-              if (!window.isTablet && !window.isPhone && _this.firstLoad) {
-                _this.firstLoad = false;
-                _this.startPlayback();
-              }
-            }
-          }
+          _this.loadAudioFile(index);
         })(i);
       }
       else {
         // set loop for last audio
         this.list[i].loop = (i == urlsCount-1);
+      }
+    }
+  },
+  loadAudioFile: function(index) {
+    var isLooped = (index == this.urls.length-1),
+        url      = this.urls[index];
+
+    function autoplay() {
+      this.setLoadingState(false);
+      if (!window.isTablet && !window.isPhone && this.firstLoad) {
+        this.firstLoad = false;
+        this.startPlayback();
+      }
+    }
+
+    if (this.isVisualizationSupported) {
+      // if audio source is supported then load audio buffer
+      loadAudioBuffer(url, function (buffer) {
+        this.list[index] = this.createAudioBuffer({
+          buffer: buffer,
+          // set loop for last audio
+          loop: isLooped,
+          loopStart: 1.5,
+          loopEnd: buffer.duration
+        });
+        if (index == 1) {
+          // trigger play on first load
+          autoplay.call(this);
+        }
+      }.bind(this));
+    }
+    else {
+      // if audio source is supported then create html Audio object
+      this.list[index] = this.createAudioTag({
+        src: url,
+        // set loop for last audio
+        loop: isLooped
+      });
+      if (index == 1) {
+        // trigger play on first load
+        autoplay.call(this);
       }
     }
   },

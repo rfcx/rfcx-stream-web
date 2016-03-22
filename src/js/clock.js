@@ -16,7 +16,7 @@ var clock = {
   initTime: function(date) {
     this.time = new Date(date);
     // get actual hours which were in ISO time (GMT 00:00))
-    this.time = new Date(this.time.getTime() + (this.time.getTimezoneOffset() * 60000));
+    this.time.setTime(this.time.getTime() + (this.time.getTimezoneOffset() * 60000));
     // substract guardian's timezone offset
     this.time.setHours(this.time.getHours() + parseFloat(queue.stream.timezone.offset));
     setTimeout(this.setTimezone, 1000);

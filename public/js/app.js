@@ -2712,7 +2712,6 @@ function updateAnalyzersDimensions() {
 
 function loadAudioBuffer(url, cb) {
   // Load asynchronously
-
   var request = new XMLHttpRequest();
   request.open("GET", url, true);
   request.responseType = "arraybuffer";
@@ -2723,7 +2722,6 @@ function loadAudioBuffer(url, cb) {
       function (b) {
         if (cb) cb(b);
       },
-
       function (buffer) {
         console.log("Error decoding audio!");
       }
@@ -3194,9 +3192,9 @@ var queue = {
     })
   },
   pullStream: function() {
-    if (this.stream.type == 'stream') {
+    //if (this.stream.type == 'stream') {
       this.createRequestTimeout();
-    }
+    //}
     return $.ajax({
       type: 'GET',
       //url: this.apiUrl + this.stream.urls.audio + '?limit=3',
@@ -3233,6 +3231,9 @@ var queue = {
     }
   },
   prepareNext: function() {
+    if (this.stream.type === 'playlist') {
+      this.increaseUrlTime();
+    }
     // new data request
     this.pullStream().then(
       function(res) {
@@ -3264,6 +3265,34 @@ var queue = {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+  },
+  increaseUrlTime: function() {
+    // get startinf_atter parameter from current playlist url
+    var startingAfter = this.getParameterByName('starting_after', this.stream.url);
+    var time = new Date(startingAfter);
+    // increase this time by 90 seconds
+    time.setSeconds(time.getSeconds() + 90);
+    // update url with new time
+    this.stream.url = this.updateUrlParameter('starting_after', time.toISOString(), this.stream.url);
+  },
+  // get url parameter
+  getParameterByName: function(param, url) {
+    if (!url) url = window.location.href;
+    url = url.toLowerCase(); // This is just to avoid case sensitiveness
+    param = param.replace(/[\[\]]/g, "\\$&").toLowerCase();// This is just to avoid case sensitiveness for query parameter name
+    var regex = new RegExp("[?&]" + param + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  },
+  // set new value to url parameter
+  updateUrlParameter: function(param, value, url){
+    var pattern = new RegExp('\\b('+ param +'=).*?(&|$)');
+    if(url.search(pattern) >= 0){
+      return url.replace(pattern,'$1' + value + '$2');
+    }
+    return url + (url.indexOf('?')>0 ? '&' : '?') + param + '=' + value;
   }
 };
 window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
@@ -3317,53 +3346,57 @@ var audio = {
     // create html audio instances for each of audio file
     // after that all audio files will be requested, cached and ready to play immediately
     var _this     = this,
-      urlsCount = this.urls.length;
+        urlsCount = this.urls.length;
     for (var i=0; i < urlsCount; i++) {
       if (!this.list[i]) {
         (function(index) {
-          var isLooped = (index == urlsCount-1),
-              url      = _this.urls[index];
-          if (_this.isVisualizationSupported) {
-            // if audio source is supported then load audio buffer
-            loadAudioBuffer(url, function (buffer) {
-              _this.list[index] = _this.createAudioBuffer({
-                buffer: buffer,
-                // set loop for last audio
-                loop: isLooped,
-                loopStart: 1.5,
-                loopEnd: buffer.duration
-              });
-              if (index == 1) {
-                // trigger play on first load
-                _this.setLoadingState(false);
-                if (!window.isTablet && !window.isPhone && _this.firstLoad) {
-                  _this.firstLoad = false;
-                  _this.startPlayback();
-                }
-              }
-            });
-          }
-          else {
-            // if audio source is supported then create html Audio object
-            _this.list[index] = _this.createAudioTag({
-              src: url,
-              // set loop for last audio
-              loop: isLooped
-            });
-            if (index == 1) {
-              // trigger play on first load
-              _this.setLoadingState(false);
-              if (!window.isTablet && !window.isPhone && _this.firstLoad) {
-                _this.firstLoad = false;
-                _this.startPlayback();
-              }
-            }
-          }
+          _this.loadAudioFile(index);
         })(i);
       }
       else {
         // set loop for last audio
         this.list[i].loop = (i == urlsCount-1);
+      }
+    }
+  },
+  loadAudioFile: function(index) {
+    var isLooped = (index == this.urls.length-1),
+        url      = this.urls[index];
+
+    function autoplay() {
+      this.setLoadingState(false);
+      if (!window.isTablet && !window.isPhone && this.firstLoad) {
+        this.firstLoad = false;
+        this.startPlayback();
+      }
+    }
+
+    if (this.isVisualizationSupported) {
+      // if audio source is supported then load audio buffer
+      loadAudioBuffer(url, function (buffer) {
+        this.list[index] = this.createAudioBuffer({
+          buffer: buffer,
+          // set loop for last audio
+          loop: isLooped,
+          loopStart: 1.5,
+          loopEnd: buffer.duration
+        });
+        if (index == 1) {
+          // trigger play on first load
+          autoplay.call(this);
+        }
+      }.bind(this));
+    }
+    else {
+      // if audio source is supported then create html Audio object
+      this.list[index] = this.createAudioTag({
+        src: url,
+        // set loop for last audio
+        loop: isLooped
+      });
+      if (index == 1) {
+        // trigger play on first load
+        autoplay.call(this);
       }
     }
   },
@@ -3523,7 +3556,7 @@ var clock = {
   initTime: function(date) {
     this.time = new Date(date);
     // get actual hours which were in ISO time (GMT 00:00))
-    this.time = new Date(this.time.getTime() + (this.time.getTimezoneOffset() * 60000));
+    this.time.setTime(this.time.getTime() + (this.time.getTimezoneOffset() * 60000));
     // substract guardian's timezone offset
     this.time.setHours(this.time.getHours() + parseFloat(queue.stream.timezone.offset));
     setTimeout(this.setTimezone, 1000);
