@@ -2712,6 +2712,7 @@ function updateAnalyzersDimensions() {
 
 function loadAudioBuffer(url, cb) {
   // Load asynchronously
+
   var request = new XMLHttpRequest();
   request.open("GET", url, true);
   request.responseType = "arraybuffer";
@@ -2722,6 +2723,7 @@ function loadAudioBuffer(url, cb) {
       function (b) {
         if (cb) cb(b);
       },
+
       function (buffer) {
         console.log("Error decoding audio!");
       }
@@ -3192,9 +3194,7 @@ var queue = {
     })
   },
   pullStream: function() {
-    //if (this.stream.type == 'stream') {
-      this.createRequestTimeout();
-    //}
+    this.createRequestTimeout();
     return $.ajax({
       type: 'GET',
       //url: this.apiUrl + this.stream.urls.audio + '?limit=3',
