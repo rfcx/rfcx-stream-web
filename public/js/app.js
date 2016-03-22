@@ -2790,6 +2790,7 @@ var menu = {
   },
   bindEvents: function() {
     this.$el.on('click', '.js-audio-item', this.onAudioLinkClicked.bind(this));
+    $(audio).on('loading', this.onAudioLoading.bind(this));
   },
   onAudioLinkClicked: function(ev) {
     $('.js-audio-item.active').removeClass('active');
@@ -2811,6 +2812,9 @@ var menu = {
         label: timezone_label
       }
     });
+  },
+  onAudioLoading: function(ev, isLoading) {
+    this.$el.toggleClass('loading', isLoading);
   },
   parseData: function (data) {
     if (!data.streams) {
@@ -3524,6 +3528,7 @@ var audio = {
   setLoadingState: function (isLoading) {
     this.changeButtonState({disabled: isLoading});
     this.toggleLoader({visible: isLoading});
+    $(this).trigger('loading', isLoading);
   },
   toggleLoader: function(opts) {
     $('#loaderContainer').toggleClass('hidden', !opts.visible);

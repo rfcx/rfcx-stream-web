@@ -8,6 +8,7 @@ var menu = {
   },
   bindEvents: function() {
     this.$el.on('click', '.js-audio-item', this.onAudioLinkClicked.bind(this));
+    $(audio).on('loading', this.onAudioLoading.bind(this));
   },
   onAudioLinkClicked: function(ev) {
     $('.js-audio-item.active').removeClass('active');
@@ -29,6 +30,9 @@ var menu = {
         label: timezone_label
       }
     });
+  },
+  onAudioLoading: function(ev, isLoading) {
+    this.$el.toggleClass('loading', isLoading);
   },
   parseData: function (data) {
     if (!data.streams) {

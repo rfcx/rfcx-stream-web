@@ -645,6 +645,21 @@ body {
   list-style: none;
   font-size: 0;
 }
+.rfcx-player__menu-list.loading {
+  position: relative;
+  z-index: 1;
+}
+.rfcx-player__menu-list.loading:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: rgba(34, 34, 34, 0.6);
+}
 .rfcx-player__menu-list .dropup {
   display: inline-block;
   vertical-align: middle;

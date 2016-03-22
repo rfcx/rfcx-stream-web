@@ -220,6 +220,7 @@ var audio = {
   setLoadingState: function (isLoading) {
     this.changeButtonState({disabled: isLoading});
     this.toggleLoader({visible: isLoading});
+    $(this).trigger('loading', isLoading);
   },
   toggleLoader: function(opts) {
     $('#loaderContainer').toggleClass('hidden', !opts.visible);
