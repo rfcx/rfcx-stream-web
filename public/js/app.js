@@ -2776,8 +2776,8 @@ if (!window.requestAnimationFrame) {
 function draw() {
   if (window.isVisualizationEnabled) {
     analyserView1.doFrequencyAnalysis();
-    analyserView2.doFrequencyAnalysis();
   }
+  analyserView2.doFrequencyAnalysis();
   window.requestAnimationFrame(draw);
 }
 "use strict";
