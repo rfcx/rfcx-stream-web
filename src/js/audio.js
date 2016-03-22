@@ -73,7 +73,6 @@ var audio = {
       if ((!window.isTablet && !window.isPhone && this.loadsCount === 0) || this.loadsCount > 0) {
         this.startPlayback();
       }
-      this.loadsCount++;
     }
 
     if (this.isVisualizationSupported) {
@@ -150,8 +149,6 @@ var audio = {
   },
   _onPlayBtnClicked: function(ev) {
     var $this = $(ev.target);
-    this.firstLoad = false;
-    this.nonFirstLoad = true;
     if ($this.prop('disabled')) {
       return;
     }
@@ -163,6 +160,7 @@ var audio = {
     }
   },
   startPlayback: function() {
+    this.loadsCount++;
     this.isStopped = false;
     $('#muteBtn').removeClass('stopped');
     $('#bigPlayBtnContainer').hide();
