@@ -18,12 +18,11 @@
             padding-top: 10px;
         }
     }
-    &__play-btn {
+    &__mute-btn {
         display: block;
-        width: 50px;
-        height: 50px;
-        border: 1px solid #d3d3d3;
-        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border: none;
         outline: none;
         overflow: hidden;
         background: transparent;
@@ -35,35 +34,28 @@
             display: block;
             content: "";
             position: absolute;
-            top: 14px;
-            left: 14px;
-            width: 20px;
-            height: 20px;
-            background: url(../../../public/img/play-stop-sprite.png) no-repeat center bottom;
+            top: 50%;
+            left: 50%;
+            width: 32px;
+            height: 32px;
+            background: url(../../../public/img/mute-unmute-sprite.png) no-repeat center top;
             background-size: auto 200%;
+            .translate(-50%, -50%);
         }
-        &.stopped {
+        &.muted {
             &:after {
-                top: 15px;
-                left: 15px;
-                background-position: center top;
+                background-position: center bottom;
             }
         }
         &:disabled {
-            opacity: 0.5;
-            &:after {
-                -webkit-animation: loadPlay 2s infinite ease;
-                animation: loadPlay 2s infinite ease;
-            }
+            visibility: hidden;
         }
         @media @mobile {
             width: 40px;
             height: 40px;
             &:after {
-                width: 16px;
-                height: 16px;
-                top: 12px;
-                left: 12px;
+                width: 20px;
+                height: 20px;
             }
         }
     }
@@ -105,6 +97,7 @@
         }
     }
     &__title {
+        max-width: 95%;
         margin: 0 auto 10px;
         font-size: 22px;
         text-align: center;
@@ -223,26 +216,5 @@
         width: 40px;
         height: auto;
         .translate(-50%, -50%);
-    }
-}
-
-@-webkit-keyframes loadPlay {
-    0%, 100% {
-        -webkit-transform: scale(0.8);
-        transform: scale(0.8);
-    }
-    50% {
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
-    }
-}
-@keyframes loadPlay {
-    0%, 100% {
-        -webkit-transform: scale(0.8);
-        transform: scale(0.8);
-    }
-    50% {
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
     }
 }

@@ -2678,7 +2678,8 @@ window.isVisualizationEnabled = true;
 var context;
 var analyser,
     analyser2,
-    splitter;
+    splitter,
+    gain;
 
 var analyserView1,
     analyserView2;
@@ -2736,6 +2737,9 @@ function loadAudioBuffer(url, cb) {
 function initAudio() {
   context = new webkitAudioContext();
 
+  gain = context.createGain();
+  gain.gain.value = 1;
+
   analyser = context.createAnalyser();
   analyser2 = context.createAnalyser();
   analyser.fftSize = 2048;
@@ -2745,9 +2749,10 @@ function initAudio() {
   splitter.connect(analyser,0,0);
   splitter.connect(analyser2,1,0);
 
-  // Connect audio processing graph
-  analyser.connect(context.destination);
-  analyser2.connect(context.destination);
+  splitter.connect(gain, 0);
+  splitter.connect(gain, 1);
+
+  gain.connect(context.destination);
 }
 
 if (!window.requestAnimationFrame) {
@@ -3313,8 +3318,10 @@ var audio = {
   isStopped: false,
   // is audio source and visualization is supported by current browser
   isVisualizationSupported: window.isVisualizationSupported,
-  // flag to trigger autoplay on first desktop load
-  firstLoad: true,
+  // how many streams/playlists were requested
+  loadsCount: 0,
+  // is audio muted
+  isMuted: false,
   init: function() {
     this.bindEvents();
   },
@@ -3324,13 +3331,13 @@ var audio = {
     this.list = [];
     this.index = 0;
     this.currentAudio = undefined;
-    this.firstLoad = true;
   },
   bindEvents: function() {
     // listen to the queue object for the new audio files
     $(queue).on('newurl', this._onNewUrls.bind(this));
-    // play/stop button clicked
-    $('#playStopBtn').click(this._onPlayStopBtnClicked.bind(this));
+    // Mute button clicked
+    $('#muteBtn').click(this._onMuteBtnClicked.bind(this));
+    // Mobile play button clicked
     $('#playBtn').click(this._onPlayBtnClicked.bind(this));
   },
   initVisualization: function () {
@@ -3367,10 +3374,10 @@ var audio = {
 
     function autoplay() {
       this.setLoadingState(false);
-      if (!window.isTablet && !window.isPhone && this.firstLoad) {
-        this.firstLoad = false;
+      if ((!window.isTablet && !window.isPhone && this.loadsCount === 0) || this.loadsCount > 0) {
         this.startPlayback();
       }
+      this.loadsCount++;
     }
 
     if (this.isVisualizationSupported) {
@@ -3416,6 +3423,7 @@ var audio = {
     audio.loop = data.loop;
     // Start playback with offset of 2000 ms to avoid empty gap in the start of audio
     audio.currentTime = 2;
+    audio.muted = this.isMuted;
     return audio;
   },
   _onPlayEnd: function(ev) {
@@ -3434,53 +3442,37 @@ var audio = {
       this.parseAudioData();
     }
   },
-  _onPlayStopBtnClicked: function(ev) {
-    var $this = $(ev.target);
-    if ($this.prop('disabled')) {
-      return;
+  _onMuteBtnClicked: function(ev) {
+    this.isMuted = !this.isMuted;
+    $(ev.target).toggleClass('muted', this.isMuted).attr('title', this.isMuted? 'Unmute' : 'Mute');
+    if (this.isVisualizationSupported) {
+      gain.gain.value = this.isMuted? 0 : 1;
     }
-    // play audio
-    if ($this.hasClass('stopped')) {
-      this.isStopped = false;
-      $this.removeClass('stopped');
-      $('#bigPlayBtnContainer').hide();
-      if (this.isVisualizationSupported) {
-        this.playAudio();
-      }
-      else {
-        if (!this.currentAudio) {
-          this.playAudio();
-        }
-        else {
-          this.currentAudio.play();
-          $(this).trigger('continued');
-        }
-      }
-    }
-    // stop audio
     else {
-      this.stopPlayback();
-      if (this.isVisualizationSupported) {
-        this.setLoadingState(true);
-        $(this).trigger('refresh');
-      }
+      this.toggleAudiosMute(this.isMuted);
     }
   },
   _onPlayBtnClicked: function(ev) {
     var $this = $(ev.target);
+    this.firstLoad = false;
+    this.nonFirstLoad = true;
     if ($this.prop('disabled')) {
       return;
     }
     this.startPlayback();
   },
+  toggleAudiosMute: function(isMuted) {
+    for (var i = 0; i < this.list.length; i++) {
+      this.list[i].muted = isMuted;
+    }
+  },
   startPlayback: function() {
     this.isStopped = false;
-    $('#playStopBtn').removeClass('stopped');
+    $('#muteBtn').removeClass('stopped');
     $('#bigPlayBtnContainer').hide();
     this.playAudio();
   },
   stopPlayback: function () {
-    $('#playStopBtn').addClass('stopped');
     if (this.isVisualizationSupported) {
       if (this.currentAudio) {
         this.currentAudio.stop();
@@ -3497,7 +3489,7 @@ var audio = {
     $(this).trigger('stopped');
   },
   changeButtonState: function(opts) {
-    $('#playStopBtn').prop('disabled', opts.disabled);
+    $('#muteBtn').prop('disabled', opts.disabled);
     $('#playBtn').prop('disabled', opts.disabled);
   },
   playAudio: function() {
@@ -3515,6 +3507,7 @@ var audio = {
         // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
         audio.start(0, 1.5);
         audio.connect(splitter);
+        audio.connect(gain);
       }
       else {
         audio.play();

@@ -992,12 +992,11 @@ body {
     padding-top: 10px;
   }
 }
-.rfcx-player__play-btn {
+.rfcx-player__mute-btn {
   display: block;
-  width: 50px;
-  height: 50px;
-  border: 1px solid #d3d3d3;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: none;
   outline: none;
   overflow: hidden;
   background: transparent;
@@ -1009,39 +1008,35 @@ body {
   -ms-transform: translate3d(0, -50%, 0);
   -o-transform: translate3d(0, -50%, 0);
 }
-.rfcx-player__play-btn:after {
+.rfcx-player__mute-btn:after {
   display: block;
   content: "";
   position: absolute;
-  top: 14px;
-  left: 14px;
-  width: 20px;
-  height: 20px;
-  background: url(../../../public/img/play-stop-sprite.png) no-repeat center bottom;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  background: url(../../../public/img/mute-unmute-sprite.png) no-repeat center top;
   background-size: auto 200%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
 }
-.rfcx-player__play-btn.stopped:after {
-  top: 15px;
-  left: 15px;
-  background-position: center top;
+.rfcx-player__mute-btn.muted:after {
+  background-position: center bottom;
 }
-.rfcx-player__play-btn:disabled {
-  opacity: 0.5;
-}
-.rfcx-player__play-btn:disabled:after {
-  -webkit-animation: loadPlay 2s infinite ease;
-  animation: loadPlay 2s infinite ease;
+.rfcx-player__mute-btn:disabled {
+  visibility: hidden;
 }
 @media only screen and (max-width: 767px) {
-  .rfcx-player__play-btn {
+  .rfcx-player__mute-btn {
     width: 40px;
     height: 40px;
   }
-  .rfcx-player__play-btn:after {
-    width: 16px;
-    height: 16px;
-    top: 12px;
-    left: 12px;
+  .rfcx-player__mute-btn:after {
+    width: 20px;
+    height: 20px;
   }
 }
 .rfcx-player__waveform-container {
@@ -1093,6 +1088,7 @@ body {
   }
 }
 .rfcx-player__title {
+  max-width: 95%;
   margin: 0 auto 10px;
   font-size: 22px;
   text-align: center;
@@ -1237,28 +1233,6 @@ body {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
-}
-@-webkit-keyframes loadPlay {
-  0%,
-  100% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-  }
-  50% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-  }
-}
-@keyframes loadPlay {
-  0%,
-  100% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-  }
-  50% {
-    -webkit-transform: scale(1.2);
-    transform: scale(1.2);
-  }
 }
 .rfcx-player__btn-show-carousel {
   position: absolute;

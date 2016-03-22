@@ -12,7 +12,8 @@ window.isVisualizationEnabled = true;
 var context;
 var analyser,
     analyser2,
-    splitter;
+    splitter,
+    gain;
 
 var analyserView1,
     analyserView2;
@@ -70,6 +71,9 @@ function loadAudioBuffer(url, cb) {
 function initAudio() {
   context = new webkitAudioContext();
 
+  gain = context.createGain();
+  gain.gain.value = 1;
+
   analyser = context.createAnalyser();
   analyser2 = context.createAnalyser();
   analyser.fftSize = 2048;
@@ -79,9 +83,10 @@ function initAudio() {
   splitter.connect(analyser,0,0);
   splitter.connect(analyser2,1,0);
 
-  // Connect audio processing graph
-  analyser.connect(context.destination);
-  analyser2.connect(context.destination);
+  splitter.connect(gain, 0);
+  splitter.connect(gain, 1);
+
+  gain.connect(context.destination);
 }
 
 if (!window.requestAnimationFrame) {
