@@ -194,7 +194,8 @@ var queue = {
   increaseUrlTime: function() {
     // get startinf_atter parameter from current playlist url
     var startingAfter = this.getParameterByName('starting_after', this.stream.url);
-    var time = new Date(startingAfter);
+    // time has not standard value (e.g. 2016-03-12t21:49:00z) apply uppercase to avoid bug in IE
+    var time = new Date(startingAfter.toUpperCase());
     // increase this time by 90 seconds
     time.setSeconds(time.getSeconds() + 90);
     // update url with new time

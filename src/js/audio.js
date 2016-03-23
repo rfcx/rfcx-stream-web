@@ -13,7 +13,7 @@ var audio = {
   // is stop button was pressed
   isStopped: false,
   // is audio source and visualization is supported by current browser
-  isVisualizationSupported: window.isVisualizationSupported,
+  isModernBrowser: window.isVisualizationSupported && window.isAudioContextSupported,
   // how many streams/playlists were requested
   loadsCount: 0,
   // is audio muted
@@ -37,7 +37,7 @@ var audio = {
     $('#playBtn').click(this._onPlayBtnClicked.bind(this));
   },
   initVisualization: function () {
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       // init waveform and sonogram if visualization is supported by current browser
       initAnalysers();
     }
@@ -75,7 +75,7 @@ var audio = {
       }
     }
 
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       // if audio source is supported then load audio buffer
       loadAudioBuffer(url, function (buffer) {
         this.list[index] = this.createAudioBuffer({
@@ -117,7 +117,9 @@ var audio = {
     audio.src = data.src;
     audio.loop = data.loop;
     // Start playback with offset of 2000 ms to avoid empty gap in the start of audio
-    audio.currentTime = 2;
+    audio.addEventListener('loadedmetadata', function() {
+      audio.currentTime = 2;
+    }, false);
     audio.muted = this.isMuted;
     return audio;
   },
@@ -140,7 +142,7 @@ var audio = {
   _onMuteBtnClicked: function(ev) {
     this.isMuted = !this.isMuted;
     $(ev.target).toggleClass('muted', this.isMuted).attr('title', this.isMuted? 'Unmute' : 'Mute');
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       gain.gain.value = this.isMuted? 0 : 1;
     }
     else {
@@ -167,7 +169,7 @@ var audio = {
     this.playAudio();
   },
   stopPlayback: function () {
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       if (this.currentAudio) {
         this.currentAudio.stop();
       }
@@ -197,7 +199,7 @@ var audio = {
     if (toPlayNewSong) {
       var audio = this.list[this.index];
       audio.onended = this._onPlayEnd.bind(this);
-      if (this.isVisualizationSupported) {
+      if (this.isModernBrowser) {
         // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
         audio.start(0, 1.5);
         audio.connect(splitter);
@@ -209,7 +211,7 @@ var audio = {
       this.currentAudio = audio;
     }
     if(this.index == 1) {
-        if (this.isVisualizationSupported) {
+        if (this.isModernBrowser) {
           window.requestAnimationFrame(draw);
         }
     }

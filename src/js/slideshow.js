@@ -10,7 +10,7 @@ var slideshow = {
   photosCache: {},
   init: function() {
     // if browser doesn't support webgl, then set current view mode to slideshow
-    if (!window.isVisualizationSupported) {
+    if (!window.isVisualizationSupported || !window.isAudioContextSupported) {
       this.currentMode = 'slideshow';
     }
     this.bindEvents();

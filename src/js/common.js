@@ -1,6 +1,6 @@
 "use strict";
 
-function webgl_detect() {
+function webglSupported() {
   if (!!window.WebGLRenderingContext) {
     var canvas = document.createElement("canvas"),
       names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
@@ -24,7 +24,14 @@ function webgl_detect() {
   return false;
 }
 
-window.isVisualizationSupported = webgl_detect();
+function audioContextSupported() {
+  // This feature is still prefixed in Safari
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  return !!window.AudioContext;
+}
+
+window.isVisualizationSupported = webglSupported();
+window.isAudioContextSupported  = audioContextSupported();
 
 $(function() {
 

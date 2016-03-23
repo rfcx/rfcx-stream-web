@@ -2626,7 +2626,7 @@ o3djs.shader.Shader.prototype.getUniform = function(name) {
 
 "use strict";
 
-function webgl_detect() {
+function webglSupported() {
   if (!!window.WebGLRenderingContext) {
     var canvas = document.createElement("canvas"),
       names = ["webgl", "experimental-webgl", "moz-webgl", "webkit-3d"],
@@ -2650,7 +2650,14 @@ function webgl_detect() {
   return false;
 }
 
-window.isVisualizationSupported = webgl_detect();
+function audioContextSupported() {
+  // This feature is still prefixed in Safari
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  return !!window.AudioContext;
+}
+
+window.isVisualizationSupported = webglSupported();
+window.isAudioContextSupported  = audioContextSupported();
 
 $(function() {
 
@@ -2859,6 +2866,7 @@ var login = {
   $keypadControls: $('#keypadControls'),
   $keypadLoader: $('#keypadLoader'),
   init: function() {
+    this.$input.val('');
     this.bindEvents();
   },
   bindEvents: function() {
@@ -2924,8 +2932,8 @@ var login = {
       }.bind(this))
       .fail(function(err) {
         this.toggleLoadingState(false);
+        this.$input.val('').trigger('change');
         if (err.status == 401) {
-          this.$input.val('').trigger('change');
           this.setMessage('Invalid Password');
         }
         else {
@@ -2963,7 +2971,7 @@ var slideshow = {
   photosCache: {},
   init: function() {
     // if browser doesn't support webgl, then set current view mode to slideshow
-    if (!window.isVisualizationSupported) {
+    if (!window.isVisualizationSupported || !window.isAudioContextSupported) {
       this.currentMode = 'slideshow';
     }
     this.bindEvents();
@@ -3280,7 +3288,8 @@ var queue = {
   increaseUrlTime: function() {
     // get startinf_atter parameter from current playlist url
     var startingAfter = this.getParameterByName('starting_after', this.stream.url);
-    var time = new Date(startingAfter);
+    // time has not standard value (e.g. 2016-03-12t21:49:00z) apply uppercase to avoid bug in IE
+    var time = new Date(startingAfter.toUpperCase());
     // increase this time by 90 seconds
     time.setSeconds(time.getSeconds() + 90);
     // update url with new time
@@ -3321,7 +3330,7 @@ var audio = {
   // is stop button was pressed
   isStopped: false,
   // is audio source and visualization is supported by current browser
-  isVisualizationSupported: window.isVisualizationSupported,
+  isModernBrowser: window.isVisualizationSupported && window.isAudioContextSupported,
   // how many streams/playlists were requested
   loadsCount: 0,
   // is audio muted
@@ -3345,7 +3354,7 @@ var audio = {
     $('#playBtn').click(this._onPlayBtnClicked.bind(this));
   },
   initVisualization: function () {
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       // init waveform and sonogram if visualization is supported by current browser
       initAnalysers();
     }
@@ -3383,7 +3392,7 @@ var audio = {
       }
     }
 
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       // if audio source is supported then load audio buffer
       loadAudioBuffer(url, function (buffer) {
         this.list[index] = this.createAudioBuffer({
@@ -3425,7 +3434,9 @@ var audio = {
     audio.src = data.src;
     audio.loop = data.loop;
     // Start playback with offset of 2000 ms to avoid empty gap in the start of audio
-    audio.currentTime = 2;
+    audio.addEventListener('loadedmetadata', function() {
+      audio.currentTime = 2;
+    }, false);
     audio.muted = this.isMuted;
     return audio;
   },
@@ -3448,7 +3459,7 @@ var audio = {
   _onMuteBtnClicked: function(ev) {
     this.isMuted = !this.isMuted;
     $(ev.target).toggleClass('muted', this.isMuted).attr('title', this.isMuted? 'Unmute' : 'Mute');
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       gain.gain.value = this.isMuted? 0 : 1;
     }
     else {
@@ -3475,7 +3486,7 @@ var audio = {
     this.playAudio();
   },
   stopPlayback: function () {
-    if (this.isVisualizationSupported) {
+    if (this.isModernBrowser) {
       if (this.currentAudio) {
         this.currentAudio.stop();
       }
@@ -3505,7 +3516,7 @@ var audio = {
     if (toPlayNewSong) {
       var audio = this.list[this.index];
       audio.onended = this._onPlayEnd.bind(this);
-      if (this.isVisualizationSupported) {
+      if (this.isModernBrowser) {
         // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
         audio.start(0, 1.5);
         audio.connect(splitter);
@@ -3517,7 +3528,7 @@ var audio = {
       this.currentAudio = audio;
     }
     if(this.index == 1) {
-        if (this.isVisualizationSupported) {
+        if (this.isModernBrowser) {
           window.requestAnimationFrame(draw);
         }
     }

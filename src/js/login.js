@@ -7,6 +7,7 @@ var login = {
   $keypadControls: $('#keypadControls'),
   $keypadLoader: $('#keypadLoader'),
   init: function() {
+    this.$input.val('');
     this.bindEvents();
   },
   bindEvents: function() {
@@ -72,8 +73,8 @@ var login = {
       }.bind(this))
       .fail(function(err) {
         this.toggleLoadingState(false);
+        this.$input.val('').trigger('change');
         if (err.status == 401) {
-          this.$input.val('').trigger('change');
           this.setMessage('Invalid Password');
         }
         else {
