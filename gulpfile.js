@@ -92,7 +92,6 @@ function convertIndexJade(opts) {
 gulp.task('scripts', function() {
   return gulp.src([
     './src/js/lib/jquery-2.1.4.min.js',
-    './src/js/lib/jquery.xdomainrequest.min.js',
     './src/js/lib/kenburns.js',
     './src/js/lib/webgl/events.js',
     './src/js/lib/webgl/base.js',
