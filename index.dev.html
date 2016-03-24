@@ -9,7 +9,14 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="public/css/app.css">
   </head>
-  <body>
+  <body><!--[if lte IE 9]>
+    <div class="outdated-browser">
+      <p class="outdated-browser__text">
+        You are using an <strong>outdated</strong> browser.
+        <br>
+        Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+      </p>
+    </div><![endif]-->
     <div id="phoneDeviceContainer"></div>
     <div id="tabletDeviceContainer"></div>
     <div id="loginOverlay" class="login-overlay">

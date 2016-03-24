@@ -9,6 +9,13 @@ html.no-js(lang='')
     link(rel='shortcut icon', href='favicon.ico')
     link(rel='stylesheet', href='public/css/app#{suffix}.css')
   body
+    <!--[if lte IE 9]>
+    .outdated-browser
+      p.outdated-browser__text.
+        You are using an <strong>outdated</strong> browser.
+        <br>
+        Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+    <![endif]-->
     #phoneDeviceContainer
     #tabletDeviceContainer
     #loginOverlay.login-overlay

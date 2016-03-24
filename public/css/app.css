@@ -1287,6 +1287,26 @@ body {
     border-bottom-right-radius: 10px;
   }
 }
+.outdated-browser {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+}
+.outdated-browser__text {
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 40%;
+  left: 0;
+  text-align: center;
+  color: #000;
+  font-size: 20px;
+  line-height: 1.5;
+}
 @media only screen and (max-width: 1024px) and (min-width: 768px) {
   #tabletDeviceContainer {
     display: none;
