@@ -39,9 +39,9 @@ html.no-js(lang='')
       a.logo-link(href='http://rfcx.org')
         img.logo-link__img(src='public/img/rfcx-logo.png', alt='')
         span.logo-link__text Rainforest Connection
-    .rfcx-player
+    .rfcx-player(data-step='1', data-intro='test1')
       .rfcx-player__top
-        button#muteBtn.rfcx-player__mute-btn.stopped(type='button', disabled='', title='Mute')
+        button#muteBtn.rfcx-player__mute-btn.stopped(type='button', disabled='', title='Mute', data-step='2', data-intro='test2')
         .rfcx-player__waveform-container
           canvas#waveformView(width='300', height='90')
         .rfcx-player__time
@@ -62,6 +62,28 @@ html.no-js(lang='')
             img.rfcx-player__main-loader(src='public/img/ajax-loader.gif', alt='')
       nav.rfcx-player__menu
         #playerMenu.rfcx-player__menu-list
+    ul#tlyPageGuide(data-tourtitle='Take a tour of the player')
+      li.tlypageguide_right(data-tourtarget='#muteBtn')
+        div
+          | Click here to mute
+      li.tlypageguide_left(data-tourtarget='#clock')
+        div
+          | Amazon time of live / curated stream 
+      li.tlypageguide_left(data-tourtarget='#btnShowCarousel')
+        div
+          | Start a slide show of pictures from the Brazil forest
+      li.tlypageguide_top(data-tourtarget='#playerMenu')
+        div
+          | You can select one of our curated streams and listen to the history of the forest. The live stream is about x minutes ... 
+    .tlyPageGuideWelcome
+      p Welcome to RainForest Connection Beta Player. Thank you for your patience. Can we take you on a guided tour of our player? 
+      p 
+        button.tlypageguide_start hell yeah
+      p 
+        button.tlypageguide_ignore not now, but maybe later
+      p 
+        button.tlypageguide_dismiss never, the force guides me
+    div#hidePageGuideToggle
     .rfcx-iframe
       iframe(src='https://rainforestconnect.typeform.com/to/npn63N')
     script(type='text/javascript', src='./public/js/app#{suffix}.js')

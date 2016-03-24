@@ -70,6 +70,7 @@ var login = {
       .done(function () {
         this.hideOverlay();
         this.toggleLoadingState(false);
+        $(this).trigger('successful-login');
       }.bind(this))
       .fail(function(err) {
         this.toggleLoadingState(false);

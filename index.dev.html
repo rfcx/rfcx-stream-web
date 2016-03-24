@@ -44,9 +44,9 @@
       </form>
     </div>
     <div><a href="http://rfcx.org" class="logo-link"><img src="public/img/rfcx-logo.png" alt="" class="logo-link__img"><span class="logo-link__text">Rainforest Connection</span></a></div>
-    <div class="rfcx-player">
+    <div data-step="1" data-intro="test1" class="rfcx-player">
       <div class="rfcx-player__top">
-        <button id="muteBtn" type="button" disabled="" title="Mute" class="rfcx-player__mute-btn stopped"></button>
+        <button id="muteBtn" type="button" disabled="" title="Mute" data-step="2" data-intro="test2" class="rfcx-player__mute-btn stopped"></button>
         <div class="rfcx-player__waveform-container">
           <canvas id="waveformView" width="300" height="90"></canvas>
         </div>
@@ -73,6 +73,33 @@
         <div id="playerMenu" class="rfcx-player__menu-list"></div>
       </nav>
     </div>
+    <ul id="tlyPageGuide" data-tourtitle="Take a tour of the player">
+      <li data-tourtarget="#muteBtn" class="tlypageguide_right">
+        <div>Click here to mute</div>
+      </li>
+      <li data-tourtarget="#clock" class="tlypageguide_left">
+        <div>Amazon time of live / curated stream </div>
+      </li>
+      <li data-tourtarget="#btnShowCarousel" class="tlypageguide_left">
+        <div>Start a slide show of pictures from the Brazil forest</div>
+      </li>
+      <li data-tourtarget="#playerMenu" class="tlypageguide_top">
+        <div>You can select one of our curated streams and listen to the history of the forest. The live stream is about x minutes ... </div>
+      </li>
+    </ul>
+    <div class="tlyPageGuideWelcome">
+      <p>Welcome to RainForest Connection Beta Player. Thank you for your patience. Can we take you on a guided tour of our player? </p>
+      <p> 
+        <button class="tlypageguide_start">hell yeah</button>
+      </p>
+      <p> 
+        <button class="tlypageguide_ignore">not now, but maybe later</button>
+      </p>
+      <p> 
+        <button class="tlypageguide_dismiss">never, the force guides me</button>
+      </p>
+    </div>
+    <div id="hidePageGuideToggle"></div>
     <div class="rfcx-iframe">
       <iframe src="https://rainforestconnect.typeform.com/to/npn63N"></iframe>
     </div>
