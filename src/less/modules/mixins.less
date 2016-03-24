@@ -47,10 +47,24 @@
 }
 
 .translate (@x, @y:0) {
-    -webkit-transform:       translate(@x, @y);
-    -moz-transform: 	 translate(@x, @y);
-    -ms-transform: 		 translate(@x, @y);
-    -o-transform: 		 translate(@x, @y);
+    -webkit-transform: translate(@x, @y);
+    -moz-transform:    translate(@x, @y);
+    -ms-transform: 	   translate(@x, @y);
+    -o-transform: 	   translate(@x, @y);
+}
+
+.translateY (@y) {
+    -webkit-transform: translateY(@y);
+    -moz-transform:    translateY(@y);
+    -ms-transform: 	   translateY(@y);
+    -o-transform: 	   translateY(@y);
+}
+
+.animation(@animation) {
+    -webkit-animation: @animation;
+    -moz-animation: @animation;
+    -o-animation: @animation;
+    animation: @animation;
 }
 
 .translate3d (@x, @y: 0, @z: 0) {
@@ -73,17 +87,4 @@
     &:-ms-input-placeholder {
         @rules();
     }
-}
-
-// Font mixins
-.roadgeek(@sizeValue) {
-    font: ~"@{sizeValue}px" 'roadgeek', sans-serif;
-}
-
-.lucida(@sizeValue) {
-    font: ~"@{sizeValue}px" "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-}
-
-.helvetica(@sizeValue) {
-    font: ~"@{sizeValue}px" "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }

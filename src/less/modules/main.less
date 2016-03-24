@@ -144,6 +144,48 @@ body {
     }
 }
 
+.rfcx-bugs {
+    position: fixed;
+    z-index: 10000;
+    bottom: 0;
+    right: 50px;
+    width: 200px;
+    background: rgba(0,0,0,0.7);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px 14px;
+    color: rgba(255,255,255,0.8);
+    .box-shadow(0px 0px 15px 0px rgba(0,0,0,0.5));
+    .box-sizing(border-box);
+    @media @desktopAndTablet {
+        .animation(bounce 1.2s ease-out);
+    }
+    &__text {
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+        margin: 0 auto;
+        padding: 0;
+    }
+    &__link {
+        border: none;
+        outline: none;
+        text-decoration: underline;
+        color: rgba(255,255,255,0.8);
+        &:hover, &:active, &:focus {
+            outline: none;
+        }
+    }
+    @media @mobile {
+        position: static;
+        width: 95%;
+        max-width: 600px;
+        margin: 20px auto 0;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+}
+
 @media @tablet{
     #tabletDeviceContainer {
         display: none;

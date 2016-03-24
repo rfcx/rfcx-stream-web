@@ -1,0 +1,62 @@
+@-webkit-keyframes bounce {
+    0% {
+        -webkit-transform:translateY(100%);
+        opacity: 0;
+    }
+    35% {
+        padding-bottom: 20px;
+    }
+    100% {
+        -webkit-transform:translateY(0);
+        padding-bottom: 10px;
+        opacity: 1;
+    }
+}
+
+/* Mozilla Firefox 15 below */
+@-moz-keyframes bounce {
+    0% {
+        -moz-transform:translateY(100%);
+        opacity: 0;
+    }
+    35% {
+        padding-bottom: 20px;
+    }
+    100% {
+        -moz-transform:translateY(0);
+        padding-bottom: 10px;
+        opacity: 1;
+    }
+}
+
+/* Opera 12.0 */
+@-o-keyframes bounce {
+    0% {
+        -o-transform:translateY(100%);
+        opacity: 0;
+    }
+    35% {
+        padding-bottom: 20px;
+    }
+    100% {
+        -o-transform:translateY(0);
+        padding-bottom: 10px;
+        opacity: 1;
+    }
+}
+
+/* W3, Opera 12+, Firefox 16+ */
+@keyframes bounce {
+    0% {
+        transform:translateY(100%);
+        opacity: 0;
+    }
+    35% {
+        padding-bottom: 20px;
+    }
+    100% {
+        transform:translateY(0);
+        padding-bottom: 10px;
+        opacity: 1;
+    }
+}
