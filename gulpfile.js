@@ -93,6 +93,7 @@ gulp.task('scripts', function() {
   return gulp.src([
     './src/js/lib/jquery-2.1.4.min.js',
     './src/js/lib/kenburns.js',
+    './src/js/lib/pageguide.js',
     './src/js/lib/webgl/events.js',
     './src/js/lib/webgl/base.js',
     './src/js/lib/webgl/cameracontroller.js',
@@ -106,7 +107,8 @@ gulp.task('scripts', function() {
     './src/js/slideshow.js',
     './src/js/queue.js',
     './src/js/audio.js',
-    './src/js/clock.js'
+    './src/js/clock.js',
+    './src/js/tour.js'
   ])
     .pipe(concat('app.js'))
     .pipe(gulp.dest('./public/js/'))
