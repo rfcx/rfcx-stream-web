@@ -24,7 +24,7 @@ html.no-js(lang='')
           .keypad__content
             p.keypad__title Please Enter Password:
             .keypad__input-wrapper
-              input#passwordInput.keypad__input(type='text', name='password', readonly='', required='required', placeholder='******')
+              input#passwordInput.keypad__input(type='text', name='password', readonly='', required='required', placeholder='* * * *')
               span#passwordErrorLabel.keypad__input-error-message
               img#keypadLoader.keypad__loader(src='public/img/ajax-loader.gif', alt='')
             #keypadControls.keypad__controls
@@ -43,7 +43,7 @@ html.no-js(lang='')
                 button.keypad__btn.js-keypad-btn(type='button', data-value='9')
                 button.keypad__btn.keypad__btn_backspace.js-keypad-backspace(type='button')
     div
-      a.logo-link(href='http://rfcx.org')
+      span.logo-link
         img.logo-link__img(src='public/img/rfcx-logo.png', alt='')
         span.logo-link__text Rainforest Connection
     .rfcx-player(data-step='1', data-intro='test1')
@@ -86,7 +86,7 @@ html.no-js(lang='')
         div
           | You can select one of our curated streams and listen to the history of the forest. The live stream is about x minutes ... 
     .tlyPageGuideWelcome
-      p Welcome to RainForest Connection Beta Player. Can we take you on a guided tour of our player? 
+      p Welcome to the RFCx Beta Player. Can we take you on a guided tour of our player? 
       p 
         button.tlypageguide_start yes, please
       p 
