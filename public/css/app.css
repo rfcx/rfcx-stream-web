@@ -1232,6 +1232,7 @@ body {
   display: block;
   width: 100%;
   min-height: 400px;
+  border: none;
 }
 .rfcx-bugs {
   position: fixed;
@@ -1931,4 +1932,51 @@ body {
 .rfcx-player .slick-next:before {
   background: url(../../../public/img/next.png) no-repeat center center;
   background-size: contain;
+}
+#tlyPageGuideWelcome,
+.tlyPageGuideWelcome {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  width: 95%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#tlyPageGuideWrapper #tlyPageGuideMessages {
+  margin: 0 auto;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+}
+@media only screen and (max-width: 767px) {
+  #tlyPageGuideWrapper #tlyPageGuideMessages {
+    width: 100%;
+    left: 0;
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #tlyPageGuideWrapper #tlyPageGuideMessages .tlypageguide_close {
+    right: 5%;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #tlyPageGuideWrapper #tlyPageGuideMessages .tlypageguide_text {
+    margin: 25px 2% 0 120px;
+    font-size: 12px;
+  }
 }

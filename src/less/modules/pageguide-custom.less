@@ -1,0 +1,38 @@
+#tlyPageGuideWelcome,
+.tlyPageGuideWelcome {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    .translate(-50%, -50%);
+    width: 95%;
+    .box-sizing(border-box);
+}
+
+#tlyPageGuideWrapper {
+    #tlyPageGuideMessages {
+        margin: 0 auto;
+        left: 50%;
+        .translate(-50%, 0);
+
+        @media @mobile {
+            width: 100%;
+            left: 0;
+            .translate(0, 0);
+            .box-sizing(border-box);
+        }
+
+        .tlypageguide_close {
+            @media @mobile {
+                right: 5%;
+            }
+        }
+
+        .tlypageguide_text {
+            @media @mobile {
+                margin: 25px 2% 0 120px;
+                font-size: 12px;
+            }
+        }
+    }
+}
