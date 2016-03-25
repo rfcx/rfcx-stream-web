@@ -155,6 +155,7 @@ var audio = {
       return;
     }
     this.startPlayback();
+    $(this).trigger('mobile-playback-started')
   },
   toggleAudiosMute: function(isMuted) {
     for (var i = 0; i < this.list.length; i++) {

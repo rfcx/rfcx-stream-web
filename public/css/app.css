@@ -1948,6 +1948,12 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+@media only screen and (max-width: 767px) {
+  #tlyPageGuideWelcome button,
+  .tlyPageGuideWelcome button {
+    font-size: 18px;
+  }
+}
 #tlyPageGuideWrapper #tlyPageGuideMessages {
   margin: 0 auto;
   left: 50%;
@@ -1978,5 +1984,13 @@ body {
   #tlyPageGuideWrapper #tlyPageGuideMessages .tlypageguide_text {
     margin: 25px 2% 0 120px;
     font-size: 12px;
+  }
+}
+.tlyPageGuideStepIndex.tlypageguide_top {
+  left: 1.5%;
+}
+@media only screen and (max-width: 767px) {
+  .tlyPageGuideStepIndex.tlypageguide_top {
+    left: 3%;
   }
 }

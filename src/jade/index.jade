@@ -73,13 +73,16 @@ html.no-js(lang='')
       p.rfcx-bugs__text.
         Found a bug? Kindly report it to us at <a class="rfcx-bugs__link" href="mailto:bugs@rfcx.org">bugs@rfcx.org</a>
     ul#tlyPageGuide(data-tourtitle='Take a tour of the player')
+      li#stepPlayBtn.tlypageguide_right(data-tourtarget='#playBtn')
+        div
+          | Click here to start playback
       li.tlypageguide_right(data-tourtarget='#muteBtn')
         div
           | Click here to mute
       li.tlypageguide_left(data-tourtarget='#clockLabel')
         div
           | Amazon time of live / curated stream 
-      li.tlypageguide_left(data-tourtarget='#btnShowCarousel')
+      li#stepBtnShowCarousel.tlypageguide_left(data-tourtarget='#btnShowCarousel')
         div
           | Start a slide show of pictures from the Brazil forest
       li.tlypageguide_top(data-tourtarget='#playerMenu')
