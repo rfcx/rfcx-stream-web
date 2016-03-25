@@ -4401,7 +4401,7 @@ var tour = {
     $(login).on('successful-login', this._onSuccessfulLogin);
   },
   _onSuccessfulLogin: function() {
-    tl.pg.init({ custom_open_button: 'hidePageGuideToggle' });
+    tl.pg.init({ /*custom_open_button: 'hidePageGuideToggle'*/ });
   }
 };
 
