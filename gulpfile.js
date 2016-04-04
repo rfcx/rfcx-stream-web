@@ -6,7 +6,8 @@ var gulp      = require('gulp'),
     jade      = require('gulp-jade'),
     del       = require('del'),
     concat    = require('gulp-concat'),
-    minify    = require('gulp-minify');
+    minify    = require('gulp-minify'),
+    rev       = require('gulp-rev-hash');
 
 var paths = {
   lessAllFiles: './src/less/**/*.less',
@@ -32,28 +33,45 @@ gulp.task('less', function () {
 
 // watches for changes in files (currently for *.less)
 gulp.task('watch', function() {
-  gulp.watch(paths.lessAllFiles, ['less']);
   gulp.watch(paths.jadeAllFiles, ['jade']);
-  gulp.watch(paths.jsAllFiles, ['scripts']);
+  gulp.watch(paths.lessAllFiles, ['less',    'jade']);
+  gulp.watch(paths.jsAllFiles,   ['scripts', 'jade']);
 });
 
 // create node server to open page locally
 gulp.task('connect', function() {
-  connect.server({
-    port: process.env.PORT || 8083
+  return connect.server({
+    port: process.env.PORT || 8083,
+    middleware: function() {
+      return [
+        require('connect-gzip').gzip()
+      ];
+    }
   });
 });
 
 // remove index.html and index.dev.html before converting jade to these files
-gulp.task('clean:html', function() {
+gulp.task('clean:html_dev', function() {
   return del([
-    './index.html',
     './index.dev.html'
   ]);
 });
 
+// remove index.html and index.dev.html before converting jade to these files
+gulp.task('clean:html_prod', function() {
+  return del([
+    './index.html'
+  ]);
+});
+
+gulp.task('clean:js', function() {
+  return del([
+    './public/js/*.js'
+  ]);
+});
+
 // create index.dev.html (pretty and with non-minified js files) file from jade source
-gulp.task('jade:dev', function() {
+gulp.task('jade:dev', ['clean:html_dev', 'scripts'], function() {
   var opts = {
     html_suffix: '.dev',
     pretty: true,
@@ -61,11 +79,11 @@ gulp.task('jade:dev', function() {
       suffix: ''
     }
   };
-  convertIndexJade(opts);
+  return convertIndexJade(opts);
 });
 
 // create index.html (minified html, js and css files) file from jade source
-gulp.task('jade:prod', function() {
+gulp.task('jade:prod', ['clean:html_prod', 'scripts'], function() {
   var opts = {
     html_suffix: '',
     pretty: false,
@@ -73,23 +91,24 @@ gulp.task('jade:prod', function() {
       suffix: '.min'
     }
   };
-  convertIndexJade(opts);
+  return convertIndexJade(opts);
 });
 
 // method to convert jade to html with given options
 function convertIndexJade(opts) {
-  gulp.src('./src/jade/index.jade')
+  return gulp.src('./src/jade/index.jade')
     .pipe(jade({
       locals: opts.locals,
       pretty: opts.pretty
     }))
+    .pipe(rev())
     .pipe(rename({suffix: opts.html_suffix}))
     .pipe(gulp.dest('./'))
 }
 
 // concat js files into one file
 // create normal and minified versions of js file
-gulp.task('scripts', function() {
+gulp.task('scripts', ['clean:js'], function() {
   return gulp.src([
     './src/js/lib/jquery-2.1.4.min.js',
     './src/js/lib/kenburns.js',
@@ -121,5 +140,5 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('./public/js/'))
 });
 
-gulp.task('jade', ['clean:html', 'jade:dev', 'jade:prod']);
-gulp.task('default', ['less', 'jade', 'scripts', 'connect', 'watch']);
+gulp.task('jade', ['jade:dev', 'jade:prod']);
+gulp.task('default', ['less', 'scripts', 'jade',  'connect', 'watch']);
