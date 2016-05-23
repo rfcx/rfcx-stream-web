@@ -1,5 +1,7 @@
 # Rainforest Connection Audio Streaming
 
+[Open player](http://beta-player.rfcx.org/)
+
 Use the following command to run local server:
 
 ```sh
