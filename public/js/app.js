@@ -3613,7 +3613,8 @@ var menu = {
         type: stream.type,
         timezone_offset: stream.timezone_offset,
         timezone_label: stream.location,
-        flickr_photoset_id: stream.flickr_photoset_id
+        flickr_photoset_id: stream.flickr_photoset_id,
+        is_active: stream.is_active
       })
     }
   },
@@ -3621,6 +3622,7 @@ var menu = {
     var $button = $('<button/>', {
       class: 'btn btn-default js-audio-item',
       type: 'button',
+      disabled: !data.is_active,
       'data-name': data.name,
       'data-url': data.audio_url,
       'data-type': data.type,
@@ -4402,9 +4404,9 @@ var tour = {
   },
   _onSuccessfulLogin: function() {
 
-    setTimeout(function(){
-      tl.pg.init({ custom_open_button: 'hidePageGuideToggle' });
-    }, 30000);
+    // setTimeout(function(){
+    //   tl.pg.init({ custom_open_button: 'hidePageGuideToggle' });
+    // }, 30000);
     
   }
 };
