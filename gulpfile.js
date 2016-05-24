@@ -100,6 +100,7 @@ gulp.task('scripts', function() {
     './src/js/lib/webgl/matrix4x4.js',
     './src/js/lib/webgl/visualizer.js',
     './src/js/lib/webgl/shader.js',
+    './config/config.js',
     './src/js/common.js',
     './src/js/visualiser.js',
     './src/js/menu.js',

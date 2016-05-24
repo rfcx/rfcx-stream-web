@@ -3401,6 +3401,9 @@ o3djs.shader.Shader.prototype.getUniform = function(name) {
   return this.gl.getUniformLocation(this.program, name);
 }
 
+window.conf = {
+  baseUrl: 'https://api.rfcx.org'
+};
 "use strict";
 
 function webglSupported() {
@@ -3875,7 +3878,7 @@ $(function() {
 "use strict";
 
 var queue = {
-  apiUrl: 'https://api.rfcx.org',
+  apiUrl: window.conf.baseUrl,
   list: [],
   measureList: [],
   token: '',

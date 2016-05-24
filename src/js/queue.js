@@ -1,7 +1,7 @@
 "use strict";
 
 var queue = {
-  apiUrl: 'https://api.rfcx.org',
+  apiUrl: window.conf.baseUrl,
   list: [],
   measureList: [],
   token: '',
