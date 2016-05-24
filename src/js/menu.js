@@ -48,7 +48,7 @@ var menu = {
         timezone_offset: stream.timezone_offset,
         timezone_label: stream.location,
         flickr_photoset_id: stream.flickr_photoset_id,
-        is_active: stream.is_active
+        is_active: stream.is_active !== undefined? stream.is_active : true
       })
     }
   },
