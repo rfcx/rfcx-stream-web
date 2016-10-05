@@ -3403,7 +3403,6 @@ o3djs.shader.Shader.prototype.getUniform = function(name) {
 
 window.conf = {
   baseUrl: 'https://api.rfcx.org'
-  //baseUrl: 'http://localhost:8080'
 };
 "use strict";
 

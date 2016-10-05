@@ -1543,7 +1543,7 @@ body {
   display: block;
   width: 95%;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   background: #222;
   color: #fff;
   border-radius: 8px;
