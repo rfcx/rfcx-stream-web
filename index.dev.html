@@ -31,37 +31,31 @@
     </div><![endif]-->
     <div id="phoneDeviceContainer"></div>
     <div id="tabletDeviceContainer"></div>
-    <div id="loginOverlay" class="login-overlay">
-      <form id="loginForm" action="/" method="post" class="form">
-        <div class="keypad">
-          <div class="keypad__content">
-            <p class="keypad__title">Please Enter Password:</p>
-            <div class="keypad__input-wrapper">
-              <input id="passwordInput" type="text" name="password" readonly="" required="required" placeholder="* * * *" class="keypad__input"><span id="passwordErrorLabel" class="keypad__input-error-message"></span><img id="keypadLoader" src="public/img/ajax-loader.gif" alt="" class="keypad__loader">
-            </div>
-            <div id="keypadControls" class="keypad__controls">
-              <div class="keypad__col">
-                <button type="button" data-value="1" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="4" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="7" class="keypad__btn js-keypad-btn"></button>
-              </div>
-              <div class="keypad__col">
-                <button type="button" data-value="2" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="5" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="8" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="0" class="keypad__btn js-keypad-btn"></button>
-              </div>
-              <div class="keypad__col">
-                <button type="button" data-value="3" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="6" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" data-value="9" class="keypad__btn js-keypad-btn"></button>
-                <button type="button" class="keypad__btn keypad__btn_backspace js-keypad-backspace"></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
+    <!--#loginOverlay.login-overlay
+    form#loginForm.form(action='/', method='post')
+      .keypad
+        .keypad__content
+          p.keypad__title Please Enter Password:
+          .keypad__input-wrapper
+            input#passwordInput.keypad__input(type='text', name='password', readonly='', required='required', placeholder='* * * *')
+            span#passwordErrorLabel.keypad__input-error-message
+            img#keypadLoader.keypad__loader(src='public/img/ajax-loader.gif', alt='')
+          #keypadControls.keypad__controls
+            .keypad__col
+              button.keypad__btn.js-keypad-btn(type='button', data-value='1')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='4')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='7')
+            .keypad__col
+              button.keypad__btn.js-keypad-btn(type='button', data-value='2')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='5')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='8')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='0')
+            .keypad__col
+              button.keypad__btn.js-keypad-btn(type='button', data-value='3')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='6')
+              button.keypad__btn.js-keypad-btn(type='button', data-value='9')
+              button.keypad__btn.keypad__btn_backspace.js-keypad-backspace(type='button')
+    -->
     <div><span class="logo-link"><img src="public/img/rfcx-logo.png" alt="" class="logo-link__img"><span class="logo-link__text">Rainforest Connection</span></span></div>
     <div data-step="1" data-intro="test1" class="rfcx-player">
       <div class="rfcx-player__top">

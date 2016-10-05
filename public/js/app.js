@@ -3403,6 +3403,7 @@ o3djs.shader.Shader.prototype.getUniform = function(name) {
 
 window.conf = {
   baseUrl: 'https://api.rfcx.org'
+  //baseUrl: 'http://localhost:8080'
 };
 "use strict";
 
@@ -3650,6 +3651,7 @@ var login = {
   init: function() {
     this.$input.val('');
     this.bindEvents();
+    this.submitForm();
   },
   bindEvents: function() {
     this.$form.submit(this.onSubmit.bind(this));
@@ -3693,17 +3695,18 @@ var login = {
     ev.preventDefault();
   },
   submitForm: function() {
-    if (!this.$input.val().length) {
-      return;
-    }
-    this.clearMessage();
-    this.$input.removeClass('error');
-    this.clearMessage();
+    //if (!this.$input.val().length) {
+    //  return;
+    //}
+    //this.clearMessage();
+    //this.$input.removeClass('error');
+    //this.clearMessage();
     this.savePassphrase();
     this.checkPassword();
   },
   savePassphrase: function() {
-    window.rfcxPassphrase = this.$input.val();
+    window.rfcxPassphrase = 1121;
+    //window.rfcxPassphrase = this.$input.val();
   },
   checkPassword: function() {
     this.toggleLoadingState(true);
