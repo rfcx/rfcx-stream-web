@@ -16,7 +16,7 @@ var menu = {
         name               = $this.attr('data-name'),
         type               = $this.attr('data-type'),
         url                = $this.attr('data-url'),
-        timezone_offset    = $this.attr('data-timezone-offset'),
+        timezone           = $this.attr('data-timezone'),
         timezone_label     = $this.attr('data-timezone-label'),
         flickr_photoset_id = $this.attr('data-flickr-photoset-id');
     $this.addClass('active');
@@ -26,7 +26,7 @@ var menu = {
       url : url,
       flickr_photoset_id: flickr_photoset_id,
       timezone: {
-        offset: timezone_offset,
+        value: timezone,
         label: timezone_label
       }
     });
@@ -45,7 +45,7 @@ var menu = {
         shortname: stream.shortname,
         audio_url: stream.urls.audio,
         type: stream.type,
-        timezone_offset: stream.timezone_offset,
+        timezone: stream.timezone,
         timezone_label: stream.location,
         flickr_photoset_id: stream.flickr_photoset_id,
         is_active: stream.is_active !== undefined? stream.is_active : true
@@ -60,7 +60,7 @@ var menu = {
       'data-name': data.name,
       'data-url': data.audio_url,
       'data-type': data.type,
-      'data-timezone-offset': data.timezone_offset,
+      'data-timezone': data.timezone,
       'data-timezone-label': data.timezone_label,
       'data-flickr-photoset-id': data.flickr_photoset_id,
       text: data.shortname

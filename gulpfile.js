@@ -92,6 +92,8 @@ function convertIndexJade(opts) {
 gulp.task('scripts', function() {
   return gulp.src([
     './src/js/lib/jquery-2.1.4.min.js',
+    './src/js/lib/moment.js',
+    './src/js/lib/moment-timezone-with-data-2010-2020.js',
     './src/js/lib/kenburns.js',
     './src/js/lib/pageguide.js',
     './src/js/lib/webgl/events.js',

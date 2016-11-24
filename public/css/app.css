@@ -1145,7 +1145,7 @@ body {
   display: inline-block;
   vertical-align: middle;
   width: 23.5%;
-  margin: 0 0.5%;
+  margin: 0 0.5% 5px;
   font-size: 14px;
   color: #d3d3d3;
   text-align: center;

@@ -24,7 +24,7 @@ var queue = {
     this.stream.url = undefined;
     this.stream.name = undefined;
     this.stream.type = undefined;
-    this.stream.timezone.offset = undefined;
+    this.stream.timezone.value = undefined;
     this.stream.timezone.label = undefined;
     this.isStopped = false;
   },
