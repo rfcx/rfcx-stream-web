@@ -14,7 +14,7 @@ var clock = {
     this.initTime(queue.measureList[ev.target.index]);
   },
   initTime: function(date) {
-    this.time = moment.tz(date, queue.stream.timezone.value);
+    this.time = moment.tz(date, queue.stream.timezone);
     setTimeout(this.setTimezone, 1000);
     this.startTimer();
   },
@@ -34,11 +34,11 @@ var clock = {
     this.time = moment(this.time).add(1, 's');
   },
   render: function() {
-    this.$el.html(moment.tz(this.time, queue.stream.timezone.value).format('HH:mm:ss'));
+    this.$el.html(moment.tz(this.time, queue.stream.timezone).format('HH:mm:ss'));
   },
   setTimezone: function() {
     $('#clockLabel').show();
-    $('#timezone').html(queue.stream.timezone.label);
+    $('#timezone').html(queue.stream.timezone);
   }
 };
 

@@ -24,8 +24,7 @@ var queue = {
     this.stream.url = undefined;
     this.stream.name = undefined;
     this.stream.type = undefined;
-    this.stream.timezone.value = undefined;
-    this.stream.timezone.label = undefined;
+    this.stream.timezone = undefined;
     this.isStopped = false;
   },
   setupUI: function() {
@@ -34,26 +33,71 @@ var queue = {
 
     audio.initVisualization();
 
-    this.firstRequest();
+    this.initAudioFromUrlParams();
   },
-  firstRequest: function() {
-    var def = this.requestData()
-      .then(function(res) {
-        menu.init(res);
-        // Play first stream automatically
-        $('.js-audio-item').first().click();
-      }.bind(this));
-
-    def.fail(function() {
-      console.log('RFCX | Error Receiving Data from Server. Retry in 10 seconds');
-      setTimeout(this.firstRequest.bind(this), 10000);
-    }.bind(this));
-  },
-  setupAudio: function(opts) {
-    // do not setup one stream twice
-    if (this.stream.url == opts.url) {
+  initAudioFromUrlParams: function() {
+    audio.reset();
+    this.reset();
+    var params = this.parseUrl();
+    if (!params.guid) {
       return;
     }
+    $('#streamName').text('Loading...');
+    audio.setLoadingState(true);
+    this.getGuardianInfo(params.guid)
+      .then(
+        function(guardianInfo) {
+          console.log('guardianInfo', guardianInfo);
+
+          this.stream = {
+            description: guardianInfo.site_description,
+            location: guardianInfo.site_name,
+            name: guardianInfo.shortname + ' ' + guardianInfo.site_name,
+            shortname: guardianInfo.shortname,
+            timezone: guardianInfo.timezone,
+            url: '/v1/guardians/' + params.guid + '/audio.json',
+            type: "stream"
+          };
+          console.log('stream', this.stream);
+          this.pullAudio();
+          $(this).trigger('stream-changed');
+        }.bind(this),
+
+        function(err) {
+          $('#streamName').text('Error while getting guardian data');
+          audio.setLoadingState(false, true);
+          console.log('guardianInfo error', err);
+        }.bind(this)
+      );
+  },
+  parseUrl: function() {
+    return {
+      guid: this.getQueryVariable('guid'),
+      time: this.getQueryVariable('time')
+    };
+  },
+  getQueryVariable: function(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      if (decodeURIComponent(pair[0]) == variable) {
+        return decodeURIComponent(pair[1]);
+      }
+    }
+    console.log('Query variable %s not found', variable);
+  },
+  getGuardianInfo: function(guid) {
+    return $.ajax({
+      type: 'GET',
+      url: this.apiUrl + '/v1/guardians/' + guid + '/public-info',
+      beforeSend: function (request) {
+        request.setRequestHeader("x-auth-user", 'token/' + this.guid);
+        request.setRequestHeader("x-auth-token", this.token);
+      }.bind(this)
+    });
+  },
+  setupAudio: function(opts) {
     audio.reset();
     audio.setLoadingState(true);
     this.reset();
@@ -105,27 +149,14 @@ var queue = {
     this.token = data.token.token;
     this.guid  = data.token.guid;
   },
-  requestData: function() {
-    return $.ajax({
-      type: 'GET',
-      url: this.apiUrl + '/v1/player/web',
-      beforeSend: function (request) {
-        // x-auth-token and x-auth-user are required for backend api call.
-        request.setRequestHeader("x-auth-user", 'token/' + this.guid);
-        request.setRequestHeader("x-auth-token", this.token);
-      }.bind(this)
-    })
-  },
   pullStream: function() {
     if (this.stream.type == 'stream' || (this.stream.type == 'playlist' && this.list.length < 20)) {
       this.createRequestTimeout();
     }
     return $.ajax({
       type: 'GET',
-      //url: this.apiUrl + this.stream.urls.audio + '?limit=3',
       url: this.apiUrl + this.stream.url + (this.stream.type == 'stream'? '?limit=3' : ''),
       beforeSend: function (request) {
-        // x-auth-token and x-auth-user are required for backend api call.
         request.setRequestHeader("x-auth-user", 'token/' + this.guid);
         request.setRequestHeader("x-auth-token", this.token);
       }.bind(this)

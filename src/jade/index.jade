@@ -29,30 +29,6 @@ html.no-js(lang='')
     <![endif]-->
     #phoneDeviceContainer
     #tabletDeviceContainer
-    //#loginOverlay.login-overlay
-      form#loginForm.form(action='/', method='post')
-        .keypad
-          .keypad__content
-            p.keypad__title Please Enter Password:
-            .keypad__input-wrapper
-              input#passwordInput.keypad__input(type='text', name='password', readonly='', required='required', placeholder='* * * *')
-              span#passwordErrorLabel.keypad__input-error-message
-              img#keypadLoader.keypad__loader(src='public/img/ajax-loader.gif', alt='')
-            #keypadControls.keypad__controls
-              .keypad__col
-                button.keypad__btn.js-keypad-btn(type='button', data-value='1')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='4')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='7')
-              .keypad__col
-                button.keypad__btn.js-keypad-btn(type='button', data-value='2')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='5')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='8')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='0')
-              .keypad__col
-                button.keypad__btn.js-keypad-btn(type='button', data-value='3')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='6')
-                button.keypad__btn.js-keypad-btn(type='button', data-value='9')
-                button.keypad__btn.keypad__btn_backspace.js-keypad-backspace(type='button')
     div
       span.logo-link
         img.logo-link__img(src='public/img/rfcx-logo.png', alt='')
@@ -68,41 +44,28 @@ html.no-js(lang='')
           #timezone.rfcx-player__time-zone
       h2#streamName.rfcx-player__title
         | Loading...
+      //- h2#streamError.rfcx-player__title.rfcx-player__title_error
       .rfcx-player__sonogram-container
         canvas#3dSonogramView.rfcx-player__sonogram
-        button#btnShowCarousel.rfcx-player__btn-show-carousel(type='button', title='Show Gallery')
-        button#btnHideCarousel.rfcx-player__btn-hide-carousel(type='button', title='Hide Gallery')
-        #imgSlideshow.rfcx-player__carousel
         #bigPlayBtnContainer.rfcx-player__big-play-btn-container
           button#playBtn.rfcx-player__big-play-btn(type='button', disabled='disabled')
         #loaderContainer.rfcx-player__loader-container
           .rfcx-player__loader-wrapper
             img.rfcx-player__main-loader(src='public/img/ajax-loader.gif', alt='')
-      nav.rfcx-player__menu
-        #playerMenu.rfcx-player__menu-list
-    .rfcx-bugs
-      p.rfcx-bugs__text.
-        Found a bug? Kindly report it to us at <a class="rfcx-bugs__link" href="mailto:bugs@rfcx.org">bugs@rfcx.org</a>
     ul#tlyPageGuide(data-tourtitle='Take a tour of the player')
       li.tlypageguide_right(data-tourtarget='#muteBtn')
         div
           | Click here to mute
       li.tlypageguide_left(data-tourtarget='#clockLabel')
         div
-          | Amazon time of live / curated stream 
-      li.tlypageguide_left(data-tourtarget='#btnShowCarousel')
-        div
-          | Start a slide show of pictures from the Brazil forest
-      li.tlypageguide_top(data-tourtarget='#playerMenu')
-        div
-          | You can select one of our curated streams and listen to the history of the forest. The live stream is about x minutes ... 
+          | Local time of live / curated stream
     .tlyPageGuideWelcome
-      p Welcome to the RFCx Beta Player. Can we take you on a guided tour of our player? 
-      p 
+      p Welcome to the RFCx Beta Player. Can we take you on a guided tour of our player?
+      p
         button.tlypageguide_start yes, please
-      p 
+      p
         button.tlypageguide_ignore not now, but maybe later
-      p 
+      p
         button.tlypageguide_dismiss never, the force guides me
     div#hidePageGuideToggle
     //.rfcx-iframe

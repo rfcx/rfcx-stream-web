@@ -44,7 +44,6 @@ var audio = {
     else {
       // if visualization is not supported init slideshow
       initCanvases();
-      slideshow.setUncloseable();
     }
   },
   parseAudioData: function() {
@@ -217,8 +216,9 @@ var audio = {
     }
     $(this).trigger('started');
   },
-  setLoadingState: function (isLoading) {
-    this.changeButtonState({disabled: isLoading});
+  setLoadingState: function (isLoading, isError) {
+    isError = (isError === undefined? false : isError);
+    this.changeButtonState({disabled: isLoading || isError});
     this.toggleLoader({visible: isLoading});
     $(this).trigger('loading', isLoading);
   },
