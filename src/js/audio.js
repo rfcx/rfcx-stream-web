@@ -80,8 +80,9 @@ var audio = {
         this.list[index] = this.createAudioBuffer({
           buffer: buffer,
           // set loop for last audio
-          loop: isLooped,
-          loopStart: 1.5,
+          // loop: isLooped,
+          loop: false,
+          loopStart: 0,
           loopEnd: buffer.duration
         });
         if (index == 1) {
@@ -95,7 +96,8 @@ var audio = {
       this.list[index] = this.createAudioTag({
         src: url,
         // set loop for last audio
-        loop: isLooped
+        // loop: isLooped
+        loop: false
       });
       if (index == 1) {
         // trigger play on first load
@@ -200,7 +202,7 @@ var audio = {
       audio.onended = this._onPlayEnd.bind(this);
       if (this.isModernBrowser) {
         // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
-        audio.start(0, 1.5);
+        audio.start(0, 0);
         audio.connect(splitter);
         audio.connect(gain);
       }

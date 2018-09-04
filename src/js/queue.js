@@ -18,11 +18,11 @@ var queue = {
   timeout: undefined,
   isStopped: false,
   reset: function() {
-    clearTimeout(this.timeout);
     this.list = [];
     this.measureList = [];
-    this.stream.url = undefined;
+    clearTimeout(this.timeout);
     this.stream.name = undefined;
+    this.stream.url = undefined;
     this.stream.type = undefined;
     this.stream.timezone = undefined;
     this.isStopped = false;
@@ -39,6 +39,7 @@ var queue = {
     audio.reset();
     this.reset();
     var params = this.parseUrl();
+    console.log('params', params);
     if (!params.guid) {
       return;
     }
@@ -47,15 +48,18 @@ var queue = {
     this.getGuardianInfo(params.guid)
       .then(
         function(guardianInfo) {
-          console.log('guardianInfo', guardianInfo);
 
+          var url = '/v1/guardians/' + params.guid + '/audio.json?';
+          if (params.time) {
+            url += ('starting_after=' + params.time);
+          }
           this.stream = {
             description: guardianInfo.site_description,
             location: guardianInfo.site_name,
             name: guardianInfo.shortname + ' ' + guardianInfo.site_name,
             shortname: guardianInfo.shortname,
             timezone: guardianInfo.timezone,
-            url: '/v1/guardians/' + params.guid + '/audio.json',
+            url: url,
             type: "stream"
           };
           console.log('stream', this.stream);
@@ -107,11 +111,19 @@ var queue = {
   },
   pullAudio: function() {
     this.pullStream()
-      .then(function(res) {
-        this.setStreamName();
-        this.refreshAudios(res);
-        this.sendAudio();
-      }.bind(this));
+      .then(
+        function(res) {
+          this.setStreamName();
+          this.refreshAudios(res);
+          this.sendAudio();
+        }.bind(this),
+        function(err) {
+          console.log('pullStream error', err);
+          $('#streamName').text('No audio for selected time');
+          audio.setLoadingState(false, true);
+          console.log('guardianInfo error', err);
+        }.bind(this)
+      )
   },
   resetAudio: function() {
     this.list = [];
@@ -155,7 +167,7 @@ var queue = {
     }
     return $.ajax({
       type: 'GET',
-      url: this.apiUrl + this.stream.url + (this.stream.type == 'stream'? '?limit=3' : ''),
+      url: this.apiUrl + this.stream.url + (this.stream.type == 'stream'? '&limit=3' : ''),
       beforeSend: function (request) {
         request.setRequestHeader("x-auth-user", 'token/' + this.guid);
         request.setRequestHeader("x-auth-token", this.token);
