@@ -8764,6 +8764,7 @@ var queue = {
     var params = this.parseUrl();
     console.log('params', params);
     if (!params.guid) {
+      this.setAppError('Guardian is not set');
       return;
     }
     $('#streamName').text('Loading...');
@@ -8791,9 +8792,8 @@ var queue = {
         }.bind(this),
 
         function(err) {
-          $('#streamName').text('Error while getting guardian data');
-          audio.setLoadingState(false, true);
           console.log('guardianInfo error', err);
+          this.setAppError('Error while getting guardian data');
         }.bind(this)
       );
   },
@@ -8824,6 +8824,11 @@ var queue = {
       }.bind(this)
     });
   },
+  setAppError: function(text) {
+    text = text || 'Error';
+    $('#streamName').text(text);
+    audio.setLoadingState(false, true);
+  },
   setupAudio: function(opts) {
     audio.reset();
     audio.setLoadingState(true);
@@ -8842,9 +8847,7 @@ var queue = {
         }.bind(this),
         function(err) {
           console.log('pullStream error', err);
-          $('#streamName').text('No audio for selected time');
-          audio.setLoadingState(false, true);
-          console.log('guardianInfo error', err);
+          this.setAppError('No audio for selected time');
         }.bind(this)
       )
   },
