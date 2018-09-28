@@ -123,3 +123,4 @@ gulp.task('scripts', function() {
 
 gulp.task('jade', ['clean:html', 'jade:dev', 'jade:prod']);
 gulp.task('default', ['less', 'jade', 'scripts', 'connect', 'watch']);
+gulp.task('build', ['less', 'jade', 'scripts']);

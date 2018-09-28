@@ -16,7 +16,8 @@
     "del": "^2.2.0"
   },
   "scripts": {
-    "start": "./node_modules/.bin/gulp"
+    "start": "./node_modules/.bin/gulp",
+    "build": "./node_modules/.bin/gulp build"
   },
   "repository": {
     "type": "git",
