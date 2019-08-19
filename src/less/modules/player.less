@@ -126,9 +126,9 @@
         bottom: 0;
         left: 0;
         background: #222;
-        @media @desktop {
-            display: none;
-        }
+        // @media @desktop {
+        //     display: none;
+        // }
     }
     &__big-play-btn {
         position: absolute;
@@ -169,19 +169,19 @@
         &:disabled {
             opacity: 0.5;
         }
-        @media @desktop {
-            // hover effects if this button will be visible on desktop in future
-            &:not(:disabled) {
-                &:hover {
-                    border: 1px solid rgba(0,0,0,0.9);
-                    background: #fff;
-                    .box-shadow(3px 3px 20px 0px rgba(255,255,255,0.3));
-                    &:before {
-                        color: rgba(0,0,0,0.9);
-                    }
-                }
-            }
-        }
+        // @media @desktop {
+        //     // hover effects if this button will be visible on desktop in future
+        //     &:not(:disabled) {
+        //         &:hover {
+        //             border: 1px solid rgba(0,0,0,0.9);
+        //             background: #fff;
+        //             .box-shadow(3px 3px 20px 0px rgba(255,255,255,0.3));
+        //             &:before {
+        //                 color: rgba(0,0,0,0.9);
+        //             }
+        //         }
+        //     }
+        // }
     }
     &__loader-container {
         position: absolute;

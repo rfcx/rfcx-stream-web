@@ -9062,9 +9062,9 @@ var audio = {
 
     function autoplay() {
       this.setLoadingState(false);
-      if ((!window.isTablet && !window.isPhone && this.loadsCount === 0) || this.loadsCount > 0) {
-        this.startPlayback();
-      }
+      // if ((!window.isTablet && !window.isPhone && this.loadsCount === 0) || this.loadsCount > 0) {
+      //   this.startPlayback();
+      // }
     }
 
     if (this.isModernBrowser) {
@@ -9194,7 +9194,6 @@ var audio = {
       var audio = this.list[this.index];
       audio.onended = this._onPlayEnd.bind(this);
       if (this.isModernBrowser) {
-        // Start playback with offset of 1500 ms to avoid empty gap in the start of audio
         audio.start(0, 0);
         audio.connect(splitter);
         audio.connect(gain);

@@ -1688,11 +1688,6 @@ body {
   left: 0;
   background: #222;
 }
-@media only screen and (min-width: 1025px) {
-  .rfcx-player__big-play-btn-container {
-    display: none;
-  }
-}
 .rfcx-player__big-play-btn {
   position: absolute;
   top: 50%;
@@ -1751,18 +1746,6 @@ body {
 }
 .rfcx-player__big-play-btn:disabled {
   opacity: 0.5;
-}
-@media only screen and (min-width: 1025px) {
-  .rfcx-player__big-play-btn:not(:disabled):hover {
-    border: 1px solid rgba(0, 0, 0, 0.9);
-    background: #fff;
-    -webkit-box-shadow: 3px 3px 20px 0px rgba(255, 255, 255, 0.3);
-    -moz-box-shadow: 3px 3px 20px 0px rgba(255, 255, 255, 0.3);
-    box-shadow: 3px 3px 20px 0px rgba(255, 255, 255, 0.3);
-  }
-  .rfcx-player__big-play-btn:not(:disabled):hover:before {
-    color: rgba(0, 0, 0, 0.9);
-  }
 }
 .rfcx-player__loader-container {
   position: absolute;
