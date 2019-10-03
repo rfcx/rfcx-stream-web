@@ -17,6 +17,7 @@ var queue = {
   },
   timeout: undefined,
   isStopped: false,
+  isPaused: false,
   reset: function() {
     this.list = [];
     this.measureList = [];
@@ -26,9 +27,11 @@ var queue = {
     this.stream.type = undefined;
     this.stream.timezone = undefined;
     this.isStopped = false;
+    this.isPaused = false;
   },
   setupUI: function() {
     this.isStopped = false;
+    this.isPaused = false;
     this.list = [];
 
     audio.initVisualization();
@@ -131,11 +134,13 @@ var queue = {
   resetAudio: function() {
     this.list = [];
     this.isStopped = false;
+    this.isPaused = false;
     this.pullAudio();
   },
   bindEvents: function() {
     $(audio).on('refresh', this.resetAudio.bind(this));
     $(audio).on('stopped', this.onAudioStopped.bind(this));
+    $(audio).on('paused', this.onAudioPaused.bind(this));
   },
   checkPassword: function() {
     var def = this.requestToken();
@@ -227,12 +232,18 @@ var queue = {
       clearTimeout(this.timeout);
     }
     // request new audio files every 100 seconds
-    if (!this.isStopped) {
+    if (!this.isStopped || !audio.isPaused) {
       this.timeout = setTimeout(this.prepareNext.bind(this), 100000)
     }
   },
   onAudioStopped: function() {
     this.isStopped = true;
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+  },
+  onAudioPaused: function() {
+    this.isPaused = true;
     if (this.timeout) {
       clearTimeout(this.timeout);
     }

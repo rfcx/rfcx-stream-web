@@ -9,6 +9,7 @@ var clock = {
     $(audio).on('started', this.onPlaybackStarded.bind(this));
     $(audio).on('stopped', this.stopTimer.bind(this));
     $(audio).on('continued', this.startTimer.bind(this));
+    $(audio).on('paused', this.stopTimer.bind(this));
   },
   onPlaybackStarded: function(ev) {
     this.initTime(queue.measureList[ev.target.index]);

@@ -12,6 +12,7 @@ var audio = {
   currentAudio: undefined,
   // is stop button was pressed
   isStopped: false,
+  isPaused: false,
   // is audio source and visualization is supported by current browser
   isModernBrowser: window.isVisualizationSupported && window.isAudioContextSupported,
   // how many streams/playlists were requested
@@ -23,6 +24,7 @@ var audio = {
   },
   reset: function() {
     this.stopPlayback();
+    this.pausePlayback();
     this.urls = [];
     this.list = [];
     this.index = 0;
@@ -35,6 +37,8 @@ var audio = {
     $('#muteBtn').click(this._onMuteBtnClicked.bind(this));
     // Mobile play button clicked
     $('#playBtn').click(this._onPlayBtnClicked.bind(this));
+    // Mobile pause button clicked
+    $('#pauseBtn').click(this._onPauseBtnClicked.bind(this));
   },
   initVisualization: function () {
     if (this.isModernBrowser) {
@@ -122,6 +126,7 @@ var audio = {
       audio.currentTime = 2;
     }, false);
     audio.muted = this.isMuted;
+    audio.paused = this.isPaused;
     return audio;
   },
   _onPlayEnd: function(ev) {
@@ -157,6 +162,28 @@ var audio = {
     }
     this.startPlayback();
   },
+  _onPauseBtnClicked: function(ev) {
+    var $this = $(ev.target);
+    if ($this.prop('disabled')) {
+      return;
+    }
+    this.isPaused = !this.isPaused;
+    $this.toggleClass('paused', this.isPaused).attr('title', this.isPaused? 'Play' : 'Pause');
+    if (this.isPaused) {
+      this.pausePlayback();
+    }
+    else if (!this.isPaused) {
+      if (this.currentAudio) {
+        if (this.isModernBrowser) {
+          context.resume();
+        }
+        else {
+          audio.play();
+        }
+        $(this).trigger('continued');
+      }
+    }
+  },
   toggleAudiosMute: function(isMuted) {
     for (var i = 0; i < this.list.length; i++) {
       this.list[i].muted = isMuted;
@@ -166,7 +193,9 @@ var audio = {
     this.loadsCount++;
     this.isStopped = false;
     $('#muteBtn').removeClass('stopped');
+    $('#pauseBtn').removeClass('paused');
     $('#bigPlayBtnContainer').hide();
+    $('#pauseBtn').prop('disabled', false);
     this.playAudio();
   },
   stopPlayback: function () {
@@ -184,6 +213,19 @@ var audio = {
     }
     this.isStopped = true;
     $(this).trigger('stopped');
+  },
+  pausePlayback: function () {
+    if (this.isModernBrowser) {
+      if (this.currentAudio) {
+        context.suspend();
+      }
+    }
+    else {
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+      }
+    }
+    $(this).trigger('paused');
   },
   changeButtonState: function(opts) {
     $('#muteBtn').prop('disabled', opts.disabled);
@@ -211,9 +253,9 @@ var audio = {
       this.currentAudio = audio;
     }
     if(this.index == 1) {
-        if (this.isModernBrowser) {
-          window.requestAnimationFrame(draw);
-        }
+      if (this.isModernBrowser) {
+        window.requestAnimationFrame(draw);
+      }
     }
     $(this).trigger('started');
   },
@@ -222,6 +264,7 @@ var audio = {
     this.changeButtonState({disabled: isLoading || isError});
     this.toggleLoader({visible: isLoading});
     $(this).trigger('loading', isLoading);
+    $('#pauseBtn').prop('disabled', true);
   },
   toggleLoader: function(opts) {
     $('#loaderContainer').toggleClass('hidden', !opts.visible);

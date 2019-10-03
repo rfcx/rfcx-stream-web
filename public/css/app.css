@@ -1609,6 +1609,54 @@ body {
     height: 20px;
   }
 }
+.rfcx-player__pause-btn {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  background: transparent;
+  position: absolute;
+  top: 50%;
+  left: 12%;
+  -webkit-transform: translate3d(0, -50%, 0);
+  -moz-transform: translate3d(0, -50%, 0);
+  -ms-transform: translate3d(0, -50%, 0);
+  -o-transform: translate3d(0, -50%, 0);
+}
+.rfcx-player__pause-btn:after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 20px;
+  background: url(../../../public/img/pause.png) no-repeat center center;
+  background-color: transparent;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+.rfcx-player__pause-btn.paused:after {
+  width: 18px;
+  background: url(../../../public/img/play.png) no-repeat center center;
+}
+.rfcx-player__pause-btn:disabled {
+  visibility: hidden;
+}
+@media only screen and (max-width: 767px) {
+  .rfcx-player__pause-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .rfcx-player__pause-btn:after {
+    width: 20px;
+    height: 20px;
+  }
+}
 .rfcx-player__waveform-container {
   display: block;
   max-width: 50%;

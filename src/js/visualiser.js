@@ -83,8 +83,7 @@ function initAudio() {
   splitter.connect(analyser,0,0);
   splitter.connect(analyser2,1,0);
 
-  splitter.connect(gain, 0);
-  splitter.connect(gain, 1);
+  analyser.connect(gain);
 
   gain.connect(context.destination);
 }

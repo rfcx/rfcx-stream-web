@@ -7828,7 +7828,7 @@ AnalyserView.prototype.initGL = function() {
     model = new Matrix4x4();
     view = new Matrix4x4();
     projection = new Matrix4x4();
-    
+
     var sonogram3DWidth = this.sonogram3DWidth;
     var sonogram3DHeight = this.sonogram3DHeight;
     var sonogram3DGeometrySize = this.sonogram3DGeometrySize;
@@ -7846,13 +7846,13 @@ AnalyserView.prototype.initGL = function() {
     TRIANGLES = gl.TRIANGLES;
     UNSIGNED_SHORT = gl.UNSIGNED_SHORT;
     GLFLOAT = gl.FLOAT;
-    
+
     // If we're missing this shader feature, then we can't do the 3D visualization.
     this.has3DVisualizer = (gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0);
-    
+
     if (!this.has3DVisualizer && this.analysisType == ANALYSISTYPE_3D_SONOGRAM)
         this.analysisType = ANALYSISTYPE_FREQUENCY;
-    
+
     var cameraController = new CameraController(canvas);
     this.cameraController = cameraController;
 
@@ -7910,7 +7910,7 @@ AnalyserView.prototype.initGL = function() {
     // Create the vertices and texture coordinates
     var vbo = gl.createBuffer();
     this.vbo = vbo;
-    
+
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bufferData(gl.ARRAY_BUFFER,
         vboTexCoordOffset + texCoords.byteLength,
@@ -7948,7 +7948,7 @@ AnalyserView.prototype.initGL = function() {
     // Create the vertices and texture coordinates
     var sonogram3DVBO = gl.createBuffer();
     this.sonogram3DVBO = sonogram3DVBO;
-    
+
     gl.bindBuffer(gl.ARRAY_BUFFER, sonogram3DVBO);
     gl.bufferData(gl.ARRAY_BUFFER, vbo3DTexCoordOffset + texCoords.byteLength, gl.STATIC_DRAW);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertices);
@@ -7993,17 +7993,17 @@ AnalyserView.prototype.initGL = function() {
 AnalyserView.prototype.initByteBuffer = function() {
     var gl = this.gl;
     var TEXTURE_HEIGHT = this.TEXTURE_HEIGHT;
-    
+
     if (!this.freqByteData || this.freqByteData.length != analyser.frequencyBinCount) {
         this.freqByteData = new Uint8Array(analyser.frequencyBinCount);
-        
+
         // (Re-)Allocate the texture object
         if (this.texture) {
             gl.deleteTexture(this.texture);
             this.texture = null;
         }
         this.texture = gl.createTexture();
-        
+
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
@@ -8047,7 +8047,7 @@ AnalyserView.prototype.doFrequencyAnalysis = function(event) {
           analyser.getByteTimeDomainData(this.freqByteData);
           break;
     }
-  
+
     this.drawGL();
 };
 
@@ -8065,13 +8065,13 @@ AnalyserView.prototype.drawGL = function() {
     var freqByteData = this.freqByteData;
     var texture = this.texture;
     var TEXTURE_HEIGHT = this.TEXTURE_HEIGHT;
-    
+
     var frequencyShader = this.frequencyShader;
     var waveformShader = this.waveformShader;
     var sonogramShader = this.sonogramShader;
     var sonogram3DShader = this.sonogram3DShader;
-    
-    
+
+
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
     if (this.analysisType != ANALYSISTYPE_SONOGRAM && this.analysisType != ANALYSISTYPE_3D_SONOGRAM) {
@@ -8585,8 +8585,7 @@ function initAudio() {
   splitter.connect(analyser,0,0);
   splitter.connect(analyser2,1,0);
 
-  splitter.connect(gain, 0);
-  splitter.connect(gain, 1);
+  analyser.connect(gain);
 
   gain.connect(context.destination);
 }
@@ -8616,6 +8615,7 @@ function draw() {
   analyserView2.doFrequencyAnalysis();
   window.requestAnimationFrame(draw);
 }
+
 "use strict";
 
 var login = {
@@ -8740,6 +8740,7 @@ var queue = {
   },
   timeout: undefined,
   isStopped: false,
+  isPaused: false,
   reset: function() {
     this.list = [];
     this.measureList = [];
@@ -8749,9 +8750,11 @@ var queue = {
     this.stream.type = undefined;
     this.stream.timezone = undefined;
     this.isStopped = false;
+    this.isPaused = false;
   },
   setupUI: function() {
     this.isStopped = false;
+    this.isPaused = false;
     this.list = [];
 
     audio.initVisualization();
@@ -8854,11 +8857,13 @@ var queue = {
   resetAudio: function() {
     this.list = [];
     this.isStopped = false;
+    this.isPaused = false;
     this.pullAudio();
   },
   bindEvents: function() {
     $(audio).on('refresh', this.resetAudio.bind(this));
     $(audio).on('stopped', this.onAudioStopped.bind(this));
+    $(audio).on('paused', this.onAudioPaused.bind(this));
   },
   checkPassword: function() {
     var def = this.requestToken();
@@ -8950,12 +8955,18 @@ var queue = {
       clearTimeout(this.timeout);
     }
     // request new audio files every 100 seconds
-    if (!this.isStopped) {
+    if (!this.isStopped || !audio.isPaused) {
       this.timeout = setTimeout(this.prepareNext.bind(this), 100000)
     }
   },
   onAudioStopped: function() {
     this.isStopped = true;
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+  },
+  onAudioPaused: function() {
+    this.isPaused = true;
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
@@ -9005,6 +9016,7 @@ var audio = {
   currentAudio: undefined,
   // is stop button was pressed
   isStopped: false,
+  isPaused: false,
   // is audio source and visualization is supported by current browser
   isModernBrowser: window.isVisualizationSupported && window.isAudioContextSupported,
   // how many streams/playlists were requested
@@ -9016,6 +9028,7 @@ var audio = {
   },
   reset: function() {
     this.stopPlayback();
+    this.pausePlayback();
     this.urls = [];
     this.list = [];
     this.index = 0;
@@ -9028,6 +9041,8 @@ var audio = {
     $('#muteBtn').click(this._onMuteBtnClicked.bind(this));
     // Mobile play button clicked
     $('#playBtn').click(this._onPlayBtnClicked.bind(this));
+    // Mobile pause button clicked
+    $('#pauseBtn').click(this._onPauseBtnClicked.bind(this));
   },
   initVisualization: function () {
     if (this.isModernBrowser) {
@@ -9115,6 +9130,7 @@ var audio = {
       audio.currentTime = 2;
     }, false);
     audio.muted = this.isMuted;
+    audio.paused = this.isPaused;
     return audio;
   },
   _onPlayEnd: function(ev) {
@@ -9150,6 +9166,28 @@ var audio = {
     }
     this.startPlayback();
   },
+  _onPauseBtnClicked: function(ev) {
+    var $this = $(ev.target);
+    if ($this.prop('disabled')) {
+      return;
+    }
+    this.isPaused = !this.isPaused;
+    $this.toggleClass('paused', this.isPaused).attr('title', this.isPaused? 'Play' : 'Pause');
+    if (this.isPaused) {
+      this.pausePlayback();
+    }
+    else if (!this.isPaused) {
+      if (this.currentAudio) {
+        if (this.isModernBrowser) {
+          context.resume();
+        }
+        else {
+          audio.play();
+        }
+        $(this).trigger('continued');
+      }
+    }
+  },
   toggleAudiosMute: function(isMuted) {
     for (var i = 0; i < this.list.length; i++) {
       this.list[i].muted = isMuted;
@@ -9159,7 +9197,9 @@ var audio = {
     this.loadsCount++;
     this.isStopped = false;
     $('#muteBtn').removeClass('stopped');
+    $('#pauseBtn').removeClass('paused');
     $('#bigPlayBtnContainer').hide();
+    $('#pauseBtn').prop('disabled', false);
     this.playAudio();
   },
   stopPlayback: function () {
@@ -9177,6 +9217,19 @@ var audio = {
     }
     this.isStopped = true;
     $(this).trigger('stopped');
+  },
+  pausePlayback: function () {
+    if (this.isModernBrowser) {
+      if (this.currentAudio) {
+        context.suspend();
+      }
+    }
+    else {
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+      }
+    }
+    $(this).trigger('paused');
   },
   changeButtonState: function(opts) {
     $('#muteBtn').prop('disabled', opts.disabled);
@@ -9204,9 +9257,9 @@ var audio = {
       this.currentAudio = audio;
     }
     if(this.index == 1) {
-        if (this.isModernBrowser) {
-          window.requestAnimationFrame(draw);
-        }
+      if (this.isModernBrowser) {
+        window.requestAnimationFrame(draw);
+      }
     }
     $(this).trigger('started');
   },
@@ -9215,6 +9268,7 @@ var audio = {
     this.changeButtonState({disabled: isLoading || isError});
     this.toggleLoader({visible: isLoading});
     $(this).trigger('loading', isLoading);
+    $('#pauseBtn').prop('disabled', true);
   },
   toggleLoader: function(opts) {
     $('#loaderContainer').toggleClass('hidden', !opts.visible);
@@ -9236,6 +9290,7 @@ var clock = {
     $(audio).on('started', this.onPlaybackStarded.bind(this));
     $(audio).on('stopped', this.stopTimer.bind(this));
     $(audio).on('continued', this.startTimer.bind(this));
+    $(audio).on('paused', this.stopTimer.bind(this));
   },
   onPlaybackStarded: function(ev) {
     this.initTime(queue.measureList[ev.target.index]);

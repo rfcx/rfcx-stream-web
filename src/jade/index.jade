@@ -36,6 +36,7 @@ html.no-js(lang='')
     .rfcx-player(data-step='1', data-intro='test1')
       .rfcx-player__top
         button#muteBtn.rfcx-player__mute-btn.stopped(type='button', disabled='', title='Mute', data-step='2', data-intro='test2')
+        button#pauseBtn.rfcx-player__pause-btn.paused(type='button', disabled='disabled', title='Pause', data-step='3', data-intro='test3')
         .rfcx-player__waveform-container
           canvas#waveformView(width='300', height='90')
         .rfcx-player__time

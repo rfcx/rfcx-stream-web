@@ -97,7 +97,7 @@ AnalyserView.prototype.initGL = function() {
     model = new Matrix4x4();
     view = new Matrix4x4();
     projection = new Matrix4x4();
-    
+
     var sonogram3DWidth = this.sonogram3DWidth;
     var sonogram3DHeight = this.sonogram3DHeight;
     var sonogram3DGeometrySize = this.sonogram3DGeometrySize;
@@ -115,13 +115,13 @@ AnalyserView.prototype.initGL = function() {
     TRIANGLES = gl.TRIANGLES;
     UNSIGNED_SHORT = gl.UNSIGNED_SHORT;
     GLFLOAT = gl.FLOAT;
-    
+
     // If we're missing this shader feature, then we can't do the 3D visualization.
     this.has3DVisualizer = (gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0);
-    
+
     if (!this.has3DVisualizer && this.analysisType == ANALYSISTYPE_3D_SONOGRAM)
         this.analysisType = ANALYSISTYPE_FREQUENCY;
-    
+
     var cameraController = new CameraController(canvas);
     this.cameraController = cameraController;
 
@@ -179,7 +179,7 @@ AnalyserView.prototype.initGL = function() {
     // Create the vertices and texture coordinates
     var vbo = gl.createBuffer();
     this.vbo = vbo;
-    
+
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bufferData(gl.ARRAY_BUFFER,
         vboTexCoordOffset + texCoords.byteLength,
@@ -217,7 +217,7 @@ AnalyserView.prototype.initGL = function() {
     // Create the vertices and texture coordinates
     var sonogram3DVBO = gl.createBuffer();
     this.sonogram3DVBO = sonogram3DVBO;
-    
+
     gl.bindBuffer(gl.ARRAY_BUFFER, sonogram3DVBO);
     gl.bufferData(gl.ARRAY_BUFFER, vbo3DTexCoordOffset + texCoords.byteLength, gl.STATIC_DRAW);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertices);
@@ -262,17 +262,17 @@ AnalyserView.prototype.initGL = function() {
 AnalyserView.prototype.initByteBuffer = function() {
     var gl = this.gl;
     var TEXTURE_HEIGHT = this.TEXTURE_HEIGHT;
-    
+
     if (!this.freqByteData || this.freqByteData.length != analyser.frequencyBinCount) {
         this.freqByteData = new Uint8Array(analyser.frequencyBinCount);
-        
+
         // (Re-)Allocate the texture object
         if (this.texture) {
             gl.deleteTexture(this.texture);
             this.texture = null;
         }
         this.texture = gl.createTexture();
-        
+
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
@@ -316,7 +316,7 @@ AnalyserView.prototype.doFrequencyAnalysis = function(event) {
           analyser.getByteTimeDomainData(this.freqByteData);
           break;
     }
-  
+
     this.drawGL();
 };
 
@@ -334,13 +334,13 @@ AnalyserView.prototype.drawGL = function() {
     var freqByteData = this.freqByteData;
     var texture = this.texture;
     var TEXTURE_HEIGHT = this.TEXTURE_HEIGHT;
-    
+
     var frequencyShader = this.frequencyShader;
     var waveformShader = this.waveformShader;
     var sonogramShader = this.sonogramShader;
     var sonogram3DShader = this.sonogram3DShader;
-    
-    
+
+
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
     if (this.analysisType != ANALYSISTYPE_SONOGRAM && this.analysisType != ANALYSISTYPE_3D_SONOGRAM) {
